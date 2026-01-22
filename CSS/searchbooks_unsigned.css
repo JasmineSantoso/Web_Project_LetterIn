@@ -121,10 +121,116 @@ header {
     justify-content: space-between;
 }
 
-.filter-btn i {
+.filter-btn .arrow-down {
+    display: flex;
     font-size: 0.8rem;
     color: #8d6e63;
 }
+
+.filter-btn.open .arrow-down {
+    transform: rotate(-180deg);
+}
+
+.filter-btn.open ~ .list-items {
+    opacity: 0;
+    animation-name: fadeInUp;
+    -webkit-animation-name: fadeInUp;
+    animation-duration: 0.4s;
+    animation-fill-mode: both;
+    -webkit-animation-duration: 0.4s;
+    -webkit-animation-fill-mode: both;
+}
+
+.list-items {
+  position: absolute;
+  max-width: 320px;
+  width: 100%;
+  margin-top: 15px;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  animation-name: fadeInDown;
+  -webkit-animation-name: fadeInDown;
+  animation-duration: 0.35s;
+  animation-fill-mode: both;
+  -webkit-animation-duration: 0.35s;
+  -webkit-animation-fill-mode: both;
+}
+
+.list-items .item {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  height: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+  padding: 0 15px;
+  border-radius: 8px;
+}
+
+.list-items .item:hover {
+    background-color: #285AEB;
+}
+
+.item .item-text{
+    font-size: 16px;
+    font-weight: 300;
+    color: #3e2723;
+}
+
+.item .checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 16px;
+  width: 16px;
+  border-radius: 4px;
+  margin-right: 12px;
+  border: 1.5px solid #c0c0c0;
+  transition: all 0.3s ease-in-out;
+}
+
+.item.checked .checkbox {
+  background-color: #4070f4;
+  border-color: #4070f4;
+}
+
+.item.checked .check-icon {
+  transform: scale(1);
+}
+
+.checkbox .check-icon {
+  color: #fff;
+  font-size: 11px;
+  transform: scale(0);
+  transition: all 0.2s ease-in-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    transform: translate3d(0, 30px, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, -20px, 0);
+    opacity: 0;
+  }
+}
+
+
+
+
+/* CSS Dropdown */
 
 /* --- Book List Container --- */
 .book-list-container {
@@ -240,6 +346,98 @@ footer {
 
 .social-icons a:last-child {
     background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+
+/* Container Wrapper untuk posisi */
+.filter-item-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+Base Styling untuk Details/Summary
+.custom-dropdown {
+    width: 210px; /* Lebar sesuai gambar */
+    font-family: var(--font-serif);
+}
+
+.custom-dropdown summary {
+    background-color: var(--btn-filter);
+    color: var(--text-brown);
+    padding: 8px 15px;
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #d7ccc8;
+    font-size: 1.4rem;
+    position: relative;
+    z-index: 10; /* Di atas elemen lain */
+}
+
+/* Kotak kecil untuk icon panah di pojok kanan summary */
+.arrow-box {
+    border: 1px solid var(--text-brown);
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+}
+
+/* Efek rotasi panah saat details tertutup/terbuka */
+details:not([open]) .arrow-box i {
+    transform: rotate(180deg);
+}
+
+/* AREA DROPDOWN (MELAYANG) */
+.dropdown-content {
+    position: absolute;
+    top: 100%; /* Muncul tepat di bawah summary */
+    left: 0;
+    width: 100%;
+    background-color: var(--bg-brown);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 999; /* Sangat tinggi agar menutupi list buku */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* Styling Item Checkbox */
+.checkbox-item {
+    color: var(--bg-cream);
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.checkbox-item input {
+    display: none; /* Sembunyikan default */
+}
+
+.checkmark {
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--bg-cream);
+    margin-right: 15px;
+    position: relative;
+    display: inline-block;
+}
+
+/* Simbol centang V */
+.checkbox-item input:checked + .checkmark::after {
+    content: 'L'; /* Menggunakan rotasi huruf L untuk bentuk centang sederhana */
+    position: absolute;
+    top: 0px;
+    left: 5px;
+    transform: rotate(45deg) scaleX(-1);
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--bg-cream);
 }
 
 /* --- Responsive Mobile --- */

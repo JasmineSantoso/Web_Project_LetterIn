@@ -13,7 +13,7 @@
     <header>
         <button class="nav-btn">About us</button>
         <div class="logo-container">
-            <img src="/IMG/logo1.jpeg" alt="LetterIn Logo" class="logo-img">
+            <img src="/IMG/logo1.png" alt="LetterIn Logo" class="logo-img">
         </div>
         <button class="nav-btn">Sign in</button>
     </header>
@@ -25,13 +25,87 @@
         </div>
     </section>
 
+
     <section class="filter-bar">
         <div class="filter-container">
-            <button class="filter-btn">Genre <i class="fa-solid fa-chevron-down"></i></button>
+
+             <!-- <div class="filter-btn">
+                <details class="custom-dropdown" open>
+                    <summary>
+                        Genre
+                        <span class="arrow-box"><i class="fa-solid fa-chevron-up"></i></span>
+                    </summary>
+                    <div class="dropdown-content">
+                        <label class="checkbox-item">
+                            <input type="checkbox" checked>
+                            <span class="checkmark"></span>
+                            Romance
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" checked>
+                            <span class="checkmark"></span>
+                            Crime
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox">
+                            <span class="checkmark"></span>
+                            Sci-Fi
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox">
+                            <span class="checkmark"></span>
+                            Self-help
+                        </label>
+                    </div>
+                </details>
+            </div> -->
+
+            <!-- <select class="filter-btn" name="Genre">Genre
+                <option >Romance</option>
+                <option >Crime</option>
+                <option >Sci-fict</option>
+                <option >Self-help</option>
+            </select> -->
+
+            <div class="filter-btn open">
+                <span class="filter-text">Genre</span>
+                <span class="arrow-down">
+                    <i class="fa-solid fa-chevron-down"></i>
+                </span>
+            </div>
+            
+            <ul class="list-items">
+                <li class="item">
+                    <span class="checkbox">
+                        <i class="fa-solid fa-check chek-icon"></i>
+                    </span>
+                    <span class="item-text">Romance</span>
+                </li>
+                
+                <li class="item">
+                    <span class="checkbox">
+                        <i class="fa-solid fa-check chek-icon"></i>
+                    </span>
+                    <span class="item-text">Crime</span>
+                </li>
+                
+                <li class="item">
+                    <span class="checkbox">
+                        <i class="fa-solid fa-check chek-icon"></i>
+                    </span>
+                    <span class="item-text">Sci-fict</span>
+                </li>
+                
+            </ul>
+
+            <!-- <button class="filter-btn">Genre <i class="fa-solid fa-chevron-down"></i></button>
             <button class="filter-btn">Publish <i class="fa-solid fa-chevron-down"></i></button>
-            <button class="filter-btn">Rating <i class="fa-solid fa-chevron-down"></i></button>
+            <button class="filter-btn">Rating <i class="fa-solid fa-chevron-down"></i></button> -->
         </div>
     </section>
+
+    
+
 
     <section class="book-list-container">
         
