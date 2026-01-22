@@ -1,0 +1,341 @@
+/* Reset Dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-cream: #FFF8E7;
+    --bg-brown-dark: #5D4037; /* Coklat tua background */
+    --text-brown: #4E342E;
+    --text-cream: #FFF8E7;
+    --bar-bg: #8D6E63;       /* Warna track progress bar */
+    --bar-fill: #D7CCC8;     /* Warna isi progress bar */
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: 'Lato', sans-serif;
+}
+
+body {
+    background-color: var(--bg-cream);
+    font-family: var(--font-sans);
+    color: var(--text-brown);
+}
+
+/* --- Header (Logged In) --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background-color: var(--bg-cream);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 100;
+}
+
+.nav-left a {
+    text-decoration: none;
+    color: var(--text-brown);
+    font-weight: bold;
+    margin-right: 25px;
+    font-size: 0.95rem;
+}
+
+.logo-container {
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.logo-container img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.search-box {
+    position: relative;
+}
+
+.search-box input {
+    padding: 8px 35px 8px 15px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+    width: 200px;
+    outline: none;
+}
+
+.search-box i {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 0.8rem;
+}
+
+.profile-icon {
+    font-size: 2rem;
+    color: #4E342E;
+    text-decoration: none;
+}
+
+/* --- Greeting --- */
+.greeting-section {
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.greeting-section h1 {
+    font-family: var(--font-serif);
+    color: #6D4C41;
+    font-size: 1.8rem;
+}
+
+/* --- Current Read Section --- */
+.current-read-section {
+    background-color: var(--bg-brown-dark);
+    padding: 30px 60px;
+    color: var(--text-cream);
+}
+
+.section-title-white {
+    font-family: var(--font-serif);
+    text-transform: uppercase;
+    color: #fff;
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+}
+
+.current-read-card {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    max-width: 800px;
+}
+
+.current-cover {
+    width: 140px;
+    border-radius: 2px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.read-details {
+    flex: 1;
+}
+
+.read-title {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+}
+
+.read-author {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    opacity: 0.9;
+}
+
+/* Progress Bar */
+.progress-container {
+    margin-bottom: 20px;
+    max-width: 300px;
+}
+
+.progress-label {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    font-family: var(--font-serif);
+}
+.percent {
+    float: right;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #4E342E; /* Background bar gelap */
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: #D7CCC8; /* Isi bar terang */
+    border-radius: 5px;
+}
+
+.start-date {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+/* Review Button */
+.btn-review {
+    background-color: #FFF8E7;
+    color: #4E342E;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    font-family: var(--font-serif);
+    font-weight: bold;
+    display: inline-block;
+}
+
+.stars-review {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 1.1rem;
+}
+
+/* --- Carousel Sections --- */
+.carousel-section {
+    padding: 40px 60px;
+}
+
+.light-bg {
+    background-color: var(--bg-cream);
+}
+
+.dark-bg {
+    background-color: var(--bg-brown-dark);
+}
+
+.section-title-brown {
+    font-family: var(--font-serif);
+    text-transform: uppercase;
+    color: var(--text-brown);
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+    letter-spacing: 1px;
+}
+
+.books-carousel {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    align-items: center;
+}
+
+.books-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.books-carousel img {
+    width: 120px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 3px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    transition: transform 0.3s;
+}
+
+.books-carousel img:hover {
+    transform: scale(1.05);
+}
+
+.next-arrow {
+    background: transparent;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.brown-arrow {
+    border: 1px solid var(--text-brown);
+    color: var(--text-brown);
+}
+
+.white-arrow {
+    border: 1px solid #fff;
+    color: #fff;
+}
+
+/* --- Footer --- */
+footer {
+    background-color: var(--bg-cream);
+    padding: 30px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-sans);
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: #3e2723;
+    font-weight: 900;
+    font-size: 1rem;
+    margin-right: 15px;
+}
+
+.copyright {
+    color: #5d4037;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.social-icons a {
+    margin-left: 10px;
+    background-color: #1a1a1a;
+    color: white;
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.social-icons a:last-child {
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+
+/* --- Responsive Mobile --- */
+@media (max-width: 768px) {
+    header {
+        padding: 15px 20px;
+    }
+    
+    .nav-left a, .search-box {
+        display: none; /* Sembunyikan menu/search di mobile biar rapi */
+    }
+
+    .current-read-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .current-cover {
+        width: 160px;
+    }
+
+    .progress-container {
+        margin: 0 auto 20px auto;
+    }
+
+    .carousel-section, .current-read-section {
+        padding: 30px 20px;
+    }
+}

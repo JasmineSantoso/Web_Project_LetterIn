@@ -13,6 +13,7 @@
     --btn-sage: #AAB39B;      /* Warna tombol header */
     --font-serif: 'Playfair Display', serif;
     --font-sans: 'Lato', sans-serif;
+    --bg-headfoot: #FFF1C9;
 }
 
 body {
@@ -27,7 +28,7 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 20px 40px;
-    background-color: var(--bg-cream); /* Pastikan background terisi agar shadow terlihat */
+    background-color: var(--bg-headfoot); /* Pastikan background terisi agar shadow terlihat */
     
     /* MENAMBAHKAN SHADOW SESUAI GAMBAR BARU */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); 
@@ -199,9 +200,19 @@ header {
     color: var(--text-brown);
 }
 
+.feature-card:hover {
+    background-color: #EDAD67;
+    transform: translateY(-4px);
+}
+
+.feature-card:hover p,
+.feature-card:hover .icon-box {
+    color: #3b2a1f;
+}
+
 /* --- Footer --- */
 footer {
-    background-color: var(--bg-cream);
+    background-color: var(--bg-headfoot);
     padding: 30px 40px;
     border-top: 1px solid rgba(0,0,0,0.1);
     display: flex;
@@ -242,6 +253,8 @@ footer {
 .social-icons a:last-child {
     background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
 }
+
+
 
 /* --- Responsif (Mobile) --- */
 @media (max-width: 768px) {

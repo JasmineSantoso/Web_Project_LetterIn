@@ -1,0 +1,275 @@
+/* Reset Dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-cream: #FFF8E7;
+    --text-brown: #4E342E;
+    --border-brown: #5D4037;
+    --btn-accept: #5D4037;   /* Coklat tua */
+    --btn-decline: #FF0000;  /* Merah terang */
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: 'Lato', sans-serif;
+}
+
+body {
+    background-color: var(--bg-cream);
+    font-family: var(--font-sans);
+    color: var(--text-brown);
+}
+
+/* --- Header --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background-color: var(--bg-cream);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 100;
+}
+
+.nav-left a {
+    text-decoration: none;
+    color: var(--text-brown);
+    font-weight: bold;
+    margin-right: 25px;
+    font-size: 0.95rem;
+}
+
+.logo-container {
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.logo-container img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.search-box {
+    position: relative;
+}
+
+.search-box input {
+    padding: 8px 35px 8px 15px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+    width: 200px;
+    outline: none;
+    background-color: #fff;
+}
+
+.search-box i {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 0.8rem;
+}
+
+.profile-icon {
+    font-size: 2rem;
+    color: #4E342E;
+}
+
+/* --- Main Layout --- */
+.notif-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* Page Header Title */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #999; /* Garis pemisah di bawah judul */
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+
+.page-header h1 {
+    font-family: var(--font-serif);
+    font-size: 1.8rem;
+    color: var(--text-brown);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.page-header i {
+    font-size: 1.5rem;
+    color: var(--text-brown);
+}
+
+/* Notification List */
+.notif-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.notif-item {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding: 25px 0;
+    border-bottom: 1px solid #ccc; /* Garis pemisah antar notif */
+}
+
+/* Agar item terakhir tidak ada garis bawah penuh jika diinginkan, 
+   tapi di desain terlihat ada garis panjang pemisah */
+.notif-item:last-child {
+    border-bottom: 1px solid #ccc; 
+}
+
+/* Avatar Styling */
+.avatar-wrapper {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.2); /* Efek bayangan avatar */
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Content Styling */
+.notif-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notif-text {
+    font-family: var(--font-sans);
+    font-size: 1.2rem;
+    color: var(--text-brown);
+    margin: 0;
+}
+
+/* Buttons */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    border: none;
+    padding: 6px 15px;
+    border-radius: 4px;
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    letter-spacing: 0.5px;
+}
+
+.btn-accept {
+    background-color: var(--btn-accept);
+}
+
+.btn-decline {
+    background-color: var(--btn-decline);
+}
+
+/* Hover Effect */
+.btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* --- Footer --- */
+footer {
+    background-color: var(--bg-cream);
+    padding: 30px 40px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: #3e2723;
+    font-weight: 900;
+    font-size: 1rem;
+    margin-right: 15px;
+}
+
+.copyright {
+    color: #5d4037;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.social-icons a {
+    margin-left: 10px;
+    background-color: #1a1a1a;
+    color: white;
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.social-icons a:last-child {
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+
+/* Responsive Mobile */
+@media (max-width: 768px) {
+    header {
+        padding: 15px 20px;
+    }
+    .nav-left, .search-box {
+        display: none;
+    }
+
+    .notif-item {
+        flex-direction: row; /* Tetap row tapi avatar lebih kecil */
+        gap: 15px;
+        padding: 20px 0;
+    }
+
+    .avatar-wrapper {
+        width: 60px;
+        height: 60px;
+    }
+
+    .notif-text {
+        font-size: 1rem;
+    }
+    
+    .btn {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+    }
+}

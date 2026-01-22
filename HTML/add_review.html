@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LetterIn - Add Review</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../CSS/add_review.css">
+</head>
+<body>
+
+    <header>
+        <div class="nav-left">
+            <a href="#">Bookmates</a>
+            <a href="#">Browse</a>
+        </div>
+        
+        <div class="logo-container">
+            <img src="../IMG/logo1.jpeg" alt="LetterIn Logo">
+        </div>
+        
+        <div class="nav-right">
+            <div class="search-box">
+                <input type="text" placeholder="Search books">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <a href="#" class="profile-icon">
+                <i class="fa-regular fa-circle-user"></i>
+            </a>
+        </div>
+    </header>
+
+    <main class="review-container">
+        
+        <div class="left-column">
+            <div class="book-cover-wrapper">
+                <img src="image_current.jpg" alt="Laut Bercerita" class="book-img">
+            </div>
+        </div>
+
+        <div class="right-column">
+            <h1 class="book-title">Laut Bercerita</h1>
+            <h2 class="book-author">Leila S. Chudori</h2>
+
+            <div class="star-rating-input">
+                <i class="fa-regular fa-star"></i>
+                <i class="fa-regular fa-star"></i>
+                <i class="fa-regular fa-star"></i>
+                <i class="fa-regular fa-star"></i>
+                <i class="fa-regular fa-star"></i>
+            </div>
+
+            <textarea class="review-textarea" placeholder="Write your review here"></textarea>
+
+            <div class="song-section">
+                <h3 class="section-label">Add Related Song</h3>
+                
+                <div class="song-input-box">
+                    <div class="song-info">
+                        <img src="song1.jpg" alt="Cover" class="mini-cover"> <span>Lush Life - Zara Larsson</span>
+                    </div>
+                    <button class="add-song-btn"><i class="fa-solid fa-plus"></i></button>
+                </div>
+
+                <div class="song-tags">
+                    <div class="song-tag">
+                        <img src="song2.jpg" alt="Cover">
+                        <span>Daylight - Harry Style</span>
+                    </div>
+                    <div class="song-tag">
+                        <img src="song3.jpg" alt="Cover">
+                        <span>Love Notes - Olivia D..</span>
+                    </div>
+                    <div class="song-tag">
+                        <img src="song1.jpg" alt="Cover"> <span>Dear Reader - Taylor S..</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn-bookshelf">Add Bookshelf <i class="fa-solid fa-chevron-down"></i></button>
+                <button class="btn-send">SEND</button>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-links">
+            <a href="#">Help</a>
+            <a href="#">FAQ</a>
+            <a href="#">Contact</a>
+        </div>
+        <div class="copyright">
+            <i class="fa-regular fa-copyright"></i> 2026 LetterIn, Inc.
+        </div>
+        <div class="social-icons">
+            <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-threads"></i></a>
+            <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+    </footer>
+
+</body>
+</html>

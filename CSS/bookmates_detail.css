@@ -1,0 +1,376 @@
+/* Reset Dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-cream: #FFF8E7;
+    --card-beige: #E6D5C3;    /* Warna kartu review */
+    --text-brown: #4E342E;
+    --star-yellow: #FBC02D;
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: 'Lato', sans-serif;
+}
+
+body {
+    background-color: var(--bg-cream);
+    font-family: var(--font-sans);
+    color: var(--text-brown);
+}
+
+/* --- Header --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background-color: var(--bg-cream);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 100;
+}
+
+.nav-left a {
+    text-decoration: none;
+    color: var(--text-brown);
+    font-weight: bold;
+    margin-right: 25px;
+    font-size: 0.95rem;
+}
+
+.nav-left .active-nav {
+    font-weight: 900;
+}
+
+.logo-container {
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.logo-container img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.search-box {
+    position: relative;
+}
+
+.search-box input {
+    padding: 8px 35px 8px 15px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+    width: 200px;
+    outline: none;
+    background-color: #fff;
+}
+
+.search-box i {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 0.8rem;
+}
+
+.profile-icon {
+    font-size: 2rem;
+    color: #4E342E;
+}
+
+/* --- Main Content --- */
+.main-container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* Sub Nav (Tabs) */
+.sub-nav {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+}
+
+.tab-link {
+    text-decoration: none;
+    color: #8D6E63;
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    padding-bottom: 5px;
+}
+
+.active-tab {
+    color: var(--text-brown);
+    font-weight: bold;
+    border-bottom: 2px solid var(--text-brown);
+}
+
+/* Mate Search Bar */
+.mate-search-bar {
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.mate-search-bar input {
+    width: 100%;
+    padding: 12px 40px 12px 20px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    outline: none;
+    background-color: #fff;
+}
+
+.mate-search-bar i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+}
+
+/* --- Review Card --- */
+.review-card {
+    background-color: var(--card-beige);
+    border-radius: 10px;
+    padding: 30px 40px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    max-width: 800px;
+    margin: 0 auto; /* Tengah */
+}
+
+/* Card Header */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.avatar-circle {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background-color: #ccc;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fff;
+}
+
+.avatar-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.username {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    color: var(--text-brown);
+}
+
+.timestamp {
+    font-size: 0.85rem;
+    color: #6D4C41;
+}
+
+/* Card Body */
+.book-title {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    color: var(--text-brown);
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.book-author {
+    font-family: var(--font-serif); /* Mengikuti gaya gambar */
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-left: 5px;
+}
+
+.rating-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.stars {
+    color: var(--star-yellow);
+    font-size: 1.2rem;
+}
+
+.rating-number {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--text-brown);
+}
+
+.review-text {
+    font-family: var(--font-sans);
+    font-size: 1.2rem; /* Teks review besar dan jelas */
+    font-weight: bold;
+    color: var(--text-brown);
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+/* Related Song */
+.related-song-section {
+    margin-bottom: 30px;
+}
+
+.song-label {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    color: #5D4037;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.song-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    border: 1px solid #5D4037;
+    padding: 8px 20px 8px 8px; /* Padding kiri lebih kecil untuk gambar */
+    border-radius: 6px;
+    background-color: transparent;
+}
+
+.song-cover {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.song-title {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: var(--text-brown);
+}
+
+/* Footer Actions */
+.card-footer {
+    display: flex;
+    gap: 25px;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: #3E2723;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    opacity: 0.8;
+}
+
+.action-btn:hover {
+    opacity: 1;
+    font-weight: bold;
+}
+
+/* --- Footer --- */
+footer {
+    background-color: var(--bg-cream);
+    padding: 30px 40px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: #3e2723;
+    font-weight: 900;
+    font-size: 1rem;
+    margin-right: 15px;
+}
+
+.copyright {
+    color: #5d4037;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.social-icons a {
+    margin-left: 10px;
+    background-color: #1a1a1a;
+    color: white;
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.social-icons a:last-child {
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+
+/* --- Responsive Mobile --- */
+@media (max-width: 768px) {
+    header {
+        padding: 15px 20px;
+    }
+    .nav-left, .search-box {
+        display: none;
+    }
+    
+    .review-card {
+        padding: 20px;
+    }
+    
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .timestamp {
+        align-self: flex-end;
+        margin-top: -30px;
+    }
+    
+    .song-box {
+        width: 100%; /* Box lagu full width di HP */
+    }
+}

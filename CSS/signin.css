@@ -1,0 +1,195 @@
+/* Reset Dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    /* Ganti 'login-bg.jpg' dengan nama file gambar background kamu */
+    background: url('../IMG/BG-sign.jpeg') no-repeat center center/cover;
+    height: 100vh; /* Full layar */
+    width: 100%;
+    overflow: hidden; /* Mencegah scroll */
+    position: relative;
+}
+
+/* --- Logo Pojok Kiri Atas --- */
+.brand-logo {
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    background-color: rgba(160, 170, 150, 0.8); /* Warna sage transparan */
+    padding: 10px 25px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brand-logo img {
+    height: 60px; /* Sesuaikan ukuran logo */
+    object-fit: contain;
+}
+
+/* --- Layout Utama --- */
+.main-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding: 0 100px;
+}
+
+/* --- Tagline Kiri --- */
+.left-tagline h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: #D4C63B; /* Warna kuning kehijauan sesuai gambar */
+    max-width: 400px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    font-weight: 400;
+}
+
+/* --- Login Card (Glassmorphism) --- */
+.login-card {
+    background: rgba(255, 255, 255, 0.25); /* Latar putih transparan */
+    backdrop-filter: blur(15px);            /* Efek Blur Kaca */
+    -webkit-backdrop-filter: blur(15px);    /* Support Safari */
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    padding: 40px 50px;
+    width: 450px;
+    text-align: center;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+
+.welcome-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: #4E342E; /* Coklat tua */
+    margin-bottom: 30px;
+    line-height: 1.2;
+}
+
+/* Input Styles */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 20px;
+    background: transparent; /* Input transparan */
+    border: 1px solid #5D4037; /* Border coklat */
+    border-radius: 25px;
+    font-size: 1rem;
+    color: #333;
+    font-family: 'Playfair Display', serif; /* Font input agak serif sesuai gambar */
+    outline: none;
+}
+
+.input-group input::placeholder {
+    color: #5D4037;
+    opacity: 0.8;
+}
+
+/* Options (Remember me & Forgot Pass) */
+.options-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #333;
+    margin-bottom: 25px;
+    padding: 0 5px;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.forgot-password {
+    text-decoration: underline;
+    color: #000;
+    font-weight: bold;
+}
+
+/* Buttons */
+.btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 25px;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    font-family: 'Playfair Display', serif;
+    transition: transform 0.2s;
+    margin-bottom: 15px;
+}
+
+.btn:hover {
+    transform: scale(1.02);
+}
+
+.btn-signin {
+    background-color: #5D4037; /* Coklat tua */
+    color: white;
+}
+
+.btn-google {
+    background-color: #5D4037;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Gaya huruf 'G' warna-warni manual jika tidak pakai fontawesome */
+.google-icon {
+    font-weight: bold;
+    font-family: sans-serif;
+    background: linear-gradient(to right, #4285F4, #DB4437, #F4B400, #0F9D58);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 1.2rem;
+}
+
+/* Footer Link */
+.signup-footer {
+    font-size: 0.9rem;
+    color: #333;
+    margin-top: 10px;
+}
+
+.signup-footer a {
+    color: #5D4037; /* Teks Sign Up coklat */
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+/* Responsif Mobile */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+        justify-content: center;
+        gap: 30px;
+        padding: 20px;
+    }
+
+    .left-tagline {
+        text-align: center;
+    }
+    
+    .login-card {
+        width: 100%;
+        max-width: 400px;
+        padding: 30px;
+    }
+}

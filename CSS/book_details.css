@@ -1,0 +1,368 @@
+/* Reset Dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-cream: #FFF8E7;
+    --text-brown: #4E342E;
+    --box-beige: #E6D5C3;     /* Warna latar box synopsis/review */
+    --action-sage: #BCC6A8;   /* Warna latar menu aksi */
+    --btn-brown: #5D4037;     /* Warna tombol Add Review */
+    --star-yellow: #FBC02D;
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: 'Lato', sans-serif;
+}
+
+body {
+    background-color: var(--bg-cream);
+    font-family: var(--font-sans);
+    color: var(--text-brown);
+}
+
+/* --- Header (Sama seperti Dashboard) --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background-color: var(--bg-cream);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 100;
+}
+
+.nav-left a {
+    text-decoration: none;
+    color: var(--text-brown);
+    font-weight: bold;
+    margin-right: 25px;
+    font-size: 0.95rem;
+}
+
+.logo-container {
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.logo-container img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.search-box {
+    position: relative;
+}
+
+.search-box input {
+    padding: 8px 35px 8px 15px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+    width: 200px;
+    outline: none;
+    background-color: #fff;
+}
+
+.search-box i {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 0.8rem;
+}
+
+.profile-icon {
+    font-size: 2rem;
+    color: #4E342E;
+}
+
+/* --- Layout Utama --- */
+.detail-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 240px 1fr; /* Kolom kiri 240px, kanan sisa */
+    gap: 50px;
+    align-items: start;
+}
+
+/* --- Sidebar Kiri --- */
+.left-sidebar {
+    text-align: center;
+}
+
+.cover-wrapper {
+    margin-bottom: 10px;
+}
+
+.book-cover {
+    width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    border: 1px solid #fff;
+}
+
+.sidebar-rating {
+    margin-bottom: 20px;
+}
+
+.stars {
+    color: var(--star-yellow);
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.rating-number {
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.rating-text {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Tombol Add Review */
+.btn-add-review {
+    width: 100%;
+    background: linear-gradient(to bottom, #6d4c41, #4e342e);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.3);
+}
+
+.btn-stars {
+    color: #fff; /* Bintang putih outline */
+    font-size: 0.9rem;
+    margin-bottom: 2px;
+}
+
+.btn-add-review span {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+/* Action Menu Box (Hijau Sage) */
+.action-menu-box {
+    background-color: var(--action-sage);
+    border-radius: 6px;
+    padding: 5px 15px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.action-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: #3E2723;
+    cursor: pointer;
+    padding: 8px 0;
+}
+
+.dropdown-item {
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+/* --- Konten Kanan --- */
+.book-title {
+    font-family: var(--font-serif);
+    font-size: 3rem;
+    color: #000;
+    margin-bottom: 5px;
+    line-height: 1;
+}
+
+.book-author {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.book-metadata {
+    font-family: var(--font-serif); /* Sesuai gambar font agak serif/tebal */
+    color: #222;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 30px;
+}
+
+.book-metadata strong {
+    font-weight: 700;
+}
+
+/* Box Style (Synopsis & Review) */
+.content-box {
+    background-color: var(--box-beige);
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.box-title {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    color: var(--text-brown);
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    padding-bottom: 10px;
+}
+
+.synopsis-text {
+    line-height: 1.6;
+    color: #4a3b32;
+    font-style: italic;
+}
+
+/* Review Styles */
+.review-item {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    padding-bottom: 15px;
+}
+
+.review-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.user-avatar {
+    font-size: 2.5rem;
+    color: #4E342E;
+}
+
+.review-body {
+    flex: 1;
+}
+
+.review-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.review-stars {
+    font-size: 0.8rem;
+    color: var(--star-yellow);
+    margin-bottom: 8px;
+}
+
+.review-text {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin-bottom: 10px;
+}
+
+.review-actions {
+    font-size: 0.8rem;
+    color: #666;
+    display: flex;
+    gap: 15px;
+}
+
+.more-reviews {
+    text-align: right;
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.more-reviews a {
+    text-decoration: none;
+    color: var(--text-brown);
+}
+
+/* --- Footer --- */
+footer {
+    background-color: var(--bg-cream);
+    padding: 30px 40px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: #3e2723;
+    font-weight: 900;
+    font-size: 1rem;
+    margin-right: 15px;
+}
+
+.copyright {
+    color: #5d4037;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.social-icons a {
+    margin-left: 10px;
+    background-color: #1a1a1a;
+    color: white;
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.social-icons a:last-child {
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+
+/* --- Responsive Mobile --- */
+@media (max-width: 768px) {
+    .detail-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .left-sidebar {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    header {
+        padding: 15px 20px;
+    }
+    
+    .nav-left, .search-box {
+        display: none;
+    }
+}

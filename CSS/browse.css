@@ -1,0 +1,336 @@
+/* Reset Dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-cream: #FFF8E7;
+    --card-brown: #5D4037;    /* Warna latar kartu buku (coklat tua) */
+    --action-sage: #BCC6A8;   /* Warna latar box aksi (hijau sage pucat) */
+    --text-brown: #4E342E;
+    --text-card: #FFF;        /* Teks putih di dalam kartu */
+    --star-yellow: #FBC02D;
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: 'Lato', sans-serif;
+}
+
+body {
+    background-color: var(--bg-cream);
+    font-family: var(--font-sans);
+    color: var(--text-brown);
+}
+
+/* --- Header --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background-color: var(--bg-cream);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 100;
+}
+
+.nav-left a {
+    text-decoration: none;
+    color: var(--text-brown);
+    font-weight: bold;
+    margin-right: 25px;
+    font-size: 0.95rem;
+}
+
+.nav-left .active-link {
+    /* Style untuk menandakan halaman aktif jika perlu (bold extra) */
+    font-weight: 900;
+}
+
+.logo-container {
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.logo-container img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Search Header Kecil */
+.search-box-header {
+    position: relative;
+}
+
+.search-box-header input {
+    padding: 8px 35px 8px 15px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+    width: 200px;
+    outline: none;
+}
+
+.search-box-header i {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 0.8rem;
+}
+
+.profile-icon {
+    font-size: 2rem;
+    color: #4E342E;
+}
+
+/* --- Hero Search Area --- */
+.browse-hero {
+    text-align: center;
+    padding: 30px 20px 20px 20px;
+}
+
+.page-title {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #5d4037;
+}
+
+.main-search-container {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.main-search-container input {
+    width: 100%;
+    padding: 12px 40px 12px 25px;
+    border-radius: 30px;
+    border: 1px solid #ccc; /* Border tipis */
+    font-size: 1rem;
+    outline: none;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.main-search-container i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+}
+
+/* --- Category Buttons --- */
+.category-filter {
+    padding: 10px 20px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.button-row {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.cat-btn {
+    background-color: #5D4037;
+    color: #fff;
+    border: none;
+    padding: 8px 25px;
+    border-radius: 20px;
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    cursor: pointer;
+    border: 2px solid transparent; /* Prepare border space */
+}
+
+/* Tombol Trending yang aktif ada border biru */
+.cat-btn.active-trending {
+    border: 2px solid #29B6F6; /* Biru terang seperti di gambar */
+}
+
+/* --- Book List (Browse Cards) --- */
+.browse-list {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px 60px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.browse-card {
+    background-color: var(--card-brown);
+    border-radius: 4px;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    color: var(--text-card);
+}
+
+.browse-cover {
+    width: 90px;
+    height: 135px;
+    object-fit: cover;
+    border-radius: 2px;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.browse-info {
+    flex: 1; /* Mengambil sisa ruang di tengah */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+}
+
+.browse-title {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    font-weight: normal;
+    margin-bottom: 2px;
+}
+
+.browse-year {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-left: 5px;
+}
+
+.browse-author {
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    color: #D7CCC8; /* Coklat sangat muda */
+    margin-bottom: 8px;
+}
+
+.browse-rating {
+    font-size: 1rem;
+    color: var(--star-yellow);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.rating-text {
+    font-size: 0.8rem;
+    color: #D7CCC8;
+    margin-left: 5px;
+}
+
+/* --- Action Box (Right Side) --- */
+.action-box {
+    background-color: var(--action-sage);
+    padding: 10px 15px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 160px;
+}
+
+.action-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    color: #3E2723; /* Teks coklat tua dalam box hijau */
+    cursor: pointer;
+    padding: 2px 0;
+}
+
+.dropdown-item {
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    padding-bottom: 5px;
+    margin-bottom: 2px;
+}
+
+.action-item i {
+    font-size: 1rem;
+}
+
+/* --- Footer --- */
+footer {
+    background-color: var(--bg-cream);
+    padding: 30px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: #3e2723;
+    font-weight: 900;
+    font-size: 1rem;
+    margin-right: 15px;
+}
+
+.copyright {
+    color: #5d4037;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.social-icons a {
+    margin-left: 10px;
+    background-color: #1a1a1a;
+    color: white;
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.social-icons a:last-child {
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+
+/* --- Responsive Mobile --- */
+@media (max-width: 768px) {
+    .browse-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .browse-info {
+        align-items: center;
+    }
+
+    .action-box {
+        width: 100%; /* Box aksi jadi lebar penuh di HP */
+    }
+
+    .nav-left, .search-box-header {
+        display: none; /* Sembunyikan elemen non-krusial di header HP */
+    }
+
+    header {
+        justify-content: space-between;
+    }
+}

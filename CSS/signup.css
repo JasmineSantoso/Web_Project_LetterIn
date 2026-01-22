@@ -1,0 +1,211 @@
+/* Reset Dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    /* Pastikan file gambar background tersedia */
+    background: url('../IMG/BG-sign.jpeg') no-repeat center center/cover;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+/* --- Logo Pojok Kanan Atas --- */
+.brand-logo-container {
+    position: absolute;
+    top: 30px;
+    right: 40px; /* Posisi di kanan */
+    background-color: #FFF8E7; /* Latar belakang krem untuk logo */
+    padding: 8px 30px;
+    border-radius: 25px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 10;
+}
+
+.brand-logo {
+    height: 30px;
+    object-fit: contain;
+    display: block;
+}
+
+/* --- Layout Utama --- */
+.main-container {
+    display: flex;
+    justify-content: space-between; /* Memisahkan kiri dan kanan */
+    align-items: center;
+    height: 100%;
+    padding: 0 80px;
+}
+
+/* --- Tagline Kanan --- */
+.right-content {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end; /* Teks rata kanan area-nya */
+    padding-right: 50px;
+}
+
+.tagline {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: #4E342E; /* Warna coklat tua */
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+    max-width: 300px;
+    text-align: right;
+    line-height: 1.2;
+}
+
+/* --- Sign Up Card (Glassmorphism Kiri) --- */
+.signup-card {
+    /* Latar belakang lebih gelap/transparan dibanding Sign In agar teks putih terbaca */
+    background: rgba(0, 0, 0, 0.15); 
+    backdrop-filter: blur(12px);         
+    -webkit-backdrop-filter: blur(12px);
+    
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    padding: 30px 40px;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    margin-left: 20px; /* Jarak dari sisi kiri layar */
+}
+
+.welcome-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: #fff; /* Judul warna putih */
+    margin-bottom: 25px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Input Styles */
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 20px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.8); /* Border putih transparan */
+    border-radius: 25px;
+    font-size: 1rem;
+    color: #fff; /* Teks input putih */
+    font-family: 'Playfair Display', serif;
+    outline: none;
+    transition: background 0.3s;
+}
+
+.input-group input::placeholder {
+    color: rgba(255, 255, 255, 0.9); /* Placeholder putih */
+}
+
+.input-group input:focus {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Options (Remember me) */
+.options-row {
+    text-align: left;
+    margin-bottom: 20px;
+    padding-left: 10px;
+}
+
+.remember-me {
+    color: #fff;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+/* Buttons */
+.btn {
+    width: 100%;
+    padding: 10px;
+    border-radius: 25px;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    font-family: 'Playfair Display', serif;
+    font-weight: bold;
+    margin-bottom: 15px;
+    transition: transform 0.2s;
+}
+
+.btn:hover {
+    transform: scale(1.02);
+}
+
+/* Tombol Sign Up berwarna Krem */
+.btn-signup {
+    background-color: #FFF8E7; 
+    color: #4E342E; /* Teks coklat */
+}
+
+/* Tombol Google berwarna Krem */
+.btn-google {
+    background-color: #FFF8E7;
+    color: #4E342E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.google-icon {
+    font-weight: bold;
+    font-family: sans-serif;
+    background: linear-gradient(to right, #4285F4, #DB4437, #F4B400, #0F9D58);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 1.2rem;
+}
+
+/* Footer Link */
+.signin-footer {
+    font-size: 0.8rem;
+    color: #fff;
+    margin-top: 5px;
+}
+
+.signin-footer a {
+    color: #FFF8E7;
+    text-decoration: underline;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+/* Responsif Mobile */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column-reverse; /* Balik urutan di HP agar form di bawah teks */
+        justify-content: center;
+        gap: 30px;
+        padding: 20px;
+    }
+    
+    .brand-logo-container {
+        top: 20px;
+        right: 20px;
+    }
+
+    .signup-card {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .right-content {
+        justify-content: center;
+        padding-right: 0;
+    }
+
+    .tagline {
+        text-align: center;
+    }
+}

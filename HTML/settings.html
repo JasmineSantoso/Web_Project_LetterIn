@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LetterIn - Account Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../CSS/settings.css">
+</head>
+<body>
+
+    <header>
+        <div class="nav-left">
+            <a href="#">Bookmates</a>
+            <a href="#">Browse</a>
+        </div>
+        
+        <div class="logo-container">
+            <img src="logo1.jpg" alt="LetterIn Logo">
+        </div>
+        
+        <div class="nav-right">
+            <div class="search-box">
+                <input type="text" placeholder="Search books">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <a href="#" class="profile-icon">
+                <i class="fa-regular fa-circle-user"></i>
+            </a>
+        </div>
+    </header>
+
+    <main class="main-container">
+        
+        <div class="settings-card">
+            
+            <h2 class="settings-title">ACCOUNT SETTINGS</h2>
+
+            <form action="#" class="settings-form">
+                <div class="form-layout">
+                    
+                    <div class="input-column">
+                        <div class="form-group">
+                            <label for="fullname">Full Name</label>
+                            <input type="text" id="fullname" name="fullname">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bio">Bio</label>
+                            <textarea id="bio" name="bio"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="avatar-column">
+                        <div class="avatar-wrapper">
+                            <div class="avatar-placeholder">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <button type="button" class="btn-edit-avatar">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-discard">DISCARD</button>
+                    <button type="submit" class="btn-save">SAVE</button>
+                </div>
+
+            </form>
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="footer-links">
+            <a href="#">Help</a>
+            <a href="#">FAQ</a>
+            <a href="#">Contact</a>
+        </div>
+        <div class="copyright">
+            <i class="fa-regular fa-copyright"></i> 2026 LetterIn, Inc.
+        </div>
+        <div class="social-icons">
+            <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-threads"></i></a>
+            <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+    </footer>
+
+</body>
+</html>

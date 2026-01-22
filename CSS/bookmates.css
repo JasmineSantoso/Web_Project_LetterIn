@@ -1,0 +1,349 @@
+/* Reset Dasar */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-cream: #FFF8E7;
+    --card-beige: #EADBC8;    /* Warna latar kartu feed */
+    --text-brown: #4E342E;
+    --nav-active: #5D4037;
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: 'Lato', sans-serif;
+    --star-yellow: #FBC02D;
+}
+
+body {
+    background-color: var(--bg-cream);
+    font-family: var(--font-sans);
+    color: var(--text-brown);
+}
+
+/* --- Header --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background-color: var(--bg-cream);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 100;
+}
+
+.nav-left a {
+    text-decoration: none;
+    color: var(--text-brown);
+    font-weight: bold;
+    margin-right: 25px;
+    font-size: 0.95rem;
+}
+
+.nav-left .active-nav {
+    font-weight: 900; /* Link aktif lebih tebal */
+}
+
+.logo-container {
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.logo-container img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.search-box {
+    position: relative;
+}
+
+.search-box input {
+    padding: 8px 35px 8px 15px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+    width: 200px;
+    outline: none;
+    background-color: #fff;
+}
+
+.search-box i {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 0.8rem;
+}
+
+.profile-icon {
+    font-size: 2rem;
+    color: #4E342E;
+}
+
+/* --- Main Layout --- */
+.bookmates-container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* Sub Nav (Tabs) */
+.sub-nav {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+}
+
+.tab-link {
+    text-decoration: none;
+    color: #8D6E63;
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    padding-bottom: 5px;
+}
+
+.active-tab {
+    color: var(--text-brown);
+    font-weight: bold;
+    border-bottom: 2px solid var(--text-brown);
+}
+
+/* Mate Search Bar */
+.mate-search-bar {
+    position: relative;
+    max-width: 100%;
+    margin-bottom: 30px;
+}
+
+.mate-search-bar input {
+    width: 100%;
+    padding: 12px 40px 12px 20px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    outline: none;
+    background-color: #fff;
+}
+
+.mate-search-bar i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+}
+
+/* --- Feed List --- */
+.feed-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-bottom: 50px;
+}
+
+.feed-card {
+    background-color: var(--card-beige);
+    border-radius: 12px;
+    padding: 20px 25px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Card Header */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.avatar-circle {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: #ccc; /* Placeholder color */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fff;
+}
+
+.avatar-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-circle i {
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.username {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    color: var(--text-brown);
+}
+
+.time-stamp {
+    font-size: 0.8rem;
+    color: #6D4C41;
+}
+
+/* Card Body */
+.card-body {
+    display: flex;
+    gap: 20px;
+}
+
+.feed-book-cover {
+    width: 70px;
+    height: 105px;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.feed-book-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.feed-book-title {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    margin-bottom: 2px;
+    color: var(--text-brown);
+    font-weight: normal;
+}
+
+.feed-book-author {
+    font-size: 0.9rem;
+    color: #5D4037;
+    margin-bottom: 8px;
+}
+
+.feed-rating {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.feed-rating i {
+    color: var(--star-yellow);
+    font-size: 0.8rem;
+}
+
+.feed-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.see-review {
+    font-size: 0.85rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: #3E2723;
+}
+
+.action-icons {
+    display: flex;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: #3E2723;
+    cursor: pointer;
+}
+
+/* --- Footer --- */
+footer {
+    background-color: var(--bg-cream);
+    padding: 30px 40px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: #3e2723;
+    font-weight: 900;
+    font-size: 1rem;
+    margin-right: 15px;
+}
+
+.copyright {
+    color: #5d4037;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.social-icons a {
+    margin-left: 10px;
+    background-color: #1a1a1a;
+    color: white;
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.social-icons a:last-child {
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+}
+
+/* --- Responsive Mobile --- */
+@media (max-width: 768px) {
+    header {
+        padding: 15px 20px;
+    }
+    
+    .nav-left, .search-box {
+        display: none;
+    }
+
+    .sub-nav {
+        gap: 20px;
+        font-size: 0.9rem;
+    }
+
+    .card-header {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .time-stamp {
+        align-self: flex-end; /* Pindah ke kanan bawah header */
+        margin-top: -20px; /* Tarik ke atas dikit */
+    }
+}
