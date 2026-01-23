@@ -10,8 +10,10 @@
 </head>
 <body>
 
-    <div class="brand-logo">
-        <img src="../IMG/logo4.png" alt="LetterIn">
+    <div class="brand-logo-container">
+        <a href="home_unsigned.html">
+            <img src="../IMG/logo4.png" alt="LetterIn" class="brand-logo">
+        </a>
     </div>
 
     <div class="main-container">
@@ -25,10 +27,12 @@
             
             <form action="#">
                 <div class="input-group">
-                    <input type="email" placeholder="Email" required>
+                    <input type="email" id="email" placeholder="" required>
+                    <label for="email">Email</label>
                 </div>
                 <div class="input-group">
-                    <input type="password" placeholder="Password" required>
+                    <input type="password" id="password" placeholder="" required>
+                    <label for="password">Password</label>
                 </div>
 
                 <div class="options-row">
@@ -46,7 +50,7 @@
             </form>
 
             <div class="signup-footer">
-                Don't have an account? <a href="#">Sign Up</a>
+                Don't have an account? <a href="signup.html">Sign Up</a>
             </div>
         </div>
     </div>

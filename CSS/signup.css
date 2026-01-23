@@ -25,6 +25,13 @@ body {
     border-radius: 25px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     z-index: 10;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+}
+
+.brand-logo-container:hover {
+    background-color: rgba(160, 170, 150, 0.8);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
 }
 
 .brand-logo {
@@ -32,6 +39,24 @@ body {
     object-fit: contain;
     display: block;
 }
+
+.brand-logo a {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.brand-logo img {
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    height: 50px;
+}
+
+.brand-logo a:hover img {
+    transform: scale(1.05);
+    opacity: 0.9;
+    background-color: rgba(160, 170, 150, 0.8);
+}
+
+
 
 /* --- Layout Utama --- */
 .main-container {
@@ -140,6 +165,8 @@ body {
 
 .btn:hover {
     transform: scale(1.02);
+    background-color: #4E342E; 
+    color: #FFF8E7;
 }
 
 /* Tombol Sign Up berwarna Krem */

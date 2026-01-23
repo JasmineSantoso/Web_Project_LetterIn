@@ -16,21 +16,44 @@ body {
 }
 
 /* --- Logo Pojok Kiri Atas --- */
-.brand-logo {
+.brand-logo-container {
     position: absolute;
     top: 30px;
     left: 40px;
     background-color: rgba(160, 170, 150, 0.8); /* Warna sage transparan */
-    padding: 10px 25px;
+    padding: 8px 30px;
     border-radius: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: background-color 0.25s ease;
+    cursor: pointer;
+}
+
+.brand-logo-container:hover {
+    background-color: #FFF8E7;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.brand-logo {
+    height: 30px;
+    object-fit: contain;
+    display: block;
+}
+
+.brand-logo a {
+    display: inline-flex;
+    cursor: pointer;
 }
 
 .brand-logo img {
-    height: 60px; /* Sesuaikan ukuran logo */
-    object-fit: contain;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    height: 50px;
+}
+
+.brand-logo a:hover img {
+    transform: scale(1.05);
+    opacity: 0.9;
 }
 
 /* --- Layout Utama --- */
@@ -40,7 +63,7 @@ body {
     align-items: center;
     height: 100%;
     padding: 0 100px;
-}
+} 
 
 /* --- Tagline Kiri --- */
 .left-tagline h1 {
@@ -75,7 +98,9 @@ body {
 
 /* Input Styles */
 .input-group {
+    position: relative;
     margin-bottom: 20px;
+    background: var(--bg-site);
 }
 
 .input-group input {
@@ -90,10 +115,48 @@ body {
     outline: none;
 }
 
-.input-group input::placeholder {
+.input-group label {
+    position: absolute;
+    left:12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #000000;
+    font-size: 14px;
+    pointer-events: none;
+    transition: all 0.25s ease;
+    z-index: 2;
+    padding: 0 6px;
+}
+
+.input-group label::before {
+    content: "";
+    position: absolute;
+    left: -6px;
+    right: -6px;
+    top: 50%;
+    height: 1.2em;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.42); /* sesuaikan dg card */
+    backdrop-filter: blur(6px);
+    border-radius: 6px;
+    z-index: -1;
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+    top: -1px;
+    font-size: 14px;
+    color: #000000;
+}
+
+.input-group input:focus {
+    border-bottom-color: #000000;
+}
+
+/* .input-group input::placeholder {
     color: #5D4037;
     opacity: 0.8;
-}
+} */
 
 /* Options (Remember me & Forgot Pass) */
 .options-row {
@@ -129,12 +192,14 @@ body {
     font-size: 1.1rem;
     cursor: pointer;
     font-family: 'Playfair Display', serif;
-    transition: transform 0.2s;
+    transition: transform 0.2s ease;
     margin-bottom: 15px;
 }
 
 .btn:hover {
     transform: scale(1.02);
+    background-color: #FFF8E7;
+    color: #5D4037;
 }
 
 .btn-signin {
