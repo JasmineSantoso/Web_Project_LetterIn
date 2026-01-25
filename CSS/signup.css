@@ -96,7 +96,9 @@ body {
     border-radius: 20px;
     padding: 30px 40px;
     width: 400px;
-    text-align: center;
+    /* text-align: center; */
+    align-items: stretch;
+    text-align: left;
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
     margin-left: 20px; /* Jarak dari sisi kiri layar */
 }
@@ -112,33 +114,75 @@ body {
 /* Input Styles */
 .input-group {
     margin-bottom: 15px;
+    position: relative;
+    background: var(--bg-site);
 }
 
 .input-group input {
     width: 100%;
     padding: 12px 20px;
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.8); /* Border putih transparan */
+    border: 1px solid rgba(255, 255, 255, 0.42); /* Border putih transparan */
     border-radius: 25px;
     font-size: 1rem;
     color: #fff; /* Teks input putih */
     font-family: 'Playfair Display', serif;
     outline: none;
-    transition: background 0.3s;
+    /*transition: background 0.3s;*/
 }
 
-.input-group input::placeholder {
-    color: rgba(255, 255, 255, 0.9); /* Placeholder putih */
+.input-group label {
+    position: absolute;
+    left:12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #000000;
+    font-size: 14px;
+    pointer-events: none;
+    transition: all 0.25s ease;
+    z-index: 2;
+    padding: 0 6px;
+}
+
+.input-group label::before {
+    content: "";
+    position: absolute;
+    left: -6px;
+    right: -6px;
+    top: 50%;
+    height: 1.2em;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.42); /* sesuaikan dg card */
+    backdrop-filter: blur(6px);
+    border-radius: 6px;
+    z-index: -1;
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+    top: -1px;
+    font-size: 14px;
+    color: #000000;
 }
 
 .input-group input:focus {
-    background: rgba(255, 255, 255, 0.1);
+    border-bottom-color: rgba(255, 255, 255, 0.42);
 }
+
+/* .input-group input::placeholder {
+    color: rgba(255, 255, 255, 0.9); /* Placeholder putih */
+/* }
+
+.input-group input:focus {
+    background: rgba(255, 255, 255, 0.1);
+} */ */
 
 /* Options (Remember me) */
 .options-row {
+    width: 100%;
     text-align: left;
-    margin-bottom: 20px;
+    align-self: flex-start;
+    margin-bottom: 15px;
     padding-left: 10px;
 }
 
@@ -160,6 +204,7 @@ body {
     font-family: 'Playfair Display', serif;
     font-weight: bold;
     margin-bottom: 15px;
+    margin-top: 15px;
     transition: transform 0.2s;
 }
 

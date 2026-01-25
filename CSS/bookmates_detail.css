@@ -12,6 +12,7 @@
     --star-yellow: #FBC02D;
     --font-serif: 'Playfair Display', serif;
     --font-sans: 'Lato', sans-serif;
+    --bg-header: #FFF1C9;
 }
 
 body {
@@ -26,7 +27,7 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 15px 40px;
-    background-color: var(--bg-cream);
+    background-color: var(--bg-header);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     position: relative;
     z-index: 100;
@@ -44,17 +45,39 @@ header {
     font-weight: 900;
 }
 
+/* container logo */
 .logo-container {
+    height: 50px;
+}
+
+/* link logo */
+.brand-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+/* image logo */
+.brand-logo img {
+    height: 300%;
+    width: auto;
+    object-fit: contain;
+    position: relative;
+    left: +6px;
+}
+
+/* .logo-container {
     height: 50px;
     display: flex;
     align-items: center;
 }
 
-.logo-container img {
+.brand-logo img {
     height: 100%;
     width: auto;
     object-fit: contain;
-}
+} */
 
 .nav-right {
     display: flex;
@@ -306,7 +329,7 @@ header {
 
 /* --- Footer --- */
 footer {
-    background-color: var(--bg-cream);
+    background-color: var(--bg-header);
     padding: 30px 40px;
     border-top: 1px solid rgba(0,0,0,0.1);
     display: flex;
