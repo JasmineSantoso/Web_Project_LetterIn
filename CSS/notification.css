@@ -7,6 +7,8 @@
 
 :root {
     --bg-cream: #FFF8E7;
+    --bg-header: #FFF1C9;
+    --bg-footer: #FFF1C9;
     --text-brown: #4E342E;
     --border-brown: #5D4037;
     --btn-accept: #5D4037;   /* Coklat tua */
@@ -19,6 +21,9 @@ body {
     background-color: var(--bg-cream);
     font-family: var(--font-sans);
     color: var(--text-brown);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* --- Header --- */
@@ -27,7 +32,7 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 15px 40px;
-    background-color: var(--bg-cream);
+    background-color: var(--bg-header);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     position: relative;
     z-index: 100;
@@ -48,7 +53,7 @@ header {
 }
 
 .logo-container img {
-    height: 100%;
+    height: 500%;
     width: auto;
     object-fit: contain;
 }
@@ -64,13 +69,12 @@ header {
 }
 
 .search-box input {
-    padding: 8px 35px 8px 15px;
+    padding: 12px 40px 12px 18px;
     border-radius: 20px;
     border: 1px solid #ccc;
-    font-size: 0.9rem;
-    width: 200px;
+    font-size: 1rem;
+    width: 260px;
     outline: none;
-    background-color: #fff;
 }
 
 .search-box i {
@@ -85,6 +89,7 @@ header {
 .profile-icon {
     font-size: 2rem;
     color: #4E342E;
+    text-decoration: none;
 }
 
 /* --- Main Layout --- */
@@ -92,6 +97,7 @@ header {
     max-width: 800px;
     margin: 40px auto;
     padding: 0 20px;
+    flex: 1;
 }
 
 /* Page Header Title */
@@ -191,8 +197,89 @@ header {
     background-color: var(--btn-accept);
 }
 
+/* sembunyikan checkbox */
+.accept-toggle {
+    display: none;
+}
+
+/* default: Accepted disembunyikan */
+.accepted-text {
+    display: none;
+    font-weight: bold;
+    color: #2E7D32;
+    font-size: 1.1rem;
+}
+
+/* kalau checkbox dicentang */
+.accept-toggle:checked ~ .btn-accept,
+.accept-toggle:checked ~ .btn-decline {
+    display: none;
+}
+
+.accept-toggle:checked ~ .accepted-text {
+    display: inline;
+}
+
 .btn-decline {
     background-color: var(--btn-decline);
+}
+
+.modal-toggle {
+    display: none;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.3s;
+    z-index: 999;
+}
+
+.modal-box {
+    background: #f7f2ee;
+    padding: 24px;
+    border-radius: 16px;
+    width: 320px;
+    text-align: center;
+}
+
+.modal-title {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.modal-toggle:checked ~ .modal {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.btn-cancel {
+    background: #8d6e63;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-decline-final {
+    background: red;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
 }
 
 /* Hover Effect */
@@ -203,46 +290,48 @@ header {
 
 /* --- Footer --- */
 footer {
-    background-color: var(--bg-cream);
+    background-color: var(--bg-footer);
     padding: 30px 40px;
     border-top: 1px solid rgba(0,0,0,0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 40px;
+    font-family: var(--font-sans);
 }
 
 .footer-links a {
     text-decoration: none;
-    color: #3e2723;
+    color: #4a3b32;
     font-weight: 900;
-    font-size: 1rem;
-    margin-right: 15px;
+    font-size: 1.2rem;
+    margin-right: 20px;
 }
 
 .copyright {
-    color: #5d4037;
+    color: var(--text-brown);
     font-weight: bold;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
 }
 
 .social-icons a {
-    margin-left: 10px;
+    color: black;
+    font-size: 1.5rem;
+    margin-left: 15px;
     background-color: #1a1a1a;
     color: white;
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    border-radius: 6px;
+    border-radius: 8px;
     text-decoration: none;
-    font-size: 1rem;
 }
 
 .social-icons a:last-child {
     background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
 }
+
 
 /* Responsive Mobile */
 @media (max-width: 768px) {

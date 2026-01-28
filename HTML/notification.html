@@ -12,12 +12,12 @@
 
     <header>
         <div class="nav-left">
-            <a href="#">Bookmates</a>
-            <a href="#">Browse</a>
+            <a href="bookmates.html">Bookmates</a>
+            <a href="browse.html" class="active-link">Browse</a>
         </div>
         
         <div class="logo-container">
-            <img src="logo1.jpg" alt="LetterIn Logo">
+            <img src="../IMG/logo1.png" alt="LetterIn Logo">
         </div>
         
         <div class="nav-right">
@@ -25,7 +25,7 @@
                 <input type="text" placeholder="Search books">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
-            <a href="#" class="profile-icon">
+            <a href="profile.html" class="profile-icon">
                 <i class="fa-regular fa-circle-user"></i>
             </a>
         </div>
@@ -47,9 +47,45 @@
                 <div class="notif-content">
                     <p class="notif-text">@azalea has sent you a friend request</p>
                     <div class="action-buttons">
-                        <button class="btn btn-accept">ACCEPT</button>
-                        <button class="btn btn-decline">DECLINE</button>
-                    </div>
+
+    <!-- ACCEPT TOGGLE -->
+    <input type="checkbox" id="accept1" class="accept-toggle">
+
+    <!-- DECLINE MODAL TOGGLE -->
+    <input type="checkbox" id="decline1" class="modal-toggle">
+
+    <!-- BUTTONS -->
+    <label for="accept1" class="btn btn-accept">ACCEPT</label>
+    <label for="decline1" class="btn btn-decline">DECLINE</label>
+
+    <!-- ACCEPTED TEXT -->
+    <span class="accepted-text">Accepted</span>
+
+    <!-- MODAL -->
+    <div class="modal">
+        <div class="modal-box">
+            <h3 class="modal-title">WARNING</h3>
+            <p>
+                Are you sure want to decline<br>
+                <b>@azalea</b>'s friend request?
+            </p>
+
+            <div class="modal-actions">
+                <label for="decline1" class="btn btn-cancel">CANCEL</label>
+
+                <!-- PINDAH HALAMAN -->
+                <a href="home_signed.html" class="btn btn-decline-final">
+                    DECLINE
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+        </div>
+    </div>
+
+</div>
                 </div>
             </div>
 
@@ -60,9 +96,41 @@
                 <div class="notif-content">
                     <p class="notif-text">@william has sent you a friend request</p>
                     <div class="action-buttons">
-                        <button class="btn btn-accept">ACCEPT</button>
-                        <button class="btn btn-decline">DECLINE</button>
-                    </div>
+
+    <!-- ACCEPT TOGGLE -->
+    <input type="checkbox" id="accept2" class="accept-toggle">
+
+    <!-- DECLINE MODAL TOGGLE -->
+    <input type="checkbox" id="decline2" class="modal-toggle">
+
+    <!-- BUTTONS -->
+    <label for="accept2" class="btn btn-accept">ACCEPT</label>
+    <label for="decline2" class="btn btn-decline">DECLINE</label>
+
+    <!-- ACCEPTED TEXT -->
+    <span class="accepted-text">Accepted</span>
+
+    <!-- MODAL -->
+    <div class="modal">
+        <div class="modal-box">
+            <h3 class="modal-title">WARNING</h3>
+            <p>
+                Are you sure want to decline<br>
+                <b>@william</b>'s friend request?
+            </p>
+
+            <div class="modal-actions">
+                <label for="decline2" class="btn btn-cancel">CANCEL</label>
+
+                <!-- PINDAH HALAMAN -->
+                <a href="home_signed.html" class="btn btn-decline-final">
+                    DECLINE
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
                 </div>
             </div>
 
@@ -73,9 +141,41 @@
                 <div class="notif-content">
                     <p class="notif-text">@erica has sent you a friend request</p>
                     <div class="action-buttons">
-                        <button class="btn btn-accept">ACCEPT</button>
-                        <button class="btn btn-decline">DECLINE</button>
-                    </div>
+
+    <!-- ACCEPT TOGGLE -->
+    <input type="checkbox" id="accept3" class="accept-toggle">
+
+    <!-- DECLINE MODAL TOGGLE -->
+    <input type="checkbox" id="decline3" class="modal-toggle">
+
+    <!-- BUTTONS -->
+    <label for="accept3" class="btn btn-accept">ACCEPT</label>
+    <label for="decline3" class="btn btn-decline">DECLINE</label>
+
+    <!-- ACCEPTED TEXT -->
+    <span class="accepted-text">Accepted</span>
+
+    <!-- MODAL -->
+    <div class="modal">
+        <div class="modal-box">
+            <h3 class="modal-title">WARNING</h3>
+            <p>
+                Are you sure want to decline<br>
+                <b>@erica</b>'s friend request?
+            </p>
+
+            <div class="modal-actions">
+                <label for="decline3" class="btn btn-cancel">CANCEL</label>
+
+                <!-- PINDAH HALAMAN -->
+                <a href="home_signed.html" class="btn btn-decline-final">
+                    DECLINE
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
                 </div>
             </div>
 
@@ -85,10 +185,42 @@
                 </div>
                 <div class="notif-content">
                     <p class="notif-text">@steve has accepted your friend request</p>
-                    <div class="action-buttons">
-                        <button class="btn btn-accept">ACCEPT</button>
-                        <button class="btn btn-decline">DECLINE</button>
-                    </div>
+                        <div class="action-buttons">
+
+    <!-- ACCEPT TOGGLE -->
+    <input type="checkbox" id="accept4" class="accept-toggle">
+
+    <!-- DECLINE MODAL TOGGLE -->
+    <input type="checkbox" id="decline4" class="modal-toggle">
+
+    <!-- BUTTONS -->
+    <label for="accept4" class="btn btn-accept">ACCEPT</label>
+    <label for="decline4" class="btn btn-decline">DECLINE</label>
+
+    <!-- ACCEPTED TEXT -->
+    <span class="accepted-text">Accepted</span>
+
+    <!-- MODAL -->
+    <div class="modal">
+        <div class="modal-box">
+            <h3 class="modal-title">WARNING</h3>
+            <p>
+                Are you sure want to decline<br>
+                <b>@steve</b>'s friend request?
+            </p>
+
+            <div class="modal-actions">
+                <label for="decline4" class="btn btn-cancel">CANCEL</label>
+
+                <!-- PINDAH HALAMAN -->
+                <a href="home_signed.html" class="btn btn-decline-final">
+                    DECLINE
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
                 </div>
             </div>
 
@@ -106,8 +238,8 @@
             <i class="fa-regular fa-copyright"></i> 2026 LetterIn, Inc.
         </div>
         <div class="social-icons">
-            <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
-            <a href="#"><i class="fa-brands fa-threads"></i></a>
+            <a href="#"><i class="fa-brands fa-square-twitter"></i></a> 
+            <!-- <a href="#"><i class="fa-brands fa-square-threads" style="color: #000000;"></i></a>  -->
             <a href="#"><i class="fa-brands fa-tiktok"></i></a>
             <a href="#"><i class="fa-brands fa-instagram"></i></a>
         </div>
