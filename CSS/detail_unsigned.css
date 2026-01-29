@@ -6,11 +6,14 @@
 }
 
 :root {
-    --bg-cream: #FFF8E7;
-    --bg-brown: #6D4C41;
+    --bg-cream: #F7EED3;
+    --bg-brown-dark: #6D4C41; /* Coklat tua background */
+    --bg-header: #FFF1C9;
+    --bg-footer: #FFF1C9;
     --text-brown: #4E342E;
-    --card-bg: #EADBC8;
-    --btn-sage: #AAB39B;
+    --text-cream: #FFF8E7;
+    --bar-bg: #8D6E63;       /* Warna track progress bar */
+    --bar-fill: #D7CCC8;     /* Warna isi progress bar */
     --font-serif: 'Playfair Display', serif;
     --font-sans: 'Lato', sans-serif;
 }
@@ -27,7 +30,7 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 20px 40px;
-    background-color: var(--bg-cream);
+    background-color: var(--bg-header);
     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     position: relative;
     z-index: 100;

@@ -6,13 +6,11 @@
 }
 
 :root {
-    --bg-cream: #FFF8E7;
-    --bg-brown: #5D4037;      /* Coklat tua untuk bar filter */
-    --text-brown: #3E2723;    /* Teks judul */
-    --text-gray: #4a4a4a;     /* Teks author/tahun */
-    --btn-sage: #AAB39B;      /* Tombol Navigasi */
-    --btn-filter: #FFF3E0;    /* Background tombol filter */
-    --star-yellow: #FBC02D;   /* Warna Bintang */
+    --bg-cream: #FFF8E7;      /* Warna latar belakang utama */
+    --bg-brown: #6D4C41;      /* Warna latar bagian buku */
+    --text-brown: #4E342E;    /* Warna teks coklat tua */
+    --card-bg: #EADBC8;       /* Warna latar kartu fitur */
+    --btn-sage: #AAB39B;      /* Warna tombol header */
     --font-serif: 'Playfair Display', serif;
     --font-sans: 'Lato', sans-serif;
 }
@@ -347,40 +345,42 @@ header {
 
 /* --- Footer --- */
 footer {
-    background-color: var(--bg-cream);
-    padding: 20px 40px;
+    background-color: var(--bg-headfoot);
+    padding: 30px 40px;
     border-top: 1px solid rgba(0,0,0,0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-family: var(--font-sans);
 }
 
 .footer-links a {
     text-decoration: none;
-    color: #3e2723;
+    color: #4a3b32;
     font-weight: 900;
-    font-size: 1rem;
-    margin-right: 15px;
+    font-size: 1.2rem;
+    margin-right: 20px;
 }
 
 .copyright {
-    color: #5d4037;
+    color: var(--text-brown);
     font-weight: bold;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
 }
 
 .social-icons a {
-    margin-left: 10px;
+    color: black;
+    font-size: 1.5rem;
+    margin-left: 15px;
     background-color: #1a1a1a;
     color: white;
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    border-radius: 6px;
+    border-radius: 8px;
     text-decoration: none;
-    font-size: 1rem;
 }
 
 .social-icons a:last-child {

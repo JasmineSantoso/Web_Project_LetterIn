@@ -6,7 +6,7 @@
 }
 
 :root {
-    --bg-cream: #FFF8E7;      /* Warna latar belakang utama */
+    --bg-cream: #F7EED3;      /* Warna latar belakang utama */
     --bg-brown: #6D4C41;      /* Warna latar bagian buku */
     --text-brown: #4E342E;    /* Warna teks coklat tua */
     --card-bg: #EADBC8;       /* Warna latar kartu fitur */
@@ -27,13 +27,9 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 40px;
-    background-color: var(--bg-headfoot); /* Pastikan background terisi agar shadow terlihat */
-    
-    /* MENAMBAHKAN SHADOW SESUAI GAMBAR BARU */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); 
-    
-    /* Agar shadow muncul di atas konten Hero/Search */
+    padding: 15px 40px;
+    background-color: var(--bg-headfoot);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Efek bayangan */
     position: relative;
     z-index: 100;
 }
@@ -41,17 +37,18 @@ header {
 .nav-btn {
     background-color: var(--btn-sage);
     border: none;
-    padding: 10px 25px;
+    padding: 8px 20px;
     border-radius: 20px;
-    font-family: var(--font-sans);
     font-weight: bold;
     color: #4b5246;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: inset 10px 10px 10px -1px  rgba(10, 99, 169, 0.16),
+                inset -10px -10px 10px -1px rgba(255, 255, 255, 0.70);
+    
 }
 
 .logo-img {
-    height: 60px;
+    height: 50px;
     object-fit: contain;
 }
 

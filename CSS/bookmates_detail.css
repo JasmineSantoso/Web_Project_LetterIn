@@ -21,7 +21,7 @@ body {
     color: var(--text-brown);
 }
 
-/* --- Header --- */
+/* --- Header (Sama dengan Dashboard) --- */
 header {
     display: flex;
     justify-content: space-between;
@@ -42,15 +42,13 @@ header {
 }
 
 .nav-left .active-nav {
-    font-weight: 900;
+    font-weight: 900; /* Link aktif lebih tebal */
 }
 
-/* container logo */
 .logo-container {
     height: 50px;
 }
 
-/* link logo */
 .brand-logo {
     display: flex;
     align-items: center;
@@ -58,26 +56,13 @@ header {
     height: 100%;
 }
 
-/* image logo */
 .brand-logo img {
-    height: 300%;
+    height: 400%;
     width: auto;
     object-fit: contain;
     position: relative;
-    left: +6px;
+    left: +7px;
 }
-
-/* .logo-container {
-    height: 50px;
-    display: flex;
-    align-items: center;
-}
-
-.brand-logo img {
-    height: 100%;
-    width: auto;
-    object-fit: contain;
-} */
 
 .nav-right {
     display: flex;
@@ -111,6 +96,69 @@ header {
 .profile-icon {
     font-size: 2rem;
     color: #4E342E;
+}
+
+/* --- Dropdown Logic --- */
+.profile-container {
+    position: relative; /* Anchor untuk dropdown */
+}
+
+.profile-icon {
+    font-size: 1.8rem;
+    color: var(--text-brown);
+    text-decoration: none;
+    cursor: pointer;
+    display: block;
+}
+
+ul.home-dropdown {
+    position: absolute;
+    right: 0;
+    top: 120%;
+    width: 180px;
+    background-color: var(--bg-brown-dark);
+    list-style: none;
+    border-radius: 8px;
+    padding: 8px 0;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    
+    /* Sembunyikan secara default */
+    display: none; 
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Class bantuan yang akan dipicu oleh JavaScript */
+ul.home-dropdown.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.home-dropdown li a {
+    color: #fff;
+    padding: 12px 20px;
+    text-decoration: none;
+    display: block;
+    font-size: 0.85rem;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.home-dropdown li a:hover {
+    background-color: #6d4c41;
+}
+
+/* Panah kecil di atas dropdown */
+.home-dropdown::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    right: 10px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid var(--bg-brown-dark);
 }
 
 /* --- Main Content --- */
