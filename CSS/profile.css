@@ -13,7 +13,8 @@
     --btn-sage: #AAB39B;      /* Warna tombol header */
     --font-serif: 'Playfair Display', serif;
     --font-sans: 'Lato', sans-serif;
-    --bg-headfoot: #FFF1C9;
+    --bg-header: #FFF1C9;
+    --bg-footer: #FFF1C9;
 }
 
 body {

@@ -50,14 +50,25 @@ header {
 
 /* .logo-container {
     height: 50px;
-}
+}*/
 
 .brand-logo {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
+}
 
+/* .brand-logo img {
+    height: 400%;
+    width: auto;
+    object-fit: contain;
+    position: relative;
+    left: +6px; 
+} */
+
+.logo-container {
+    height: 50px;
 }
 
 .brand-logo img {
@@ -65,17 +76,7 @@ header {
     width: auto;
     object-fit: contain;
     position: relative;
-    left: +6px; 
-}*/
-
-.logo-container {
-    height: 50px;
-}
-
-.brand-logo img {
-    height: 40px;
-    width: auto;
-    object-fit: contain;
+    left: +7px;
 }
 
 
