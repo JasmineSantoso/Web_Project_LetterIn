@@ -10,38 +10,7 @@
 </head>
 <body>
 
-    <header>
-        <div class="nav-left">
-            <a href="bookmates.html">Bookmates</a>
-            <a href="browse.html">Browse</a>
-        </div>
-        
-        <div class="logo-container">
-            <a href="home_signed.html" class="brand-logo">
-                <img src="../IMG/logo1.png" alt="LetterIn Logo">
-            </a>
-        </div>
-        
-        <div class="nav-right">
-            <div class="search-box">
-                <input type="text" placeholder="Search books">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </div>
-            <div class="profile-container">
-                <a href="javascript:void(0)" class="profile-icon" id="profileBtn">
-                    <i class="fa-regular fa-circle-user"></i>
-                </a>
-                <ul class="home-dropdown" id="myDropdown">
-                    <li><a href="profile.html">PROFILE</a></li>
-                    <li><a href="settings.html">SETTINGS</a></li>
-                    <li><a href="notification.html">NOTIFICATIONS</a></li>
-                    <hr style="border: 0.5px solid #6d4c41; margin: 5px 0;">
-                    <li><a href="home_unsigned.html">SIGN OUT</a></li>
-                    <li><a href="#">CONTACT US</a></li>
-                </ul>
-            </div>
-        </div>
-    </header>
+    <?php include "layout/header_signed.html" ?>
 
     <main class="review-container">
         
