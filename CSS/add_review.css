@@ -213,7 +213,6 @@ ul.home-dropdown.show {
 /* Star Rating */
 .star-rating-input {
     font-size: 2rem;
-    color: #4E342E; /* Outline bintang warna coklat tua sesuai gambar */
     margin-bottom: 20px;
     cursor: pointer;
 }
@@ -225,6 +224,10 @@ ul.home-dropdown.show {
 
 .star-rating-input i:hover {
     transform: scale(1.1);
+}
+
+.star-rating-input i.active-star {
+    color: gold !important;
 }
 
 /* Textarea */
@@ -304,16 +307,16 @@ ul.home-dropdown.show {
 }
 
 .song-tag {
-    background-color: #4E342E; /* Background gelap */
-    color: #fff;
-    padding: 5px 15px 5px 5px; /* Padding kanan lebih besar untuk teks */
-    border-radius: 20px;
     display: flex;
     align-items: center;
     gap: 8px;
+    background-color: #4E342E;
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 20px;
     font-size: 0.8rem;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: 0.2s;
 }
 
 .song-tag img {
@@ -324,6 +327,16 @@ ul.home-dropdown.show {
     border: 1px solid #fff;
 }
 
+.song-tag.selected {
+    background-color: #8d6e63; /* lebih terang */
+    transform: scale(1.05);
+}
+
+.song-tag:hover {
+    transform: scale(1.05);
+    background-color:#6d4c41
+}
+
 /* Action Buttons */
 .action-buttons {
     display: flex;
@@ -332,18 +345,77 @@ ul.home-dropdown.show {
     align-items: center;
 }
 
+/* ==========================
+   BOOKSHELF DROPDOWN
+========================== */
+
+.bookshelf-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
 .btn-bookshelf {
     background-color: transparent;
     border: 1px solid #5d4037;
     color: #5d4037;
-    padding: 8px 20px;
-    border-radius: 6px;
-    font-family: var(--font-serif);
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-family: 'Playfair Display', serif;
     font-size: 1rem;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    min-width: 220px;
+    justify-content: center;
+}
+
+.btn-bookshelf i {
+    font-size: 0.9rem;
+}
+
+/* dropdown box */
+.bookshelf-dropdown {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 280px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+    overflow: hidden;
+    display: none;
+    z-index: 999;
+}
+
+/* show dropdown */
+.bookshelf-dropdown.show {
+    display: block;
+}
+
+/* item biasa */
+.dropdown-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 22px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: #4E342E;
+    cursor: pointer;
+    transition: 0.2s;
+    background: white;
+}
+
+/* hover */
+.dropdown-item:hover {
+    background: #f7f7f7;
+}
+
+/* item terpilih = hijau */
+.dropdown-item.active {
+    background: #b4eda4;
+    font-weight: 600;
 }
 
 .btn-send {
