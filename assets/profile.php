@@ -7,29 +7,36 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../CSS/profile.css">
+    
 </head>
 <body>
 
+    <script src="../JS/profile.js"></script>
     <?php include "layout/header_signed.html" ?>
 
     <main class="main-container">
         
         <section class="profile-header">
             <div class="profile-avatar">
-                <img src="../IMG/IU.webp" alt="Meilani">
+                <img src="../IMG/IU.webp" alt="User Profile" id="user-avatar">
             </div>
             <div class="profile-details">
-                <h1 class="profile-name">Meilani Greywood <a href="settings.html"><i class="fa-solid fa-pen source-icon"></i></a></h1>
-                <p class="profile-handle">@meimei</p>
-                <p class="profile-bio">"Book travelers, read every genre of books, and a cat lover."</p>
+                <h1 class="profile-name">
+                    <span id="user-name-display">Loading...</span> 
+                    
+                    <a href="settings.php" title="Edit Profile"><i class="fa-solid fa-pen source-icon"></i></a>
+                </h1>
+                <p class="profile-handle" id="user-handle">@loading...</p>
+                <p class="profile-bio" id="user-bio">"Loading bio..."</p>
+
                 <div class="profile-stats-text">
-                    <span>Following <strong>37</strong></span>
-                    <span>Followers <strong>14</strong></span>
+                    <span>Following <strong id="user-following">0</strong></span>
+                    <span>Followers <strong id="user-followers">0</strong></span>
                 </div>
             </div>
         </section>
 
-        <section class="bordered-section">
+        <!-- <section class="bordered-section">
             <h2 class="section-label">FAVORITE BOOKS</h2>
             <div class="books-grid">
                 <img src="../IMG/image1.jpg" alt="Book">
@@ -42,113 +49,55 @@
                 <img src="../IMG/image8.jpg" alt="Book">
                 <img src="../IMG/image7.jpg" alt="Book">
             </div>
+        </section> -->
+
+        <section class="bordered-section">
+            <h2 class="section-label">FAVORITE BOOKS</h2>
+            <div class="books-grid" id="favorite-books-container"></div>
         </section>
 
         <section class="stats-bar">
             <div class="stat-item">
                 <span class="stat-title">Total Book</span>
-                <span class="stat-number">12</span>
+                <span class="stat-number" id="total-books-count">0</span>
             </div>
             <div class="stat-item">
                 <span class="stat-title">Total Review</span>
-                <span class="stat-number">10</span>
+                <span class="stat-number" id="total-reviews-count">0</span>
             </div>
         </section>
 
         <section class="bordered-section">
             <h2 class="section-label">READED BOOKS</h2>
-            <div class="books-grid">
-                <img src="../IMG/image1.jpg" alt="Book">
-                <img src="../IMG/image2.jpg" alt="Book">
-                <img src="../IMG/image3.jpg" alt="Book">
-                <img src="../IMG/image4.jpg" alt="Book">
-                <img src="../IMG/image5.jpg" alt="Book">
-                <img src="../IMG/image6.jpg" alt="Book">
-            </div>
+            <div class="books-grid" id="readed-books-container">
+                </div>
         </section>
 
         <section class="section-wrapper">
             <h2 class="plain-title">CURRENTLY READING</h2>
-            <div class="current-reading-card">
-                <img src="../IMG/image11.jpg" alt="Laut Bercerita" class="current-cover">
-                <div class="current-info">
-                    <h3 class="current-title">Laut Bercerita</h3>
-                    <p class="current-author">Leila S. Chudori</p>
-                    
-                    <div class="progress-wrapper">
-                        <span>Progress</span>
-                        <div class="progress-bar"><div class="fill" style="width: 35%"></div></div>
-                        <span class="percent">35%</span>
-                    </div>
-
-                    <p class="start-date">Start reading<br>08-01-2026</p>
-
-                    <button class="btn-stars-review">
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                        <i class="fa-regular fa-star"></i>
-                    </button>
+            <div id="currently-reading-container">
                 </div>
-            </div>
         </section>
 
         <section class="section-wrapper">
             <h2 class="plain-title">CURRENTLY REVIEW</h2>
-            <div class="review-scroll-container">
-                <div class="review-card-dark">
-                    <img src="../IMG/image11.jpg" alt="Cover">
-                    <div class="review-content">
-                        <h4>Laut Bercerita</h4>
-                        <p class="author">Leila S. Chudori</p>
-                        <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                        <p class="desc">It's just gives us... the vibes is incredible...</p>
-                    </div>
+            <div class="review-scroll-container" id="currently-review-container">
                 </div>
-                <div class="review-card-dark">
-                    <img src="../IMG/image11.jpg" alt="Cover">
-                    <div class="review-content">
-                        <h4>Laut Bercerita</h4>
-                        <p class="author">Leila S. Chudori</p>
-                        <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                        <p class="desc">The plot grows on you... amazing book.</p>
-                    </div>
-                </div>
-            </div>
         </section>
 
         <section class="section-wrapper">
             <h2 class="plain-title">BOOK SHELFS</h2>
-            <div class="shelf-list">
-                <div class="shelf-item">
-                    <img src="../IMG/image6.jpg" alt="Fantasy"> <br>
-                    <span>Fantasy</span>
+            <div class="shelf-list" id="book-shelfs-container">
                 </div>
-                <div class="shelf-item">
-                    <img src="../IMG/image11.jpg" alt="FicHisto"> <br>
-                    <span>FicHisto</span>
-                </div>
-                <div class="shelf-item">
-                    <img src="../IMG/image2.jpg" alt="Shelf 3"> <br>
-                    <span>Shelf 3</span>
-                </div>
-            </div>
         </section>
 
         <section class="bordered-section">
             <h2 class="section-label">READING LISTS</h2>
-            <div class="books-grid">
-                <img src="../IMG/image7.jpg" alt="Book">
-                <img src="../IMG/image8.jpg" alt="Book">
-                <img src="../IMG/image9.jpg" alt="Book">
-                <img src="../IMG/image10.jpg" alt="Book">
-                <img src="../IMG/image11.jpg" alt="Book">
-                <img src="../IMG/hujan1.jpg" alt="Book">
-            </div>
+            <div class="books-grid" id="reading-lists-container">
+                </div>
         </section>
 
-        <section class="section-wrapper">
+        <!-- <section class="section-wrapper">
             <h2 class="plain-title">FRIEND LISTS</h2>
             <div class="friend-list-row">
                 <div class="friend-circle">
@@ -183,7 +132,9 @@
                     <i class="fa-regular fa-circle-right"></i>
                 </div>
             </div>
-        </section>
+        </section> -->
+
+        <div class="friend-list-row" id="friend-list-container"></div>
 
     </main>
 
@@ -203,6 +154,6 @@
             <a href="#"><i class="fa-brands fa-instagram"></i></a>
         </div>
     </footer>
-    <script src="../JS/home_signed.js"></script>
+
 </body>
 </html>

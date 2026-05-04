@@ -190,7 +190,7 @@ ul.home-dropdown.show {
     flex: 1;
 }
 
-.profile-name {
+/* .profile-name {
     font-family: var(--font-serif);
     font-size: 2rem;
     margin-bottom: 5px;
@@ -199,6 +199,29 @@ ul.home-dropdown.show {
     align-items: center;
     border-bottom: 1px solid #999;
     padding-bottom: 10px;
+} */
+
+.profile-name {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: space-between; /* Ini yang menekan ikon pensil ke ujung kanan */
+    align-items: center;
+    border-bottom: 1px solid #999;
+    padding-bottom: 10px;
+}
+
+/* Tambahan agar ikon link rapi */
+.profile-name a {
+    color: #5D4037; /* Warna coklat disesuaikan dengan tema LetterIn */
+    text-decoration: none;
+    font-size: 1.2rem; /* Ukuran pensil sedikit lebih kecil dari teks nama */
+    transition: color 0.3s ease;
+}
+
+.profile-name a:hover {
+    color: #000; /* Warna saat di-hover */
 }
 
 .source-icon {
@@ -553,3 +576,20 @@ footer {
         flex-wrap: wrap;
     }
 }
+
+.review-scroll-container, .friend-list-row {
+            cursor: grab; /* Mengubah kursor menjadi bentuk tangan terbuka */
+            overflow-x: auto; /* Pastikan ini ada agar bisa di-scroll */
+            scrollbar-width: none; /* Menyembunyikan scrollbar di Firefox */
+        }
+
+        /* Menyembunyikan scrollbar di Chrome/Edge/Safari untuk estetika */
+        .review-scroll-container::-webkit-scrollbar, 
+        .friend-list-row::-webkit-scrollbar {
+            display: none; 
+        }
+
+        .btn-stars-review i {
+            cursor: pointer; /* Kursor jari saat menyorot bintang */
+            transition: color 0.2s ease-in-out;
+        }
