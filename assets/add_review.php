@@ -38,29 +38,59 @@
                 <h3 class="section-label">Add Related Song</h3>
                 
                 <div class="song-input-box">
-                    <div class="song-info">
-                        <img src="../IMG/cover1.jpg" alt="Cover" class="mini-cover"> <span>Lush Life - Zara Larsson</span>
-                    </div>
-                    <button class="add-song-btn"><i class="fa-solid fa-plus"></i></button>
+    <input type="text" id="songInput" placeholder="Search song...">
                 </div>
 
                 <div class="song-tags">
-                    <div class="song-tag">
-                        <img src="../IMG/cover2.jpg" alt="Cover">
-                        <span>Daylight - Harry Style</span>
-                    </div>
-                    <div class="song-tag">
-                        <img src="../IMG/cover4.jpg" alt="Cover">
-                        <span>Love Notes - Olivia D..</span>
-                    </div>
-                    <div class="song-tag">
-                        <img src="../IMG/cover3.jpg" alt="Cover"> <span>Dear Reader - Taylor S..</span>
-                    </div>
-                </div>
-            </div>
+
+    <div class="song-tag">
+        <img src="../IMG/cover2.jpg" alt="Cover">
+        <span>Daylight - Harry Style</span>
+        <i class="fa-solid fa-xmark remove-song"></i>
+    </div>
+
+    <div class="song-tag">
+        <img src="../IMG/cover4.jpg" alt="Cover">
+        <span>Love Notes - Olivia D.</span>
+        <i class="fa-solid fa-xmark remove-song"></i>
+    </div>
+
+    <div class="song-tag">
+        <img src="../IMG/cover3.jpg" alt="Cover">
+        <span>Dear Reader - Taylor S.</span>
+        <i class="fa-solid fa-xmark remove-song"></i>
+    </div>
+
+</div>
 
             <div class="action-buttons">
-                <button class="btn-bookshelf">Add Bookshelf <i class="fa-solid fa-chevron-down"></i></button>
+                <div class="bookshelf-wrapper">
+
+    <button class="btn-bookshelf" id="bookshelfBtn">
+        Add Bookshelf
+        <i class="fa-solid fa-chevron-down"></i>
+    </button>
+
+    <div class="bookshelf-dropdown" id="bookshelfDropdown">
+
+        <div class="dropdown-item active">
+            <span>To Read</span>
+            <i class="fa-solid fa-chevron-down"></i>
+        </div>
+
+        <div class="dropdown-item">
+            <span>Add Favorite</span>
+            <i class="fa-regular fa-heart"></i>
+        </div>
+
+        <div class="dropdown-item">
+            <span>Add Bookshelf</span>
+            <i class="fa-solid fa-chevron-down"></i>
+        </div>
+
+    </div>
+
+</div>
                 <button class="btn-send">SEND</button>
             </div>
 
@@ -84,5 +114,6 @@
         </div>
     </footer>
     <script src="../JS/home_signed.js"></script>
+    <script src="../JS/add_review.js"></script>
 </body>
 </html>
