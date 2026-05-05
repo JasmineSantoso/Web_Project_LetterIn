@@ -1,0 +1,256 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    background: url('../images/BG-sign.jpeg') no-repeat center/cover;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* LOGO */
+.brand-logo-container {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    padding: 6px 20px;
+    border-radius: 40px;
+    background: #F7EED3;
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.brand-logo-container:hover {
+    background: #F7EED3;
+}
+
+.brand-logo {
+    height: 35px;
+    width: auto;
+}
+
+/* LAYOUT */
+.main-container {
+    display: flex;
+    height: 100vh;
+}
+
+/* LEFT SIDE (FORM di kiri sekarang) */
+.right-container {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* RIGHT SIDE (TAGLINE di kanan sekarang) */
+.left-tagline {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    padding-left: 100px;
+}
+
+.left-tagline h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: #674636;
+    max-width: 400px;
+}
+
+/* CARD */
+.card {
+    width: 80%;
+    height: 80%;
+    padding: 3vh 2vw;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 240, 210, 0.3);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2vh;
+}
+
+/* TITLE */
+.card h1 {
+    text-align: center;
+    color: #6b3f2a;
+    font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+}
+
+.global-error {
+    margin: 10px auto 15px;
+    padding: 10px 15px;
+    max-width: 90%;
+
+    background: rgba(255, 77, 77, 0.08);
+    border: 1px solid rgba(255, 77, 77, 0.3);
+    border-left: 4px solid #ff4d4d;
+
+    border-radius: 10px;
+
+    color: #b02a2a;
+    font-size: 0.9rem;
+    text-align: center;
+
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+
+    animation: fadeIn 0.3s ease;
+}
+
+/* INPUT */
+.input-group {
+    position: relative;
+    margin-bottom: 1.5vh;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 1.2vh 1vw;
+    border-radius: 25px;
+    border: 1px solid rgba(107,63,42,0.4);
+    background: transparent;
+    outline: none;
+    font-size: clamp(0.9rem, 1.2vw, 1.2rem);
+}
+
+.input-group label {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b3f2a;
+    font-size: clamp(0.8rem, 1vw, 1rem);
+    transition: 0.3s;
+}
+
+/* FLOATING LABEL */
+.input-group input:focus + label,
+.input-group input:valid + label {
+    top: -8px;
+    transform: none;
+    font-size: 0.75rem;
+    background: rgba(255,240,210,0.7);
+    padding: 0 6px;
+    border-radius: 10px;
+}
+
+/* FOCUS */
+.input-group input:focus {
+    border-color: #6b3f2a;
+    box-shadow: 0 0 8px rgba(107,63,42,0.4);
+}
+
+.error {
+    color: #ff4d4d;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.error:empty {
+    display: none;
+}
+
+.input-group input.invalid {
+    border: 2px solid #ff4d4d;
+}
+
+/* OPTIONS */
+.options {
+    display: flex;
+    justify-content: space-between;
+    font-size: clamp(0.7rem, 0.9vw, 0.9rem);
+    margin-bottom: 1.5vh;
+    color: #6b3f2a;
+}
+
+/* BUTTON */
+.btn {
+    width: 100%;
+    padding: 1.2vh;
+    border-radius: 25px;
+    border: none;
+    background: #6b3f2a;
+    color: white;
+    font-size: clamp(1rem, 1.3vw, 1.3rem);
+    margin-bottom: 1vh;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+/* GOOGLE */
+.google {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.google img {
+    width: 20px;
+}
+
+/* FOOTER */
+.signup {
+    text-align: center;
+    font-size: clamp(0.7rem, 0.9vw, 0.9rem);
+    color: #6b3f2a;
+}
+
+.signup a {
+    color: #6b3f2a;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+    }
+
+    .left-tagline {
+        width: 100%;
+        justify-content: center;
+        padding: 20px;
+        text-align: center;
+    }
+
+    .right-container {
+        width: 100%;
+    }
+
+    .card {
+        width: 90%;
+        height: auto;
+    }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+}
