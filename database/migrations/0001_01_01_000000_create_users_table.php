@@ -11,16 +11,32 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('fullname');
-            $table->string('username')->unique();
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('users')) {
+            Schema::create('users', function (Blueprint $table) {
+                $table->id('user_id');
+                $table->string('fullname');
+                $table->string('username')->unique();
+                $table->string('email')->unique();
+                $table->timestamp('email_verified_at')->nullable();
+                $table->string('password');
+                $table->rememberToken();
+                $table->timestamps();
+            });
+        } else {
+            Schema::table('users', function (Blueprint $table) {
+                if (!Schema::hasColumn('users', 'email_verified_at')) {
+                    $table->timestamp('email_verified_at')->nullable()->after('email');
+                }
+                if (!Schema::hasColumn('users', 'remember_token')) {
+                    $table->rememberToken()->after('password');
+                }
+                
+                // Pastikan kolom legacy nullable agar tidak error saat signup
+                $table->bigInteger('bookShelf_id')->nullable()->change();
+                $table->text('bio')->nullable()->change();
+                $table->text('profile')->nullable()->change();
+            });
+        }
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
