@@ -17,6 +17,34 @@
             min-height: 100vh;
             margin: 0;
         }
+
+        /* Global Notification Style */
+        .global-notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: #adbda3;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 9999;
+            transform: translateX(120%);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            font-family: 'Lato', sans-serif;
+            font-weight: 700;
+        }
+
+        .global-notification.show {
+            transform: translateX(0);
+        }
+
+        .global-notification i {
+            font-size: 1.2rem;
+        }
         main {
             flex: 1;
         }
@@ -128,31 +156,31 @@
                 <input type="text" placeholder="Search books">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
-            @auth
-            <div class="profile-container">
-                <a href="javascript:void(0)" class="profile-icon" id="profileBtn">
-                    <i class="fa-regular fa-circle-user"></i>
-                </a>
-                <ul class="home-dropdown" id="myDropdown">
-                    <li><a href="/profile">PROFILE</a></li>
-                    <li><a href="/settings">SETTINGS</a></li>
-                    <li><a href="/notifications">NOTIFICATIONS</a></li>
-                    <hr style="border: 0.5px solid #6d4c41; margin: 5px 0;">
-                    <li>
-                        <form action="{{ route('logout') }}" method="POST">
-                            @csrf
-                            <button type="submit" style="background: none; border: none; color: #674636; font-weight: 700; cursor: pointer; padding: 5px 10px; font-size: 0.8rem; width: 100%; text-align: left;">SIGN OUT</button>
-                        </form>
-                    </li>
-                    <li><a href="#">CONTACT US</a></li>
-                </ul>
-            </div>
-            @else
             <a href="{{ route('login') }}" class="nav-btn">Sign in</a>
             <a href="{{ route('signup') }}" class="nav-btn">Sign up</a>
-            @endauth
         </div>
     </header>
+
+    <!-- Global Notification Container -->
+    @if(session('success'))
+        <div class="global-notification" id="successNotif">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>{{ session('success') }}</span>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const notif = document.getElementById('successNotif');
+                setTimeout(() => {
+                    notif.classList.add('show');
+                }, 100);
+
+                // Hilang otomatis setelah 5 detik
+                setTimeout(() => {
+                    notif.classList.remove('show');
+                }, 5000);
+            });
+        </script>
+    @endif
 
     <main>
         @yield('content')

@@ -8,12 +8,6 @@
 
 @section('content')
     <div class="review-container">
-        @if(session('success'))
-            <div class="alert alert-success" style="position: fixed; top: 20px; right: 20px; background: #adbda3; padding: 15px; border-radius: 8px; color: white; z-index: 1000;">
-                {{ session('success') }}
-            </div>
-        @endif
-
         <form action="{{ route('book.review.store', $book->id) }}" method="POST" id="reviewForm" style="display: contents;">
             @csrf
             <input type="hidden" name="rating" id="ratingInput" value="0">
@@ -64,7 +58,7 @@
 
             <div class="action-buttons">
                 <div class="bookshelf-wrapper">
-                    <button class="btn-bookshelf" id="bookshelfBtn">
+                    <button type="button" class="btn-bookshelf" id="bookshelfBtn">
                         Add Bookshelf
                         <i class="fa-solid fa-chevron-down"></i>
                     </button>
