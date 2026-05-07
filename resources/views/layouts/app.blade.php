@@ -11,6 +11,15 @@
     
     <!-- Common Styles -->
     <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+        main {
+            flex: 1;
+        }
         header {
             display: flex;
             justify-content: space-between;
@@ -139,7 +148,7 @@
                 </ul>
             </div>
             @else
-            <a href="{{ route('signin') }}" class="nav-btn">Sign in</a>
+            <a href="{{ route('login') }}" class="nav-btn">Sign in</a>
             <a href="{{ route('signup') }}" class="nav-btn">Sign up</a>
             @endauth
         </div>

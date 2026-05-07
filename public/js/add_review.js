@@ -15,6 +15,7 @@ stars.forEach((star, index) => {
 
     star.addEventListener("click", () => {
         selectedRating = index + 1;
+        document.getElementById("ratingInput").value = selectedRating; // Update hidden input
         setStars(index);
     });
 });
@@ -37,6 +38,14 @@ function setStars(index) {
 // ==========================
 const songInput = document.getElementById("songInput");
 const songTags = document.querySelector(".song-tags");
+
+// daftar cover tersedia
+const covers = [
+    "/images/cover1.jpg",
+    "/images/cover2.jpg",
+    "/images/cover3.jpg",
+    "/images/cover4.jpg"
+];
 
 // fungsi tambah lagu baru
 function addSong(songName) {
@@ -65,16 +74,32 @@ function addSong(songName) {
     const tag = document.createElement("div");
     tag.className = "song-tag";
 
+    // Pilih cover random
+    const randomCover = covers[Math.floor(Math.random() * covers.length)];
+
     tag.innerHTML = `
-        <img src="../IMG/cover1.jpg" alt="Cover">
+        <img src="${randomCover}" alt="Cover">
         <span>${songName}</span>
         <i class="fa-solid fa-xmark remove-song"></i>
     `;
 
     songTags.appendChild(tag);
+    updateSongsHiddenInputs(); // Update hidden inputs
 
     // reset input
     songInput.value = "";
+}
+
+function updateSongsHiddenInputs() {
+    const container = document.getElementById("songsHiddenInputs");
+    container.innerHTML = "";
+    document.querySelectorAll(".song-tag span").forEach((el, index) => {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = `songs[]`;
+        input.value = el.innerText;
+        container.appendChild(input);
+    });
 }
 
 
@@ -101,6 +126,7 @@ document.addEventListener("click", function (e) {
     // kalau klik tombol remove → hapus lagu
     if (e.target.classList.contains("remove-song")) {
         tag.remove();
+        updateSongsHiddenInputs(); // Update hidden inputs
         return;
     }
 
@@ -151,6 +177,9 @@ dropdownItems.forEach(item => {
         // ambil text item
         const selectedText = this.querySelector("span").innerText;
 
+        // update hidden input
+        document.getElementById("bookshelfInput").value = selectedText;
+
         // ubah isi tombol utama
         bookshelfBtn.innerHTML = `
             ${selectedText}
@@ -173,51 +202,17 @@ document.addEventListener("click", function (e) {
 });
 
 // ==========================
-// BUTTON SEND
+// FORM VALIDATION
 // ==========================
-const sendBtn = document.querySelector(".btn-send");
+const reviewForm = document.getElementById("reviewForm");
 
-if (sendBtn) {
-    sendBtn.addEventListener("click", () => {
-        const review = document.querySelector(".review-textarea").value.trim();
-
-        let songs = [];
-        document.querySelectorAll(".song-tag span").forEach(el => {
-            songs.push(el.innerText);
-        });
-
-        // validasi rating kosong
-        if (selectedRating === 0) {
-            alert("Tolong beri rating terlebih dahulu");
-            return;
+if (reviewForm) {
+    reviewForm.addEventListener("submit", function(e) {
+        const rating = document.getElementById("ratingInput").value;
+        
+        if (rating == 0) {
+            e.preventDefault();
+            alert("Tolong beri rating terlebih dahulu (klik bintang) ⭐");
         }
-
-        // validasi review kosong
-        if (review === "") {
-            alert("Tolong beri review terlebih dahulu");
-            return;
-        }
-
-        // output sementara
-        console.log({
-            rating: selectedRating,
-            review: review,
-            songs: songs
-        });
-
-        alert("Review berhasil dikirim!");
-
-        // reset review
-        document.querySelector(".review-textarea").value = "";
-        selectedRating = 0;
-        setStars(-1);
-
-        // hapus selected
-        document.querySelectorAll(".song-tag").forEach(tag => {
-            tag.classList.remove("selected");
-        });
-
-        // kosongkan input
-        songInput.value = "";
     });
 }

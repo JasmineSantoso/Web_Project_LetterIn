@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SocialController;
+use App\Http\Controllers\ReviewController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -13,15 +14,16 @@ Route::get('/', function () {
 // Auth Routes
 Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup');
 Route::post('/signup', [AuthController::class, 'processSignup']);
-Route::get('/signin', [AuthController::class, 'showSignin'])->name('signin');
-Route::post('/signin', [AuthController::class, 'processSignin']);
+Route::get('/signin', [AuthController::class, 'showSignin'])->name('login'); // Alias for auth middleware
+Route::post('/signin', [AuthController::class, 'processSignin'])->name('signin');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Book Routes
 Route::get('/browse', [BookController::class, 'browse'])->name('browse');
 Route::get('/book/{id}', [BookController::class, 'details'])->name('book.details');
 Route::get('/search', [BookController::class, 'search'])->name('search');
-Route::get('/book/{id}/review', [BookController::class, 'addReview'])->name('book.review');
+Route::get('/book/{book_id}/review', [ReviewController::class, 'create'])->name('book.review');
+Route::post('/book/{book_id}/review', [ReviewController::class, 'store'])->name('book.review.store');
 
 // Profile & Settings
 Route::middleware(['auth'])->group(function () {
