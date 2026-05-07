@@ -106,12 +106,14 @@ function updateSongsHiddenInputs() {
 // ==========================
 // ENTER = TAMBAH LAGU
 // ==========================
-songInput.addEventListener("keydown", function (e) {
-    if (e.key === "Enter") {
-        e.preventDefault();
-        addSong(songInput.value);
-    }
-});
+if (songInput) {
+    songInput.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            addSong(songInput.value);
+        }
+    });
+}
 
 
 // ==========================
@@ -152,15 +154,17 @@ const dropdownItems = document.querySelectorAll(".dropdown-item");
 bookshelfDropdown.style.display = "none";
 
 // klik tombol → buka / tutup dropdown
-bookshelfBtn.addEventListener("click", function (e) {
-    e.stopPropagation();
+if (bookshelfBtn && bookshelfDropdown) {
+    bookshelfBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
 
-    if (bookshelfDropdown.style.display === "none") {
-        bookshelfDropdown.style.display = "block";
-    } else {
-        bookshelfDropdown.style.display = "none";
-    }
-});
+        if (bookshelfDropdown.style.display === "none") {
+            bookshelfDropdown.style.display = "block";
+        } else {
+            bookshelfDropdown.style.display = "none";
+        }
+    });
+}
 
 // klik item dropdown
 dropdownItems.forEach(item => {
@@ -193,11 +197,13 @@ dropdownItems.forEach(item => {
 
 // klik luar area → dropdown tertutup
 document.addEventListener("click", function (e) {
-    if (
-        !bookshelfBtn.contains(e.target) &&
-        !bookshelfDropdown.contains(e.target)
-    ) {
-        bookshelfDropdown.style.display = "none";
+    if (bookshelfBtn && bookshelfDropdown) {
+        if (
+            !bookshelfBtn.contains(e.target) &&
+            !bookshelfDropdown.contains(e.target)
+        ) {
+            bookshelfDropdown.style.display = "none";
+        }
     }
 });
 
@@ -209,10 +215,18 @@ const reviewForm = document.getElementById("reviewForm");
 if (reviewForm) {
     reviewForm.addEventListener("submit", function(e) {
         const rating = document.getElementById("ratingInput").value;
+        const reviewText = document.querySelector(".review-textarea").value.trim();
         
         if (rating == 0) {
             e.preventDefault();
             alert("Tolong beri rating terlebih dahulu (klik bintang) ⭐");
+            return;
+        }
+
+        if (reviewText === "") {
+            e.preventDefault();
+            alert("Tolong tulis review kamu terlebih dahulu ✍️");
+            return;
         }
     });
 }

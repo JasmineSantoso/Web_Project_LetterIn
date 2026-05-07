@@ -33,7 +33,7 @@
                 <i class="fa-regular fa-star" data-value="5"></i>
             </div>
 
-                <textarea name="content" class="review-textarea" placeholder="Write your review here" required>{{ old('content') }}</textarea>
+                <textarea name="content" class="review-textarea" placeholder="Write your review here">{{ old('content') }}</textarea>
 
             <div class="song-section">
                 <h3 class="section-label">Add Related Song</h3>
