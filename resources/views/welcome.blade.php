@@ -1,76 +1,71 @@
 @extends('layouts.app')
 
-@section('title', 'LetterIn - Welcome')
+@section('title', 'LetterIn - Home')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/home_signed.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/home_unsigned.css') }}">
 @endpush
 
 @section('content')
-    <section class="greeting-section">
-        <h1>Welcome to LetterIn!</h1>
-        @auth
-            <h2>Have a good book, {{ Auth::user()->fullname }}!</h2>
-        @endauth
-    </section>
-
-    <section class="current-read-section">
-        <h2 class="section-title-white">YOUR CURRENT READ</h2>
-        
-        <div class="current-read-card">
-            <img src="{{ asset('images/image11.jpg') }}" alt="Laut Bercerita" class="current-cover">
-            
-            <div class="read-details">
-                <h3 class="read-title">Laut Bercerita</h3>
-                <p class="read-author">Leila S. Chudori</p>
-                
-                <div class="progress-container">
-                    <p class="progress-label">Progress <span class="percent">35%</span></p>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 35%;"></div>
-                    </div>
-                </div>
-                
-                <p class="start-date">Start reading<br>08-01-2026</p>
-                
-                <button class="btn-review">
-                    Add Review
-                </button>
-            </div>
+    <section class="hero">
+        <h1 class="hero-title">Discover your next favorite book<br>on LetterIn</h1>
+        <div class="search-container">
+            <input type="text" placeholder="Search by title, author, or ISBN">
+            <span class="search-icon">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </span>
         </div>
     </section>
 
-    <section class="carousel-section light-bg">
-        <h2 class="section-title-brown">POPULAR THIS WEEK</h2>
+    <section class="most-read">
+        <h2 class="section-title white-text">MOST READ THIS WEEK</h2>
         <div class="books-carousel">
             @for ($i = 1; $i <= 10; $i++)
                 @php
                     $img = ($i == 10) ? 'image10.jpg' : "image{$i}.jpg";
                 @endphp
-                <img src="{{ asset('images/' . $img) }}" alt="Book {{ $i }}">
+                <div class="book-card">
+                    <img src="{{ asset('images/' . $img) }}" alt="Book {{ $i }}">
+                </div>
             @endfor
-            <button class="next-arrow brown-arrow">
+            <button class="next-arrow">
                 <i class="fa-solid fa-chevron-right"></i>
             </button>
         </div>
     </section>
 
-    <section class="carousel-section dark-bg">
-        <h2 class="section-title-white">RECOMMENDATIONS</h2>
-        <div class="books-carousel">
-            @php
-                $reco = [7, 8, 9, 1, 2, 3, 4, 5, 6, 10];
-            @endphp
-            @foreach ($reco as $r)
-                <img src="{{ asset('images/image' . $r . '.jpg') }}" alt="Book {{ $r }}">
-            @endforeach
-            <button class="next-arrow white-arrow">
-                <i class="fa-solid fa-chevron-right"></i>
-            </button>
+    <section class="features">
+        <h2 class="section-title brown-text">FEATURES</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="icon-box">
+                    <i class="fa-solid fa-book-open"></i>
+                </div>
+                <p>Track your reading progress and set annual reading goals</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-box">
+                    <i class="fa-solid fa-pen-nib"></i>
+                </div>
+                <p>Write and share reviews for your favorite books</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-box">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <p>Connect with other book lovers and discover what they're reading</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon-box">
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <p>Get personalized recommendations based on your taste</p>
+            </div>
         </div>
     </section>
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/home_signed.js') }}"></script>
+    {{-- No specific script for unsigned yet, or use home_signed if it has shared carousel logic --}}
+    {{-- <script src="{{ asset('js/home_signed.js') }}"></script> --}}
 @endpush
