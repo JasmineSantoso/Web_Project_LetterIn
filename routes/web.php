@@ -19,7 +19,7 @@ Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup');
 Route::post('/signup', [AuthController::class, 'processSignup']);
 Route::get('/signin', [AuthController::class, 'showSignin'])->name('signin');
 Route::post('/signin', [AuthController::class, 'processSignin']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Book Routes
 Route::get('/browse', [BookController::class, 'browse'])->name('browse');
