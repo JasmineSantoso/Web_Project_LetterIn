@@ -1,58 +1,234 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📚 LetterIn
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Design and Implementation of a Book Review Information System Based on Rating and Music Curation on the LetterIn Platform
 
-## About Laravel
+LetterIn is a web-based application designed as a digital book review platform featuring rating systems, user reviews, book recommendations, and music curation to enhance users’ reading experiences. This website aims to help users discover books that match their preferences through community reviews, ratings, and personalized reading atmospheres.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# ✨ Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 👤 Guest User
 
-## Learning Laravel
+* View the homepage
+* Browse book collections
+* View book details
+* Read reviews and ratings from other users
+* Search books by title or category
+* Register an account
+* Login to the system
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 👥 Registered User
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+* Login and logout
+* Edit user profile
+* Give book ratings
+* Write book reviews
+* Save favorite books / wishlist
+* Access personalized book recommendations
+* Get music curation based on reading mood
+* Edit or delete personal reviews
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## 🛠️ Admin
 
-## Agentic Development
+* Manage book data
+* Manage book categories
+* Manage users
+* Moderate reviews
+* Remove inappropriate content
+* View website activity reports
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+---
 
-```bash
-composer require laravel/boost --dev
+# 🗺️ Sitemap / Actor Features
 
-php artisan boost:install
+```text
+Guest
+├── Home
+├── Explore Books
+├── Book Detail
+├── Search Book
+├── Login
+└── Register
+
+Registered User
+├── Dashboard
+├── Profile
+├── Book Review
+├── Rating System
+├── Wishlist
+├── Music Recommendation
+└── Logout
+
+Admin
+├── Admin Dashboard
+├── Manage Books
+├── Manage Categories
+├── Manage Users
+├── Manage Reviews
+└── Reports
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
+# 🧰 Tech Stack
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Frontend
 
-## Code of Conduct
+* HTML5
+* CSS3
+* JavaScript
+* Blade Template Engine
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Backend
 
-## Security Vulnerabilities
+* PHP
+* Laravel Framework
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Database
 
-## License
+* MySQL / SQLite *(adjust according to the project configuration)*
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Additional Tools
+
+* Git & GitHub
+* Laragon / XAMPP
+* Composer
+
+---
+
+# 🗄️ Database Configuration
+
+## Database Used
+
+The database configuration used in this project:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=db_letterin
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+---
+
+# 📑 Table Specifications
+
+## users
+
+| Field      | Type      | Description        |
+| ---------- | --------- | ------------------ |
+| id         | bigint    | Primary key        |
+| name       | varchar   | User name          |
+| email      | varchar   | User email         |
+| password   | varchar   | User password      |
+| role       | enum      | User role          |
+| created_at | timestamp | Creation timestamp |
+
+## books
+
+| Field       | Type      | Description        |
+| ----------- | --------- | ------------------ |
+| id          | bigint    | Primary key        |
+| title       | varchar   | Book title         |
+| author      | varchar   | Book author        |
+| description | text      | Book description   |
+| cover       | varchar   | Book cover image   |
+| category_id | bigint    | Category relation  |
+| created_at  | timestamp | Creation timestamp |
+
+## categories
+
+| Field | Type    | Description   |
+| ----- | ------- | ------------- |
+| id    | bigint  | Primary key   |
+| name  | varchar | Category name |
+
+## reviews
+
+| Field      | Type      | Description        |
+| ---------- | --------- | ------------------ |
+| id         | bigint    | Primary key        |
+| user_id    | bigint    | User relation      |
+| book_id    | bigint    | Book relation      |
+| rating     | integer   | Book rating        |
+| review     | text      | Review content     |
+| created_at | timestamp | Creation timestamp |
+
+## wishlists
+
+| Field   | Type   | Description   |
+| ------- | ------ | ------------- |
+| id      | bigint | Primary key   |
+| user_id | bigint | User relation |
+| book_id | bigint | Book relation |
+
+---
+
+# 👨‍💻 Team Members
+
+| Name                     | Role                                | Responsibilities                            |
+| -------------------------| ----------------------------------- | --------------------------------------------|
+| Samara Wardasadiya       | Project Manager / Backend Developer | Develop backend systems and database        |
+| Kadiva Alifia Nurhidayah | Frontend Developer                  | Design website UI/UX                        |
+| Jasmine Aulia Santoso    | Database Designer                   | Design ERD, UML,  and database relations    |
+
+---
+
+# ⚙️ Installation Guide
+
+## 1. Clone Repository
+
+```bash
+git clone https://github.com/JasmineSantoso/Web_Project_LetterIn.git
+```
+
+## 2. Enter Project Directory
+
+```bash
+cd Web_Project_LetterIn
+```
+
+## 3. Install Laravel Dependencies
+
+```bash
+composer install
+```
+
+## 4. Copy Environment File
+
+```bash
+cp .env.example .env
+```
+
+## 5. Generate Application Key
+
+```bash
+php artisan key:generate
+```
+
+## 6. Configure Database
+
+Edit the `.env` file and adjust the database configuration.
+
+## 7. Run Migration
+
+```bash
+php artisan migrate
+```
+
+## 8. Run Development Server
+
+```bash
+php artisan serve
+```
+
+---
+
+# 🚀 Future Development
+
+* Integration with Google Books API
+* Reading progress tracker feature
+* Social interaction between users
