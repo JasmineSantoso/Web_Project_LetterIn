@@ -28,7 +28,7 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 15px 40px;
-    background-color: var(--bg-headfoot);
+    background-color: var(--btn-sage);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Efek bayangan */
     position: relative;
     z-index: 100;

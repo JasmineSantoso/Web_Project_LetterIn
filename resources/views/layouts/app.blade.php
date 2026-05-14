@@ -74,9 +74,24 @@
         .nav-btn {
             background: #674636;
             color: white !important;
-            padding: 8px 15px;
-            border-radius: 20px;
+            padding: 10px 25px;
+            border-radius: 25px;
             font-size: 0.9rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 600ms cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-block;
+        }
+        .nav-btn:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+        .page-transition {
+            animation: fadeIn 600ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         footer {
             padding: 30px 50px;
@@ -103,10 +118,16 @@
 </head>
 <body>
     <header>
-        <div class="nav-left">
-            <a href="/bookmates">Bookmates</a>
-            <a href="/browse">Browse</a>
-        </div>
+        @guest
+            <div class="nav-left">
+                <a href="#" class="nav-btn">About us</a>
+            </div>
+        @else
+            <div class="nav-left">
+                <a href="/bookmates">Bookmates</a>
+                <a href="/browse">Browse</a>
+            </div>
+        @endguest
         
         <div class="logo-container">
             <a href="/" class="brand-logo">
@@ -115,37 +136,33 @@
         </div>
         
         <div class="nav-right">
-            <div class="search-box">
-                <input type="text" placeholder="Search books">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </div>
-            @auth
-            <div class="profile-container">
-                <a href="javascript:void(0)" class="profile-icon" id="profileBtn">
-                    <i class="fa-regular fa-circle-user"></i>
-                </a>
-                <ul class="home-dropdown" id="myDropdown">
-                    <li><a href="/profile">PROFILE</a></li>
-                    <li><a href="/settings">SETTINGS</a></li>
-                    <li><a href="/notifications">NOTIFICATIONS</a></li>
-                    <hr style="border: 0.5px solid #6d4c41; margin: 5px 0;">
-                    <li>
-                        <form action="{{ route('logout') }}" method="POST">
-                            @csrf
-                            <button type="submit" style="background: none; border: none; color: #674636; font-weight: 700; cursor: pointer; padding: 5px 10px; font-size: 0.8rem; width: 100%; text-align: left;">SIGN OUT</button>
-                        </form>
-                    </li>
-                    <li><a href="#">CONTACT US</a></li>
-                </ul>
-            </div>
+            @guest
+                <a href="{{ route('signin') }}" class="nav-btn">Sign in</a>
             @else
-            <a href="{{ route('signin') }}" class="nav-btn">Sign in</a>
-            <a href="{{ route('signup') }}" class="nav-btn">Sign up</a>
-            @endauth
+                <div class="search-box">
+                    <input type="text" placeholder="Search books">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <div class="profile-container">
+                    <a href="javascript:void(0)" class="profile-icon" id="profileBtn">
+                        <i class="fa-regular fa-circle-user"></i>
+                    </a>
+                    <ul class="home-dropdown" id="myDropdown">
+                        <li><a href="/profile">PROFILE</a></li>
+                        <li><a href="/settings">SETTINGS</a></li>
+                        <li><a href="/notifications">NOTIFICATIONS</a></li>
+                        <hr style="border: 0.5px solid #6d4c41; margin: 5px 0;">
+                        <li>
+                            <a href="{{ route('logout') }}">SIGN OUT</a>
+                        </li>
+                        <li><a href="#">CONTACT US</a></li>
+                    </ul>
+                </div>
+            @endguest
         </div>
     </header>
 
-    <main>
+    <main class="page-transition">
         @yield('content')
     </main>
 

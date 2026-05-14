@@ -18,7 +18,7 @@
         <h2 class="section-title-white">YOUR CURRENT READ</h2>
         
         <div class="current-read-card">
-            <img src="{{ asset('images/image11.jpg') }}" alt="Laut Bercerita" class="current-cover">
+            <img src="{{ $currentReadCover ?? 'https://placehold.co/140x200?text=Cover' }}" alt="Laut Bercerita" class="current-cover">
             
             <div class="read-details">
                 <h3 class="read-title">Laut Bercerita</h3>
@@ -42,13 +42,20 @@
 
     <section class="carousel-section light-bg">
         <h2 class="section-title-brown">POPULAR THIS WEEK</h2>
-        <div class="books-carousel">
-            @for ($i = 1; $i <= 10; $i++)
-                @php
-                    $img = ($i == 10) ? 'image10.jpg' : "image{$i}.jpg";
-                @endphp
-                <img src="{{ asset('images/' . $img) }}" alt="Book {{ $i }}">
-            @endfor
+        <div class="carousel-container">
+            <button class="prev-arrow brown-arrow">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <div class="books-carousel">
+                @foreach ($books as $book)
+                    @php
+                        $volumeInfo = $book['volumeInfo'] ?? [];
+                        $thumbnail = $volumeInfo['imageLinks']['thumbnail'] ?? 'https://placehold.co/150x220?text=No+Cover';
+                        $title = $volumeInfo['title'] ?? 'Unknown Title';
+                    @endphp
+                    <img src="{{ $thumbnail }}" alt="{{ $title }}">
+                @endforeach
+            </div>
             <button class="next-arrow brown-arrow">
                 <i class="fa-solid fa-chevron-right"></i>
             </button>
@@ -57,13 +64,20 @@
 
     <section class="carousel-section dark-bg">
         <h2 class="section-title-white">RECOMMENDATIONS</h2>
-        <div class="books-carousel">
-            @php
-                $reco = [7, 8, 9, 1, 2, 3, 4, 5, 6, 10];
-            @endphp
-            @foreach ($reco as $r)
-                <img src="{{ asset('images/image' . $r . '.jpg') }}" alt="Book {{ $r }}">
-            @endforeach
+        <div class="carousel-container">
+            <button class="prev-arrow white-arrow">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <div class="books-carousel">
+                @foreach ($recommendations as $book)
+                    @php
+                        $volumeInfo = $book['volumeInfo'] ?? [];
+                        $thumbnail = $volumeInfo['imageLinks']['thumbnail'] ?? 'https://placehold.co/150x220?text=No+Cover';
+                        $title = $volumeInfo['title'] ?? 'Unknown Title';
+                    @endphp
+                    <img src="{{ $thumbnail }}" alt="{{ $title }}">
+                @endforeach
+            </div>
             <button class="next-arrow white-arrow">
                 <i class="fa-solid fa-chevron-right"></i>
             </button>
