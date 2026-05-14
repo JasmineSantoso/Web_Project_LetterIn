@@ -17,12 +17,13 @@ class GoogleBooksService
     /**
      * Search books by query
      */
-    public function searchBooks($query, $maxResults = 10, $orderBy = 'relevance')
+    public function searchBooks($query, $maxResults = 10, $orderBy = 'relevance', $startIndex = 0)
     {
         $params = [
             'q' => $query,
             'maxResults' => $maxResults,
             'orderBy' => $orderBy,
+            'startIndex' => $startIndex,
         ];
 
         if ($this->apiKey) {

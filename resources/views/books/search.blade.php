@@ -4,11 +4,55 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/searchbook_signed.css') }}">
+    <style>
+        .search-section-wrapper {
+            background-color: #F7EED3;
+            padding: 30px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .search-bar-inner {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 30px;
+            padding: 10px 20px;
+            width: 60%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border: 1px solid #674636;
+        }
+        .search-bar-inner input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 1rem;
+            color: #674636;
+        }
+        .search-bar-inner button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #674636;
+            font-size: 1.2rem;
+        }
+    </style>
 @endpush
 
 @section('content')
+    <div class="search-section-wrapper">
+        <form action="{{ route('search') }}" method="GET" style="width: 100%; display: flex; justify-content: center;">
+            <div class="search-bar-inner">
+                <input type="text" name="q" value="{{ $query }}" placeholder="Search by title, author, or ISBN" required>
+                <button type="submit">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+
     <section class="page-title-section">
-        <h1>Book result for 'Hujan'</h1>
+        <h1>Book result for '{{ $query }}'</h1>
     </section>
 
     <section class="filter-bar">
@@ -20,44 +64,61 @@
     </section>
 
     <section class="result-list">
-        @php
-            $books = [
-                ['title' => 'Dan Hujan Pun Berhenti', 'year' => 2007, 'author' => 'Farida Susanty', 'img' => 'image1.jpg', 'rating' => 3.11],
-                ['title' => 'Episode Hujan', 'year' => 2016, 'author' => 'Lucia Priandarini', 'img' => 'image2.jpg', 'rating' => 3.55],
-                ['title' => 'Hujan Kepagian', 'year' => 1958, 'author' => 'Nugroho Notosusanto', 'img' => 'image3.jpg', 'rating' => 3.86],
-                ['title' => 'Wait For The Rain', 'year' => 2015, 'author' => 'Maria Murnane', 'img' => 'image4.jpg', 'rating' => 3.77],
-                ['title' => 'Hujan', 'year' => 2016, 'author' => 'Tere Liye', 'img' => 'image5.jpg', 'rating' => 4.22],
-                ['title' => 'Hujan', 'year' => 2008, 'author' => 'Rien, Thee&Rien', 'img' => 'image6.jpg', 'rating' => 5.0],
-            ];
-        @endphp
-
-        @foreach ($books as $book)
-        <div class="book-card">
-            <img src="{{ asset('images/' . $book['img']) }}" alt="{{ $book['title'] }}" class="book-cover">
-            
-            <div class="book-info">
-                <div class="info-top">
-                    <h2 class="book-title">{{ $book['title'] }} <span class="book-year">{{ $book['year'] }}</span></h2>
-                    <p class="book-author">{{ $book['author'] }}</p>
+        @forelse ($books as $book)
+            @php
+                $volumeInfo = $book['volumeInfo'] ?? [];
+                $authorsArray = $volumeInfo['authors'] ?? [];
+                
+                // Skip if no authors (Unknown Author)
+                if (empty($authorsArray)) {
+                    continue;
+                }
+                
+                $authors = implode(', ', $authorsArray);
+                
+                $thumbnail = $volumeInfo['imageLinks']['thumbnail'] ?? 'https://placehold.co/150x220?text=No+Cover';
+                $title = $volumeInfo['title'] ?? 'Unknown Title';
+                $publishedDate = $volumeInfo['publishedDate'] ?? '';
+                $year = $publishedDate ? substr($publishedDate, 0, 4) : 'N/A';
+                $rating = $volumeInfo['averageRating'] ?? 0;
+                $ratingsCount = $volumeInfo['ratingsCount'] ?? 0;
+            @endphp
+            <div class="book-card">
+                <img src="{{ $thumbnail }}" alt="{{ $title }}" class="book-cover">
+                
+                <div class="book-info">
+                    <div class="info-top">
+                        <h2 class="book-title">{{ $title }} <span class="book-year">{{ $year }}</span></h2>
+                        <p class="book-author">{{ $authors }}</p>
+                    </div>
+                    <div class="book-rating">
+                        <i class="fa-solid fa-star"></i>
+                        <span class="rating-text">{{ $rating }} rating ({{ $ratingsCount }})</span>
+                    </div>
                 </div>
-                <div class="book-rating">
-                    <i class="fa-solid fa-star"></i>
-                    <span class="rating-text">{{ $book['rating'] }} rating</span>
+
+                <div class="action-box">
+                    @if(Auth::guest() || (isset($forceGuestHeader) && $forceGuestHeader))
+                        <div class="action-item" onclick="window.location.href='{{ route('signin') }}'">
+                            <span>Sign in to track</span> <i class="fa-regular fa-bookmark"></i>
+                        </div>
+                    @else
+                        <div class="action-item dropdown-item">
+                            <span>To Read</span> <i class="fa-regular fa-bookmark"></i>
+                        </div>
+                        <div class="action-item">
+                            <span>Add Favorite</span> <i class="fa-regular fa-heart"></i>
+                        </div>
+                        <div class="action-item">
+                            <span>Add Bookshelf</span> <i class="fa-regular fa-square-check"></i>
+                        </div>
+                    @endif
                 </div>
             </div>
-
-            <div class="action-box">
-                <div class="action-item dropdown-item">
-                    <span>To Read</span> <i class="fa-regular fa-bookmark"></i>
-                </div>
-                <div class="action-item">
-                    <span>Add Favorite</span> <i class="fa-regular fa-heart"></i>
-                </div>
-                <div class="action-item">
-                    <span>Add Bookshelf</span> <i class="fa-regular fa-square-check"></i>
-                </div>
+        @empty
+            <div style="text-align: center; padding: 50px; color: #674636;">
+                <p>No books found for '{{ $query }}'. Try another keyword.</p>
             </div>
-        </div>
-        @endforeach
+        @endforelse
     </section>
 @endsection

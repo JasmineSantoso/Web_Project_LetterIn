@@ -1,0 +1,289 @@
+/* 
+   LetterIn Sliding Authentication 
+   Preserving original design while adding sliding animation 
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@400;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    background: url('../images/BG-sign.jpeg') no-repeat center/cover;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* LOGO */
+.brand-logo-container {
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    padding: 6px 20px;
+    border-radius: 40px;
+    background: #AAB396;
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+    transition: all 0.6s ease-in-out;
+}
+
+.brand-logo-container:hover {
+    background: #FFF8E7;
+}
+
+.main-container.right-panel-active .brand-logo-container {
+    left: calc(100% - 30px);
+    transform: translateX(-100%);
+    background: #F7EED3; /* Signup logo color */
+}
+
+.brand-logo {
+    height: 35px;
+    width: auto;
+    display: block;
+}
+
+/* CONTAINER */
+.main-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* FORMS */
+.form-container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    transition: all 0.6s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+
+.sign-in-container {
+    left: 50%;
+    z-index: 2;
+}
+
+.main-container.right-panel-active .sign-in-container {
+    transform: translateX(-100%);
+    opacity: 0;
+    z-index: 1;
+}
+
+.sign-up-container {
+    left: 50%;
+    opacity: 0;
+    z-index: 1;
+}
+
+.main-container.right-panel-active .sign-up-container {
+    transform: translateX(-100%);
+    opacity: 1;
+    z-index: 5;
+    animation: show 0.6s;
+}
+
+@keyframes show {
+    0%, 49.99% {
+        opacity: 0;
+        z-index: 1;
+    }
+    50%, 100% {
+        opacity: 1;
+        z-index: 5;
+    }
+}
+
+/* TAGLINE / OVERLAY */
+.tagline-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: transform 0.6s ease-in-out;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    padding-left: 100px;
+}
+
+.main-container.right-panel-active .tagline-container {
+    transform: translateX(100%);
+}
+
+.tagline-content {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: #D4C63B;
+    max-width: 400px;
+}
+
+.main-container.right-panel-active .tagline-content {
+    color: #674636; /* Color from signup tagline */
+}
+
+/* CARD STYLE (Preserved from original) */
+.card {
+    width: 80%;
+    padding: 3vh 2vw;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 240, 210, 0.3);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2vh;
+}
+
+.card h1 {
+    text-align: center;
+    color: #6b3f2a;
+    font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+    font-family: 'Playfair Display', serif;
+}
+
+/* INPUTS (Preserved) */
+.input-group {
+    position: relative;
+    margin-bottom: 1.5vh;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 1.2vh 1vw;
+    border-radius: 25px;
+    border: 1px solid rgba(107,63,42,0.4);
+    background: transparent;
+    outline: none;
+    font-size: clamp(0.9rem, 1.2vw, 1.2rem);
+    color: #6b3f2a;
+}
+
+.input-group label {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b3f2a;
+    font-size: clamp(0.8rem, 1vw, 1rem);
+    transition: 0.3s;
+    pointer-events: none;
+}
+
+.input-group input:focus + label,
+.input-group input:valid + label {
+    top: -8px;
+    transform: none;
+    font-size: 0.75rem;
+    background: rgba(255,240,210,0.7);
+    padding: 0 6px;
+    border-radius: 10px;
+}
+
+/* BUTTONS (Preserved) */
+.btn {
+    width: 100%;
+    padding: 1.2vh;
+    border-radius: 25px;
+    border: none;
+    background: #6b3f2a;
+    color: white;
+    font-size: clamp(1rem, 1.3vw, 1.3rem);
+    margin-bottom: 1vh;
+    cursor: pointer;
+    transition: 0.2s;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.google {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.google img {
+    width: 20px;
+}
+
+/* OPTIONS & FOOTER */
+.options {
+    display: flex;
+    justify-content: space-between;
+    font-size: clamp(0.7rem, 0.9vw, 0.9rem);
+    margin-bottom: 1.5vh;
+    color: #6b3f2a;
+}
+
+.signup {
+    text-align: center;
+    font-size: clamp(0.7rem, 0.9vw, 0.9rem);
+    color: #6b3f2a;
+}
+
+.signup a {
+    color: #6b3f2a;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.error {
+    color: #ff4d4d;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.global-error {
+    color: #ff4d4d;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main-container {
+        display: block;
+        overflow-y: auto;
+    }
+    .form-container, .tagline-container {
+        position: relative;
+        width: 100%;
+        left: 0;
+        height: auto;
+        padding: 50px 20px;
+    }
+    .tagline-container {
+        padding-left: 20px;
+        justify-content: center;
+    }
+}

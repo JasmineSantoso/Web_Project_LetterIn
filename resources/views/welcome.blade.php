@@ -9,12 +9,14 @@
 @section('content')
     <section class="hero">
         <h1 class="hero-title">Every read leaves a letter in</h1>
-        <div class="search-container">
-            <input type="text" placeholder="Search by title, author, or ISBN">
-            <span class="search-icon">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </span>
-        </div>
+        <form action="{{ route('search') }}" method="GET">
+            <div class="search-container">
+                <input type="text" name="q" placeholder="Search by title, author, or ISBN" required>
+                <button type="submit" class="search-icon" style="background: none; border: none; cursor: pointer;">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+        </form>
     </section>
 
     <section class="most-read">

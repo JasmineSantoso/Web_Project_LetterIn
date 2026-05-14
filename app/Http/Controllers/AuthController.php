@@ -11,7 +11,7 @@ class AuthController extends Controller
 {
     public function showSignup()
     {
-        return view('auth.signup');
+        return view('auth.auth', ['mode' => 'signup']);
     }
 
     public function processSignup(Request $request)
@@ -48,7 +48,7 @@ class AuthController extends Controller
 
     public function showSignin()
     {
-        return view('auth.signin');
+        return view('auth.auth', ['mode' => 'signin']);
     }
 
     public function processSignin(Request $request)
