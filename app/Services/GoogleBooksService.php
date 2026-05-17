@@ -39,9 +39,6 @@ class GoogleBooksService
         return [];
     }
 
-    /**
-     * Get cover image for a specific book title
-     */
     public function getBookCover($title)
     {
         $books = $this->searchBooks('intitle:' . $title, 1);

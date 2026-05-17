@@ -13,58 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
         books: document.getElementById('favorite-books-container')
     };
 
-    // 🔵 AMBIL DATA USER
-    function getUserData() {
-        const stored = localStorage.getItem('currentUser');
+    // 🔵 RENDER STATS (Simulated for now)
+    if (el.totalBooks) el.totalBooks.textContent = '0';
+    if (el.totalReviews) el.totalReviews.textContent = '0';
 
-        if (stored) {
-            return JSON.parse(stored);
-        }
 
-    // async function getUserData() {  // ini kalau udah ada backend
-    //     const res = await fetch('/api/profile.php');
-    //     return await res.json();
-    // }
-
-        // fallback kalau belum login
-        return {
-            name: "Guest",
-            handle: "@guest",
-            bio: "Belum login",
-            avatarUrl: "../IMG/default.jpg",
-            following: 0,
-            followers: 0,
-            totalBooks: 0,
-            totalReviews: 0,
-            favoriteBooks: []
-        };
-    }
-
-    const user = getUserData();
-
-    // 🔵 RENDER PROFILE
-    if (el.avatar) el.avatar.src = user.avatarUrl;
-    if (el.name) el.name.textContent = user.name;
-    if (el.handle) el.handle.textContent = user.handle;
-    if (el.bio) el.bio.textContent = user.bio;
-    if (el.following) el.following.textContent = user.following;
-    if (el.followers) el.followers.textContent = user.followers;
-
-    // 🔵 RENDER STATS
-    if (el.totalBooks) el.totalBooks.textContent = user.totalBooks;
-    if (el.totalReviews) el.totalReviews.textContent = user.totalReviews;
-
-    // 🔵 RENDER BOOKS
-    if (el.books) {
-        el.books.innerHTML = '';
-
-        (user.favoriteBooks || []).forEach((url, i) => {
-            const img = document.createElement('img');
-            img.src = url;
-            img.alt = `Book ${i+1}`;
-            el.books.appendChild(img);
-        });
-    }
 
 // --- 1. DATA SIMULASI DATABASE ---
     const dynamicUserData = {

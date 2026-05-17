@@ -27,7 +27,10 @@ Route::get('/book/{id}/review', [BookController::class, 'addReview'])->name('boo
 // Profile & Settings
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::get('/u/{username}', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/settings', [ProfileController::class, 'settings'])->name('settings');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/follow/toggle', [SocialController::class, 'toggleFollow'])->name('follow.toggle');
     Route::get('/notifications', [SocialController::class, 'notifications'])->name('notifications');
     Route::get('/bookmates', [SocialController::class, 'bookmates'])->name('bookmates');
 });

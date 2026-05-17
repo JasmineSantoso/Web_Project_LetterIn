@@ -11,7 +11,13 @@
         
         <section class="profile-header">
             <div class="profile-avatar">
-                <img src="{{ asset('images/IU.webp') }}" alt="User Profile" id="user-avatar">
+                @if(Auth::user()->profile)
+                    <img src="{{ asset('images/' . Auth::user()->profile) }}" alt="User Profile" id="user-avatar" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
+                @else
+                    <div style="width: 150px; height: 150px; border-radius: 50%; background-color: #e0e0e0; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: #757575;">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                @endif
             </div>
             <div class="profile-details">
                 <h1 class="profile-name">
@@ -19,11 +25,11 @@
                     <a href="{{ route('settings') }}" title="Edit Profile"><i class="fa-solid fa-pen source-icon"></i></a>
                 </h1>
                 <p class="profile-handle" id="user-handle">{{ '@' . Auth::user()->username }}</p>
-                <p class="profile-bio" id="user-bio">"No bio yet."</p>
+                <p class="profile-bio" id="user-bio">{{ Auth::user()->bio ?: '"No bio yet."' }}</p>
 
                 <div class="profile-stats-text">
-                    <span>Following <strong id="user-following">0</strong></span>
-                    <span>Followers <strong id="user-followers">0</strong></span>
+                    <span>Following <strong id="user-following">{{ Auth::user()->following()->count() }}</strong></span>
+                    <span>Followers <strong id="user-followers">{{ Auth::user()->followers()->count() }}</strong></span>
                 </div>
             </div>
         </section>
