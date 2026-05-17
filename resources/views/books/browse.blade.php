@@ -9,50 +9,99 @@
 @section('content')
     <section class="browse-hero">
         <h1 class="page-title">Every read leaves a letter in</h1>
-        <div class="main-search-container">
-            <input type="text" value="Hujan">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </div>
+        <form action="{{ route('browse') }}" method="GET" class="main-search-container" style="margin-top: 20px;">
+            <input type="text" name="category" value="{{ request('category') }}" placeholder="Search category or keyword" style="border: 1px solid #674636;">
+            <button type="submit" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #674636; font-size: 1.2rem; padding: 0;">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </form>
     </section>
 
-    <section class="category-filter">
-        <div class="button-row">
-            <button class="cat-btn">Popular Books</button>
-            <button class="cat-btn active-trending">Trending Now</button>
-            <button class="cat-btn">Top Rated Books</button>
-        </div>
-        <div class="button-row">
-            <button class="cat-btn">Most Reviewed Books</button>
-            <button class="cat-btn">Editor's Choice</button>
-            <button class="cat-btn">New Releases</button>
-        </div>
+    <section class="filter-bar">
+        <form action="{{ route('browse') }}" method="GET" id="filter-form">
+            <input type="hidden" name="category" value="{{ request('category') }}">
+            <div class="filter-buttons">
+                <!-- Genre Dropdown -->
+                <div class="filter-dropdown" id="dropdown-genre">
+                    <button type="button" class="filter-btn" onclick="toggleDropdown('dropdown-genre')">Genre <i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="dropdown-content">
+                        <label><input type="checkbox" name="genre[]" value="Fiction" onchange="document.getElementById('filter-form').submit()" {{ in_array('Fiction', request('genre', [])) ? 'checked' : '' }}> Fiction</label>
+                        <label><input type="checkbox" name="genre[]" value="Romance" onchange="document.getElementById('filter-form').submit()" {{ in_array('Romance', request('genre', [])) ? 'checked' : '' }}> Romance</label>
+                        <label><input type="checkbox" name="genre[]" value="Fantasy" onchange="document.getElementById('filter-form').submit()" {{ in_array('Fantasy', request('genre', [])) ? 'checked' : '' }}> Fantasy</label>
+                        <label><input type="checkbox" name="genre[]" value="Mystery" onchange="document.getElementById('filter-form').submit()" {{ in_array('Mystery', request('genre', [])) ? 'checked' : '' }}> Mystery</label>
+                        <label><input type="checkbox" name="genre[]" value="History" onchange="document.getElementById('filter-form').submit()" {{ in_array('History', request('genre', [])) ? 'checked' : '' }}> History</label>
+                        <label><input type="checkbox" name="genre[]" value="Science" onchange="document.getElementById('filter-form').submit()" {{ in_array('Science', request('genre', [])) ? 'checked' : '' }}> Science</label>
+                        <label><input type="checkbox" name="genre[]" value="Biography" onchange="document.getElementById('filter-form').submit()" {{ in_array('Biography', request('genre', [])) ? 'checked' : '' }}> Biography</label>
+                    </div>
+                </div>
+
+                <!-- Publish Dropdown -->
+                <div class="filter-dropdown" id="dropdown-publish">
+                    <button type="button" class="filter-btn" onclick="toggleDropdown('dropdown-publish')">Publish <i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="dropdown-content">
+                        <div class="publish-grid">
+                            <div>
+                                <span>From</span><br>
+                                <input type="number" name="publish_from" value="{{ request('publish_from') }}">
+                            </div>
+                            <div>
+                                <span>To</span><br>
+                                <input type="number" name="publish_to" value="{{ request('publish_to') }}">
+                            </div>
+                        </div>
+                        <button type="submit" style="margin-top: 10px; width: 100%; padding: 4px; background: #FFF3E0; border: none; cursor: pointer; border-radius: 2px; font-weight: bold; color: var(--card-brown);">Apply</button>
+                    </div>
+                </div>
+
+                <!-- Rating Dropdown -->
+                <div class="filter-dropdown" id="dropdown-rating">
+                    <button type="button" class="filter-btn" onclick="toggleDropdown('dropdown-rating')">Rating <i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="dropdown-content rating-grid">
+                        <label class="rating-label"><input type="radio" name="rating" value="5" onchange="document.getElementById('filter-form').submit()" {{ request('rating') == '5' ? 'checked' : '' }}> <span><i class="fa-solid fa-star"></i> 5</span></label>
+                        <label class="rating-label"><input type="radio" name="rating" value="4" onchange="document.getElementById('filter-form').submit()" {{ request('rating') == '4' ? 'checked' : '' }}> <span>&ge;<i class="fa-solid fa-star"></i> 4</span></label>
+                        <label class="rating-label"><input type="radio" name="rating" value="3" onchange="document.getElementById('filter-form').submit()" {{ request('rating') == '3' ? 'checked' : '' }}> <span>&ge;<i class="fa-solid fa-star"></i> 3</span></label>
+                        <label class="rating-label"><input type="radio" name="rating" value="2" onchange="document.getElementById('filter-form').submit()" {{ request('rating') == '2' ? 'checked' : '' }}> <span>&ge;<i class="fa-solid fa-star"></i> 2</span></label>
+                        <label class="rating-label" style="grid-column: span 2; text-align: center;"><input type="radio" name="rating" value="1" onchange="document.getElementById('filter-form').submit()" {{ request('rating') == '1' ? 'checked' : '' }}> <span>&ge;<i class="fa-solid fa-star"></i> 1</span></label>
+                    </div>
+                </div>
+            </div>
+        </form>
     </section>
 
     <section class="browse-list">
-        @php
-            $books = [
-                ['title' => 'Dan Hujan Pun Berhenti', 'year' => 2007, 'author' => 'Farida Susanty', 'img' => 'hujan1.jpg', 'rating' => 3.11],
-                ['title' => 'Episode Hujan', 'year' => 2016, 'author' => 'Lucia Priandarini', 'img' => 'hujan2.jpg', 'rating' => 3.55],
-                ['title' => 'Hujan Kepagian', 'year' => 1958, 'author' => 'Nugroho Notosusanto', 'img' => 'hujan3.jpg', 'rating' => 3.86],
-                ['title' => 'Wait For The Rain', 'year' => 2015, 'author' => 'Maria Murnane', 'img' => 'hujan4.jpg', 'rating' => 3.77],
-                ['title' => 'Hujan', 'year' => 2016, 'author' => 'Tere Liye', 'img' => 'image10.jpg', 'rating' => 4.22],
-            ];
-        @endphp
+        @forelse ($books as $book)
+            @php
+                $volumeInfo = $book['volumeInfo'] ?? [];
+                $authorsArray = $volumeInfo['authors'] ?? [];
+                
+                // Skip if no authors (Unknown Author)
+                if (empty($authorsArray)) {
+                    continue;
+                }
+                
+                $authors = implode(', ', $authorsArray);
+                
+                $thumbnail = $volumeInfo['imageLinks']['thumbnail'] ?? 'https://placehold.co/150x220?text=No+Cover';
+                $title = $volumeInfo['title'] ?? 'Unknown Title';
+                $publishedDate = $volumeInfo['publishedDate'] ?? '';
+                $year = $publishedDate ? substr($publishedDate, 0, 4) : 'N/A';
+                $rating = $volumeInfo['averageRating'] ?? 0;
+            @endphp
 
-        @foreach ($books as $book)
         <div class="browse-card">
-            <img src="{{ asset('images/' . $book['img']) }}" alt="{{ $book['title'] }}" class="browse-cover">
+            <img src="{{ $thumbnail }}" alt="{{ $title }}" class="browse-cover">
             
             <div class="browse-info">
                 <div class="info-header">
-                    <h2 class="browse-title">{{ $book['title'] }} <span class="browse-year">{{ $book['year'] }}</span></h2>
-                    <p class="browse-author">{{ $book['author'] }}</p>
+                    <h2 class="browse-title">{{ $title }} <span class="browse-year">{{ $year }}</span></h2>
+                    <p class="browse-author">{{ $authors }}</p>
                 </div>
                 <div class="browse-rating">
                     @php
-                        $fullStars = floor($book['rating']);
-                        $halfStar = ($book['rating'] - $fullStars) >= 0.5 ? 1 : 0;
+                        $fullStars = floor($rating);
+                        $halfStar = ($rating - $fullStars) >= 0.5 ? 1 : 0;
                         $emptyStars = 5 - $fullStars - $halfStar;
+                        if ($emptyStars < 0) $emptyStars = 0;
                     @endphp
                     @for ($i = 0; $i < $fullStars; $i++)
                         <i class="fa-solid fa-star"></i>
@@ -63,40 +112,73 @@
                     @for ($i = 0; $i < $emptyStars; $i++)
                         <i class="fa-regular fa-star"></i>
                     @endfor
-                    <span class="rating-text">{{ $book['rating'] }} rating</span>
+                    <span class="rating-text">{{ $rating > 0 ? $rating : 'No' }} rating</span>
                 </div>
             </div>
 
             <div class="action-box">
-                <div class="action-item dropdown">
-                    <details>
-                        <summary>
-                            <span>To Read</span>
-                            <i class="fa-solid fa-chevron-down"></i>
-                        </summary>
-                        <div class="dropdown-menu">
-                            <div class="dropdown-option">To Read</div>
-                            <div class="dropdown-option">Currently Read</div>
-                            <div class="dropdown-option">Done Read</div>
-                        </div>
-                    </details>
-                </div>
-                <label class="action-item favorite-btn">
-                    <input type="checkbox" class="fav-toggle">
-                    <span class="fav-text add">Add Favorite</span>
-                    <span class="fav-text remove">Remove Favorite</span>
-                    <i class="fa-regular fa-heart"></i>
-                    <i class="fa-solid fa-heart"></i>
-                </label>
-                <div class="action-item">
-                    <span>Add Bookshelf</span> <i class="fa-regular fa-square-check"></i>
-                </div>
+                @auth
+                    <div class="action-item dropdown">
+                        <details>
+                            <summary>
+                                <span>To Read</span>
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </summary>
+                            <div class="dropdown-menu">
+                                <div class="dropdown-option">To Read</div>
+                                <div class="dropdown-option">Currently Read</div>
+                                <div class="dropdown-option">Done Read</div>
+                            </div>
+                        </details>
+                    </div>
+                    <label class="action-item favorite-btn">
+                        <input type="checkbox" class="fav-toggle">
+                        <span class="fav-text add">Add Favorite</span>
+                        <span class="fav-text remove">Remove Favorite</span>
+                        <i class="fa-regular fa-heart"></i>
+                        <i class="fa-solid fa-heart"></i>
+                    </label>
+                    <div class="action-item">
+                        <span>Add Bookshelf</span> <i class="fa-regular fa-square-check"></i>
+                    </div>
+                @else
+                    <div class="action-item" onclick="window.location.href='{{ route('signin') }}'">
+                        <span>Sign in to track</span> <i class="fa-regular fa-bookmark"></i>
+                    </div>
+                @endauth
             </div>
         </div>
-        @endforeach
+        @empty
+            <div style="text-align: center; padding: 50px; color: #674636; width: 100%;">
+                <p>No books found for this category.</p>
+            </div>
+        @endforelse
     </section>
 @endsection
 
 @push('scripts')
     <script src="{{ asset('js/home_signed.js') }}"></script>
+    <script>
+        function toggleDropdown(id) {
+            // Close all other dropdowns
+            const dropdowns = document.querySelectorAll('.filter-dropdown');
+            dropdowns.forEach(dropdown => {
+                if (dropdown.id !== id) {
+                    dropdown.classList.remove('active');
+                }
+            });
+            // Toggle the clicked one
+            document.getElementById(id).classList.toggle('active');
+        }
+
+        // Close dropdown when clicking outside
+        window.onclick = function(event) {
+            if (!event.target.matches('.filter-btn') && !event.target.closest('.filter-btn') && !event.target.closest('.dropdown-content')) {
+                const dropdowns = document.querySelectorAll('.filter-dropdown');
+                dropdowns.forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            }
+        }
+    </script>
 @endpush

@@ -16,8 +16,10 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px 40px;
-            background: #FFF2CC; /* Brighter yellow from screenshot */
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            background-color: #FFF1C9;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 100;
         }
         .nav-left, .nav-right {
             display: flex;
@@ -26,50 +28,100 @@
         }
         .nav-left a, .nav-right a {
             text-decoration: none;
-            color: #674636;
-            font-weight: 700;
+            color: #4E342E;
+            font-weight: bold;
+            font-size: 0.95rem;
         }
-        .logo-container img {
-            height: 40px;
+        .nav-left .active-nav {
+            font-weight: 900;
+        }
+        .logo-container {
+            height: 50px;
+        }
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        .brand-logo img {
+            height: 400%;
+            width: auto;
+            object-fit: contain;
+            position: relative;
+            left: +7px;
         }
         .search-box {
             position: relative;
         }
         .search-box input {
-            padding: 5px 30px 5px 10px;
+            padding: 8px 35px 8px 15px;
             border-radius: 20px;
-            border: 1px solid #674636;
+            border: 1px solid #ccc;
+            font-size: 0.9rem;
+            width: 200px;
+            outline: none;
+            background-color: #fff;
         }
         .search-box i {
             position: absolute;
-            right: 10px;
+            right: 12px;
             top: 50%;
             transform: translateY(-50%);
-            color: #674636;
+            color: #888;
+            font-size: 0.8rem;
         }
         .profile-container {
             position: relative;
         }
-        .home-dropdown {
-            display: none;
+        .profile-icon {
+            font-size: 2.2rem !important;
+            color: #4E342E;
+            text-decoration: none;
+            cursor: pointer;
+            display: block;
+        }
+        ul.home-dropdown {
             position: absolute;
             right: 0;
-            background: #F7EED3;
+            top: 120%;
+            width: 180px;
+            background-color: #6D4C41;
             list-style: none;
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            padding: 8px 0;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            display: none; 
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
             z-index: 1000;
-            min-width: 150px;
+        }
+        ul.home-dropdown.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
         }
         .home-dropdown li a {
+            color: #fff;
+            padding: 12px 20px;
+            text-decoration: none;
             display: block;
-            padding: 5px 10px;
-            font-size: 0.8rem;
-            color: #674636;
+            font-size: 0.85rem;
+            font-weight: bold;
+            transition: background 0.2s;
         }
-        .home-dropdown.show {
-            display: block;
+        .home-dropdown li a:hover {
+            background-color: #5D4037;
+        }
+        .home-dropdown::before {
+            content: "";
+            position: absolute;
+            top: -8px;
+            right: 10px;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid #6D4C41;
         }
         .nav-btn {
             background: #AAB396; /* Sage green from screenshot */
