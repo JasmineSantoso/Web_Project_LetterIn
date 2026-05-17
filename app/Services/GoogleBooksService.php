@@ -53,4 +53,34 @@ class GoogleBooksService
 
         return null;
     }
+    /**
+     * Get book details by ID
+     */
+    public function getBookById($id)
+    {
+        $params = [];
+        if ($this->apiKey) {
+            $params['key'] = $this->apiKey;
+        }
+
+        $response = Http::withoutVerifying()->get($this->baseUrl . '/' . $id, $params);
+
+        if ($response->successful()) {
+            return $response->json();
+        }
+
+        // Return fallback dummy data if API fails (e.g., quota exceeded)
+        return [
+            'id' => $id,
+            'volumeInfo' => [
+                'title' => 'Hujan (Dummy - API Quota Exceeded)',
+                'authors' => ['Tere Liye'],
+                'publisher' => 'Gramedia Pustaka Utama',
+                'publishedDate' => '2016',
+                'description' => 'Tentang persahabatan... Tentang cinta... Tentang melupakan... Tentang perpisahan... Dan tentang hujan... <br><br><i>Note: Ini adalah data sementara karena limit/kuota Google Books API Anda sedang habis.</i>',
+                'pageCount' => 318,
+                'language' => 'id',
+            ]
+        ];
+    }
 }

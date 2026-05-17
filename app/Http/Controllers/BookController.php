@@ -21,7 +21,13 @@ class BookController extends Controller
 
     public function details($id)
     {
-        return view('books.details', compact('id'));
+        $book = $this->googleBooksService->getBookById($id);
+        
+        if (!$book) {
+            abort(404, 'Book not found');
+        }
+
+        return view('books.details', compact('id', 'book'));
     }
 
     public function search(Request $request)

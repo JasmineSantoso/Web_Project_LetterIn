@@ -1,3 +1,33 @@
+<?php
+$bookId = isset($_GET['id']) ? $_GET['id'] : 'zyTCAlFPjgJC'; // Default fallback ID
+$url = "https://www.googleapis.com/books/v1/volumes/{$bookId}";
+
+// Suppress errors if API quota is exceeded or offline
+$response = @file_get_contents($url);
+$bookData = $response ? json_decode($response, true) : null;
+
+$title = $bookData['volumeInfo']['title'] ?? 'Hujan (Dummy - API Quota Exceeded)';
+$authors = isset($bookData['volumeInfo']['authors']) ? implode(', ', $bookData['volumeInfo']['authors']) : 'Tere Liye';
+$publisher = $bookData['volumeInfo']['publisher'] ?? 'Gramedia Pustaka Utama';
+$publishedDate = $bookData['volumeInfo']['publishedDate'] ?? '16 April 2018';
+$description = $bookData['volumeInfo']['description'] ?? 'Tentang persahabatan... Tentang cinta... Tentang melupakan... Tentang perpisahan... Dan tentang hujan...';
+$pageCount = $bookData['volumeInfo']['pageCount'] ?? 318;
+$averageRating = $bookData['volumeInfo']['averageRating'] ?? 4.22;
+$ratingsCount = $bookData['volumeInfo']['ratingsCount'] ?? 667;
+$categories = isset($bookData['volumeInfo']['categories']) ? implode(', ', $bookData['volumeInfo']['categories']) : 'Fiction, Romance';
+$language = strtoupper($bookData['volumeInfo']['language'] ?? 'id');
+$thumbnail = $bookData['volumeInfo']['imageLinks']['thumbnail'] ?? '../IMG/image10.jpg';
+
+$isbn = '9786020324784';
+if (isset($bookData['volumeInfo']['industryIdentifiers'])) {
+    foreach ($bookData['volumeInfo']['industryIdentifiers'] as $identifier) {
+        if (in_array($identifier['type'], ['ISBN_13', 'ISBN_10'])) {
+            $isbn = $identifier['identifier'];
+            break;
+        }
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,33 +58,33 @@
 
         <!-- LEFT : BOOK COVER -->
         <div class="book-cover">
-            <img src="../IMG/image10.jpg" alt="Hujan - Tere Liye">
+            <img src="<?= htmlspecialchars($thumbnail) ?>" alt="<?= htmlspecialchars($title) ?>">
             <div class="rating">
-                ★★★★★ <span>4.22</span>
-                <p>based on 667 reviews</p>
+                ★★★★★ <span><?= number_format($averageRating, 2) ?></span>
+                <p>based on <?= number_format($ratingsCount) ?> reviews</p>
             </div>
         </div>
 
         <!-- RIGHT : BOOK INFO -->
         <div class="book-info">
-            <h1>Hujan</h1>
-            <h3>Tere Liye</h3>
+            <h1><?= htmlspecialchars($title) ?></h1>
+            <h3><?= htmlspecialchars($authors) ?></h3>
 
             <ul class="book-meta">
-                <li><b>ISBN/UID:</b> 9786020324784</li>
+                <li><b>Genre:</b> <?= htmlspecialchars($categories) ?></li>
+                <li><b>ISBN/UID:</b> <?= htmlspecialchars($isbn) ?></li>
                 <li><b>Format:</b> Paperback</li>
-                <li><b>Language:</b> Indonesian</li>
-                <li><b>Publisher:</b> Gramedia Pustaka Utama</li>
-                <li><b>Edition Publish Date:</b> 16 April 2018</li>
-                <li><b>Page:</b> 318</li>
+                <li><b>Language:</b> <?= htmlspecialchars($language) ?></li>
+                <li><b>Publisher:</b> <?= htmlspecialchars($publisher) ?></li>
+                <li><b>Edition Publish Date:</b> <?= htmlspecialchars($publishedDate) ?></li>
+                <li><b>Page:</b> <?= htmlspecialchars($pageCount) ?></li>
             </ul>
 
             <!-- SYNOPSIS -->
             <div class="card">
                 <h4>Synopsis</h4>
                 <p>
-                    Tentang persahabatan... Tentang cinta... Tentang melupakan...
-                    Tentang perpisahan... Dan tentang hujan...
+                    <?= $description ?>
                 </p>
             </div>
 
