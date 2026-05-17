@@ -269,7 +269,10 @@
                         <li><a href="/notifications">NOTIFICATIONS</a></li>
                         <hr style="border: 0.5px solid #6d4c41; margin: 5px 0;">
                         <li>
-                            <a href="{{ route('logout') }}">SIGN OUT</a>
+                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">SIGN OUT</a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
                         </li>
                         <li><a href="#">CONTACT US</a></li>
                     </ul>
