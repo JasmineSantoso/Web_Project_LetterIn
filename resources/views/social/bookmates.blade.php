@@ -15,12 +15,37 @@
             <a href="#" class="tab-link">Similar User</a>
         </nav>
 
-        <div class="mate-search-bar">
-            <input type="text" placeholder="Search bookmates">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </div>
+        <form action="{{ route('bookmates') }}" method="GET" class="mate-search-bar" style="margin-bottom: 20px;">
+            <input type="text" name="q" placeholder="Search users by name or username" value="{{ $search ?? '' }}">
+            <button type="submit" style="background: none; border: none; cursor: pointer; color: #674636;">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </form>
 
         <div class="feed-list">
+            @if(isset($search) && $search !== '')
+                <h3 style="color: #674636; margin-bottom: 15px;">Search Results for "{{ $search }}"</h3>
+                @forelse($users as $user)
+                    <div class="feed-card" style="padding: 15px; display: flex; align-items: center; gap: 15px; border-radius: 8px; margin-bottom: 10px;">
+                        @if($user->profile)
+                            <img src="{{ asset('images/' . $user->profile) }}" alt="Avatar" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                        @else
+                            <div style="width: 50px; height: 50px; border-radius: 50%; background-color: #e0e0e0; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #757575;">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                        @endif
+                        <div style="flex-grow: 1;">
+                            <a href="{{ route('profile.show', ['username' => $user->username]) }}" style="text-decoration: none; color: #674636;">
+                                <h4 style="margin: 0;">{{ $user->fullname }}</h4>
+                                <p style="margin: 0; font-size: 0.9rem; color: #a67c52;">{{ '@' . $user->username }}</p>
+                            </a>
+                        </div>
+                        <a href="{{ route('profile.show', ['username' => $user->username]) }}" style="background-color: #674636; color: white; padding: 6px 12px; border-radius: 20px; text-decoration: none; font-size: 0.9rem;">View Profile</a>
+                    </div>
+                @empty
+                    <p style="color: #674636;">No users found matching "{{ $search }}".</p>
+                @endforelse
+            @else
             @php
                 $feeds = [
                     ['user' => '@anastasia', 'time' => '1 minute ago', 'rating' => 4.5, 'book' => 'Hujan'],
@@ -58,6 +83,7 @@
                 </div>
             </div>
             @endforeach
+            @endif
         </div>
     </main>
 @endsection

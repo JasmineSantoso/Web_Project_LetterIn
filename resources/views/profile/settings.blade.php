@@ -13,7 +13,23 @@
             
             <h2 class="settings-title">ACCOUNT SETTINGS</h2>
 
-            <form action="#" class="settings-form" method="POST">
+            @if(session('success'))
+                <div class="alert-success" style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if($errors->any())
+                <div class="alert-danger" style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+                    <ul style="margin: 0; padding-left: 20px;">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form action="{{ route('profile.update') }}" class="settings-form" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-layout">
                     
@@ -35,16 +51,25 @@
 
                         <div class="form-group">
                             <label for="bio">Bio</label>
-                            <textarea id="bio" name="bio"></textarea>
+                            <textarea id="bio" name="bio">{{ Auth::user()->bio }}</textarea>
                         </div>
                     </div>
 
                     <div class="avatar-column">
                         <div class="avatar-wrapper">
-                            <div class="avatar-placeholder">
-                                <i class="fa-solid fa-user"></i>
-                            </div>
-                            <button type="button" class="btn-edit-avatar">
+                            @if(Auth::user()->profile)
+                                <img src="{{ asset('images/' . Auth::user()->profile) }}" alt="Profile Avatar" class="avatar-img" id="avatar-preview" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
+                                <div class="avatar-placeholder" id="avatar-placeholder" style="display: none;">
+                                    <i class="fa-solid fa-user"></i>
+                                </div>
+                            @else
+                                <img src="" alt="Profile Avatar" class="avatar-img" id="avatar-preview" style="display: none; width: 150px; height: 150px; border-radius: 50%; object-fit: cover;">
+                                <div class="avatar-placeholder" id="avatar-placeholder">
+                                    <i class="fa-solid fa-user"></i>
+                                </div>
+                            @endif
+                            <input type="file" name="profile" id="profile_input" style="display: none;" accept="image/*">
+                            <button type="button" class="btn-edit-avatar" id="btn-edit-avatar">
                                 <i class="fa-solid fa-pen"></i>
                             </button>
                         </div>
@@ -61,4 +86,27 @@
         </div>
 
     </main>
+
+    @push('scripts')
+    <script>
+        document.getElementById('btn-edit-avatar').addEventListener('click', function() {
+            document.getElementById('profile_input').click();
+        });
+
+        document.getElementById('profile_input').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('avatar-preview');
+                    const placeholder = document.getElementById('avatar-placeholder');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    placeholder.style.display = 'none';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+    @endpush
 @endsection
