@@ -8,26 +8,35 @@
 
 @section('content')
     <section class="hero">
-        <h1 class="hero-title">Discover your next favorite book<br>on LetterIn</h1>
-        <div class="search-container">
-            <input type="text" placeholder="Search by title, author, or ISBN">
-            <span class="search-icon">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </span>
-        </div>
+        <h1 class="hero-title">Every read leaves a letter in</h1>
+        <form action="{{ route('search') }}" method="GET">
+            <div class="search-container">
+                <input type="text" name="q" placeholder="Search by title, author, or ISBN" required>
+                <button type="submit" class="search-icon" style="background: none; border: none; cursor: pointer;">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+        </form>
     </section>
 
     <section class="most-read">
         <h2 class="section-title white-text">MOST READ THIS WEEK</h2>
-        <div class="books-carousel">
-            @for ($i = 1; $i <= 10; $i++)
-                @php
-                    $img = ($i == 10) ? 'image10.jpg' : "image{$i}.jpg";
-                @endphp
-                <div class="book-card">
-                    <img src="{{ asset('images/' . $img) }}" alt="Book {{ $i }}">
-                </div>
-            @endfor
+        <div class="carousel-container">
+            <button class="prev-arrow">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <div class="books-carousel">
+                @foreach ($books as $book)
+                    @php
+                        $volumeInfo = $book['volumeInfo'] ?? [];
+                        $thumbnail = $volumeInfo['imageLinks']['thumbnail'] ?? 'https://placehold.co/150x220?text=No+Cover';
+                        $title = $volumeInfo['title'] ?? 'Unknown Title';
+                    @endphp
+                    <div class="book-card">
+                        <img src="{{ $thumbnail }}" alt="{{ $title }}">
+                    </div>
+                @endforeach
+            </div>
             <button class="next-arrow">
                 <i class="fa-solid fa-chevron-right"></i>
             </button>
@@ -66,6 +75,5 @@
 @endsection
 
 @push('scripts')
-    {{-- No specific script for unsigned yet, or use home_signed if it has shared carousel logic --}}
-    {{-- <script src="{{ asset('js/home_signed.js') }}"></script> --}}
+    <script src="{{ asset('js/home_signed.js') }}"></script>
 @endpush

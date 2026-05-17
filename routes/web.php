@@ -8,12 +8,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\ReviewController;
 
-Route::get('/', function () {
-    if (Auth::check()) {
-        return view('home_signed');
-    }
-    return view('welcome');
-});
+use App\Http\Controllers\HomeController;
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Auth Routes
 Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup');

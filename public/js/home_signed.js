@@ -1,17 +1,16 @@
-const profileBtn = document.getElementById('profileBtn');
-const dropdown = document.getElementById('myDropdown');
+// Carousel Scrolling Logic
+document.querySelectorAll('.carousel-container').forEach(container => {
+    const carousel = container.querySelector('.books-carousel');
+    const prevBtn = container.querySelector('.prev-arrow');
+    const nextBtn = container.querySelector('.next-arrow');
 
-// 1. Fungsi klik untuk toggle (buka/tutup)
-profileBtn.addEventListener('click', function(event) {
-    event.stopPropagation(); // Mencegah event bubbling
-    dropdown.classList.toggle('show');
-});
+    if (carousel && prevBtn && nextBtn) {
+        prevBtn.addEventListener('click', () => {
+            carousel.scrollBy({ left: -300, behavior: 'smooth' });
+        });
 
-// 2. Fungsi untuk menutup dropdown jika klik di luar area profil
-window.addEventListener('click', function(event) {
-    if (!profileBtn.contains(event.target)) {
-        if (dropdown.classList.contains('show')) {
-            dropdown.classList.remove('show');
-        }
+        nextBtn.addEventListener('click', () => {
+            carousel.scrollBy({ left: 300, behavior: 'smooth' });
+        });
     }
 });

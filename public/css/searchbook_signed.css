@@ -6,10 +6,10 @@
 }
 
 :root {
-    --bg-cream: #FFF8E7;
-    --card-brown: #5D4037;    /* Warna latar kartu buku */
-    --action-sage: #C5CCA8;   /* Warna latar box aksi (hijau sage) */
-    --text-brown: #4E342E;
+    --bg-cream: #F7EED3;
+    --card-brown: #674636;    /* Warna latar kartu buku */
+    --action-sage: #AAB396;   /* Warna latar box aksi (hijau sage) */
+    --text-brown: #674636;
     --text-card: #FFF;        /* Teks putih di dalam kartu */
     --text-author: #D7CCC8;   /* Warna teks penulis agak redup */
     --btn-filter: #FFF3E0;    /* Warna tombol filter */
@@ -30,7 +30,7 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 15px 40px;
-    background-color: var(--bg-header);
+    background-color: #FFF2CC;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     position: relative;
     z-index: 100;
@@ -319,47 +319,9 @@ ul.home-dropdown.show {
     font-size: 1rem;
 }
 
-/* --- Footer --- */
-footer {
-    background-color: var(--bg-cream);
-    padding: 30px 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid rgba(0,0,0,0.1);
-}
 
-.footer-links a {
-    text-decoration: none;
-    color: #3e2723;
-    font-weight: 900;
-    font-size: 1rem;
-    margin-right: 15px;
-}
 
-.copyright {
-    color: #5d4037;
-    font-weight: bold;
-    font-size: 0.8rem;
-}
 
-.social-icons a {
-    margin-left: 10px;
-    background-color: #1a1a1a;
-    color: white;
-    width: 30px;
-    height: 30px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 1rem;
-}
-
-.social-icons a:last-child {
-    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
-}
 
 /* --- Responsive Mobile --- */
 @media (max-width: 768px) {

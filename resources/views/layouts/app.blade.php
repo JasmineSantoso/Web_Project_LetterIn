@@ -52,9 +52,9 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 50px;
-            background: #F7EED3;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 15px 40px;
+            background: #FFF2CC; /* Brighter yellow from screenshot */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
         .nav-left, .nav-right {
             display: flex;
@@ -109,30 +109,71 @@
             display: block;
         }
         .nav-btn {
-            background: #674636;
+            background: #AAB396; /* Sage green from screenshot */
             color: white !important;
-            padding: 8px 15px;
-            border-radius: 20px;
+            padding: 10px 25px;
+            border-radius: 25px;
             font-size: 0.9rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 600ms cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-block;
+        }
+        .nav-btn:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+        .page-transition {
+            animation: fadeIn 600ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         footer {
-            padding: 30px 50px;
-            background: #F7EED3;
+            padding: 0 50px;
+            height: 80px; /* Reduced from 119px */
+            background: #FFF1C9; /* Color from Figma */
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-top: 1px solid rgba(103, 70, 54, 0.1);
+            width: 100%;
         }
         .footer-links a {
-            margin-right: 20px;
+            margin-right: 35px;
             text-decoration: none;
             color: #674636;
-            font-weight: 700;
+            font-weight: 800;
+            font-size: 1.2rem;
+            font-family: 'Lato', sans-serif;
+        }
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
         }
         .social-icons a {
-            margin-left: 15px;
+            color: #1a1a1a;
+            font-size: 1.8rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .social-icons .fa-instagram {
+            color: white;
+            background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+            border-radius: 8px;
+            padding: 2px;
+            font-size: 1.6rem;
+        }
+        .copyright {
             color: #674636;
-            font-size: 1.2rem;
+            font-weight: 700;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
     </style>
     
@@ -140,10 +181,16 @@
 </head>
 <body>
     <header>
-        <div class="nav-left">
-            <a href="/bookmates">Bookmates</a>
-            <a href="/browse">Browse</a>
-        </div>
+        @if(Auth::guest() || (isset($forceGuestHeader) && $forceGuestHeader))
+            <div class="nav-left">
+                <a href="#" class="nav-btn">About us</a>
+            </div>
+        @else
+            <div class="nav-left">
+                <a href="/bookmates">Bookmates</a>
+                <a href="/browse">Browse</a>
+            </div>
+        @endif
         
         <div class="logo-container">
             <a href="/" class="brand-logo">
@@ -152,12 +199,30 @@
         </div>
         
         <div class="nav-right">
-            <div class="search-box">
-                <input type="text" placeholder="Search books">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </div>
-            <a href="{{ route('login') }}" class="nav-btn">Sign in</a>
-            <a href="{{ route('signup') }}" class="nav-btn">Sign up</a>
+            @if(Auth::guest() || (isset($forceGuestHeader) && $forceGuestHeader))
+                <a href="{{ route('signin') }}" class="nav-btn">Sign in</a>
+                <a href="{{ route('signup') }}" class="nav-btn">Sign up</a>
+            @else
+                <div class="search-box">
+                    <input type="text" placeholder="Search books">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <div class="profile-container">
+                    <a href="javascript:void(0)" class="profile-icon" id="profileBtn">
+                        <i class="fa-regular fa-circle-user"></i>
+                    </a>
+                    <ul class="home-dropdown" id="myDropdown">
+                        <li><a href="/profile">PROFILE</a></li>
+                        <li><a href="/settings">SETTINGS</a></li>
+                        <li><a href="/notifications">NOTIFICATIONS</a></li>
+                        <hr style="border: 0.5px solid #6d4c41; margin: 5px 0;">
+                        <li>
+                            <a href="{{ route('logout') }}">SIGN OUT</a>
+                        </li>
+                        <li><a href="#">CONTACT US</a></li>
+                    </ul>
+                </div>
+            @endif
         </div>
     </header>
 
@@ -182,7 +247,7 @@
         </script>
     @endif
 
-    <main>
+    <main class="page-transition">
         @yield('content')
     </main>
 
@@ -193,11 +258,12 @@
             <a href="#">Contact</a>
         </div>
         <div class="copyright">
-            <i class="fa-regular fa-copyright"></i> 2026 LetterIn, Inc.
+            <i class="fa-solid fa-copyright"></i> 2026 LetterIn, Inc.
         </div>
         <div class="social-icons">
-            <a href="#"><i class="fa-brands fa-square-twitter"></i></a> 
-            <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="#"><i class="fa-brands fa-square-x-twitter"></i></a> 
+            <a href="#"><i class="fa-brands fa-square-threads"></i></a>
+            <a href="#"><i class="fa-brands fa-square-tiktok"></i></a>
             <a href="#"><i class="fa-brands fa-instagram"></i></a>
         </div>
     </footer>

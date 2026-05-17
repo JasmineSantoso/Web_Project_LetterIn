@@ -344,16 +344,19 @@ ul.home-dropdown.show {
     letter-spacing: 1px;
 }
 
+.carousel-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
 .books-carousel {
     display: flex;
     gap: 20px;
     overflow-x: auto;
-    padding-bottom: 10px;
+    padding: 10px 0;
     align-items: center;
-    margin-left: -60px;
-    margin-right: -60px;
-    padding-left: 60px;
-    padding-right: 60px;
+    width: 100%;
 }
 
 .books-carousel::-webkit-scrollbar {
@@ -373,26 +376,43 @@ ul.home-dropdown.show {
     transform: scale(1.05);
 }
 
-.next-arrow {
-    background: transparent;
-    width: 40px;
-    height: 40px;
+.prev-arrow, .next-arrow {
+    background: rgba(0, 0, 0, 0.3);
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    margin-left: auto;
+    position: absolute;
+    z-index: 10;
+    border: none;
+    transition: background 0.3s;
+}
+
+.prev-arrow:hover, .next-arrow:hover {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.prev-arrow {
+    left: -20px;
+}
+
+.next-arrow {
+    right: -20px;
 }
 
 .brown-arrow {
-    border: 1px solid var(--text-brown);
+    background: rgba(109, 76, 65, 0.2);
     color: var(--text-brown);
+    border: 1px solid var(--text-brown) !important;
 }
 
 .white-arrow {
-    border: 1px solid #fff;
+    background: rgba(255, 255, 255, 0.2);
     color: #fff;
+    border: 1px solid #fff !important;
 }
 
 /* --- Footer --- */
