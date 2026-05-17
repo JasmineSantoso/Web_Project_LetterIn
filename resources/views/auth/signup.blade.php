@@ -35,35 +35,27 @@
                         <input type="text" name="fullname" required
                             value="{{ old('fullname') }}">
                         <label>Full Name</label>
-                        @error('fullname')
-                            <small class="error" style="color: red;">{{ $message }}</small>
-                        @enderror
+                        <small class="error" style="color: red;">{{ $errors->first('fullname') }}</small>
                     </div>
 
                     <div class="input-group">
                         <input type="text" name="username" required
                             value="{{ old('username') }}">
                         <label>Username</label>
-                        @error('username')
-                            <small class="error" style="color: red;">{{ $message }}</small>
-                        @enderror
+                        <small class="error" style="color: red;">{{ $errors->first('username') }}</small>
                     </div>
 
                     <div class="input-group">
                         <input type="email" name="email" required
                             value="{{ old('email') }}">
                         <label>Email</label>
-                        @error('email')
-                            <small class="error" style="color: red;">{{ $message }}</small>
-                        @enderror
+                        <small class="error" style="color: red;">{{ $errors->first('email') }}</small>
                     </div>
 
                     <div class="input-group">
                         <input type="password" name="password" required>
                         <label>Password</label>
-                        @error('password')
-                            <small class="error" style="color: red;">{{ $message }}</small>
-                        @enderror
+                        <small class="error" style="color: red;">{{ $errors->first('password') }}</small>
                     </div>
 
                     <div class="options">

@@ -21,9 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
             valid = false;
         }
 
-        // USERNAME
-        if (username.length < 8) {
-            showError("username", "Username minimal 8 karakter");
+        // USERNAME (diperbolehkan bebas panjangnya)
+        if (username === "") {
+            showError("username", "Username wajib diisi");
             valid = false;
         }
 

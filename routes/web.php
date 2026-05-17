@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\ProfileController;
@@ -8,14 +9,17 @@ use App\Http\Controllers\SocialController;
 use App\Http\Controllers\ReviewController;
 
 Route::get('/', function () {
+    if (Auth::check()) {
+        return view('home_signed');
+    }
     return view('welcome');
 });
 
 // Auth Routes
 Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup');
 Route::post('/signup', [AuthController::class, 'processSignup']);
-Route::get('/signin', [AuthController::class, 'showSignin'])->name('login'); // Alias for auth middleware
-Route::post('/signin', [AuthController::class, 'processSignin'])->name('signin');
+Route::get('/signin', [AuthController::class, 'showSignin'])->name('signin');
+Route::post('/signin', [AuthController::class, 'processSignin']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Book Routes
