@@ -11,6 +11,43 @@
     
     <!-- Common Styles -->
     <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        /* Global Notification Style */
+        .global-notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: #adbda3;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 9999;
+            transform: translateX(120%);
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            font-family: 'Lato', sans-serif;
+            font-weight: 700;
+        }
+
+        .global-notification.show {
+            transform: translateX(0);
+        }
+
+        .global-notification i {
+            font-size: 1.2rem;
+        }
+        main {
+            flex: 1;
+        }
         header {
             display: flex;
             justify-content: space-between;
@@ -216,6 +253,7 @@
         <div class="nav-right">
             @if(Auth::guest() || (isset($forceGuestHeader) && $forceGuestHeader))
                 <a href="{{ route('signin') }}" class="nav-btn">Sign in</a>
+                <a href="{{ route('signup') }}" class="nav-btn">Sign up</a>
             @else
                 <div class="search-box">
                     <input type="text" placeholder="Search books">
@@ -239,6 +277,27 @@
             @endif
         </div>
     </header>
+
+    <!-- Global Notification Container -->
+    @if(session('success'))
+        <div class="global-notification" id="successNotif">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>{{ session('success') }}</span>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const notif = document.getElementById('successNotif');
+                setTimeout(() => {
+                    notif.classList.add('show');
+                }, 100);
+
+                // Hilang otomatis setelah 5 detik
+                setTimeout(() => {
+                    notif.classList.remove('show');
+                }, 5000);
+            });
+        </script>
+    @endif
 
     <main class="page-transition">
         @yield('content')

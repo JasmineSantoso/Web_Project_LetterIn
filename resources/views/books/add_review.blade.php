@@ -7,17 +7,23 @@
 @endpush
 
 @section('content')
-    <main class="review-container">
-        
-        <div class="left-column">
-            <div class="book-cover-wrapper">
-                <img src="{{ asset('images/image11.jpg') }}" alt="Laut Bercerita" class="book-img">
-            </div>
-        </div>
+    <div class="review-container">
+        <form action="{{ route('book.review.store', $book->id) }}" method="POST" id="reviewForm" style="display: contents;">
+            @csrf
+            <input type="hidden" name="rating" id="ratingInput" value="0">
+            <input type="hidden" name="bookshelf_status" id="bookshelfInput" value="To Read">
+            <div id="songsHiddenInputs"></div>
 
-        <div class="right-column">
-            <h1 class="book-title">Laut Bercerita</h1>
-            <h2 class="book-author">Leila S. Chudori</h2>
+        
+            <div class="left-column">
+                <div class="book-cover-wrapper">
+                    <img src="{{ asset('images/' . ($book->cover_image ?? 'image11.jpg')) }}" alt="{{ $book->title }}" class="book-img">
+                </div>
+            </div>
+
+            <div class="right-column">
+                <h1 class="book-title">{{ $book->title }}</h1>
+                <h2 class="book-author">{{ $book->author }}</h2>
 
             <div class="star-rating-input">
                 <i class="fa-regular fa-star" data-value="1"></i>
@@ -27,7 +33,7 @@
                 <i class="fa-regular fa-star" data-value="5"></i>
             </div>
 
-            <textarea class="review-textarea" placeholder="Write your review here"></textarea>
+                <textarea name="content" class="review-textarea" placeholder="Write your review here">{{ old('content') }}</textarea>
 
             <div class="song-section">
                 <h3 class="section-label">Add Related Song</h3>
@@ -52,27 +58,31 @@
 
             <div class="action-buttons">
                 <div class="bookshelf-wrapper">
-                    <button class="btn-bookshelf" id="bookshelfBtn">
+                    <button type="button" class="btn-bookshelf" id="bookshelfBtn">
                         Add Bookshelf
                         <i class="fa-solid fa-chevron-down"></i>
                     </button>
                     <div class="bookshelf-dropdown" id="bookshelfDropdown">
-                        <div class="dropdown-item">
+                        <div class="dropdown-item active">
                             <span>To Read</span>
+                            <div class="icon-box"><i class="fa-solid fa-chevron-down"></i></div>
                         </div>
                         <div class="dropdown-item">
-                            <span>Currently Read</span>
+                            <span>Add Favorite</span>
+                            <i class="fa-regular fa-heart"></i>
                         </div>
                         <div class="dropdown-item">
-                            <span>Done Read</span>
+                            <span>Add Bookshelf</span>
+                            <div class="icon-box"><i class="fa-solid fa-chevron-down"></i></div>
                         </div>
                     </div>
                 </div>
-                <button class="btn-send">SEND</button>
-            </div>
+                    <button type="submit" class="btn-send">SEND</button>
+                </div>
 
-        </div>
-    </main>
+            </div>
+        </form>
+    </div>
 @endsection
 
 @push('scripts')

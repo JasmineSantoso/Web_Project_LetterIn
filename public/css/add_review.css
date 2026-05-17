@@ -20,9 +20,6 @@ body {
     background-color: var(--bg-cream);
     font-family: var(--font-sans);
     color: var(--text-brown);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
 }
 
 /* --- Header (Sama dengan Dashboard) --- */
@@ -267,13 +264,24 @@ ul.home-dropdown.show {
 /* Input Box Lagu (Mirip Search Result) */
 .song-input-box {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    background-color: var(--bg-cream);
+    background-color: #fff; /* Latar belakang putih agar lebih bersih */
     border: 1px solid #5d4037;
-    border-radius: 4px;
-    padding: 5px 10px;
-    margin-bottom: 10px;
+    border-radius: 8px; /* Lebih rounded agar konsisten */
+    padding: 0; /* Padding dipindah ke input */
+    margin-bottom: 15px;
+    overflow: hidden;
+}
+
+.song-input-box input {
+    width: 100%;
+    padding: 12px 15px;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    color: var(--text-brown);
 }
 
 .song-info {
@@ -398,24 +406,44 @@ ul.home-dropdown.show {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px 22px;
+    padding: 15px 25px;
     font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     color: #4E342E;
     cursor: pointer;
     transition: 0.2s;
-    background: white;
+    background: #F9F1DC; /* Cream ke arah kuning */
+    border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
 /* hover */
 .dropdown-item:hover {
-    background: #f7f7f7;
+    background: #e8fbe8; /* Hijau sangat muda */
 }
 
-/* item terpilih = hijau */
+/* item terpilih / spesial = hijau */
 .dropdown-item.active {
-    background: #b4eda4;
-    font-weight: 600;
+    background: #adbda3; /* Hijau sage sesuai gambar */
+    font-weight: 500;
+}
+
+.icon-box {
+    border: 2px solid #4E342E;
+    border-radius: 6px;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-box i {
+    font-size: 1rem;
+}
+
+.dropdown-item i.fa-heart {
+    font-size: 1.8rem;
+    color: #4E342E;
 }
 
 .btn-send {
