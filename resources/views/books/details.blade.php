@@ -15,15 +15,26 @@
             </div>
             
             <div class="sidebar-rating">
+                @php
+                    $avgRating = $book['volumeInfo']['averageRating'] ?? 0;
+                    $ratingsCount = $book['volumeInfo']['ratingsCount'] ?? 0;
+                    $fullStars = floor($avgRating);
+                    $halfStar = ($avgRating - $fullStars) >= 0.5 ? 1 : 0;
+                    $emptyStars = 5 - $fullStars - $halfStar;
+                @endphp
                 <div class="stars">
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star-half-stroke"></i>
+                    @for($i=0; $i<$fullStars; $i++)
+                        <i class="fa-solid fa-star" style="color: #FFD700;"></i>
+                    @endfor
+                    @if($halfStar)
+                        <i class="fa-solid fa-star-half-stroke" style="color: #FFD700;"></i>
+                    @endif
+                    @for($i=0; $i<$emptyStars; $i++)
+                        <i class="fa-regular fa-star" style="color: #FFD700;"></i>
+                    @endfor
                 </div>
-                <div class="rating-number">4.22</div>
-                <div class="rating-text">based on 667 reviews</div>
+                <div class="rating-number">{{ $avgRating > 0 ? number_format($avgRating, 1) : 'No Rating' }}</div>
+                <div class="rating-text">based on {{ number_format($ratingsCount) }} reviews</div>
             </div>
 
             @auth
@@ -70,7 +81,7 @@
                 @endphp
                 <p><strong>Genre:</strong> {{ implode(', ', $book['volumeInfo']['categories'] ?? ['Fiction', 'Romance']) }}</p>
                 <p><strong>ISBN/UID:</strong> {{ $isbn }}</p>
-                <p><strong>Format:</strong> Paperback</p>
+                <p><strong>Format:</strong> {{ $book['volumeInfo']['printType'] ?? 'Unknown' }}</p>
                 <p><strong>Language:</strong> {{ strtoupper($book['volumeInfo']['language'] ?? 'Unknown') }}</p>
                 <p><strong>Publisher:</strong> {{ $book['volumeInfo']['publisher'] ?? 'Unknown Publisher' }}</p>
                 <p><strong>Edition Publish Date:</strong> {{ $book['volumeInfo']['publishedDate'] ?? 'Unknown Date' }}</p>

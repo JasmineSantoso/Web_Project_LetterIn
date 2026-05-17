@@ -1,9 +1,40 @@
+<?php
+$bookId = isset($_GET['id']) ? $_GET['id'] : 'zyTCAlFPjgJC'; // Default fallback ID
+$apiKey = 'AIzaSyCrzDO1SZu-fiZMIjxJ9h6um9Ki_-VwA2s'; // API Key from .env
+$url = "https://www.googleapis.com/books/v1/volumes/{$bookId}?key={$apiKey}";
+
+// Suppress errors if API quota is exceeded or offline
+$response = @file_get_contents($url);
+$bookData = $response ? json_decode($response, true) : null;
+
+$title = $bookData['volumeInfo']['title'] ?? 'Hujan (Dummy - API Quota Exceeded)';
+$authors = isset($bookData['volumeInfo']['authors']) ? implode(', ', $bookData['volumeInfo']['authors']) : 'Tere Liye';
+$publisher = $bookData['volumeInfo']['publisher'] ?? 'Gramedia Pustaka Utama';
+$publishedDate = $bookData['volumeInfo']['publishedDate'] ?? '16 April 2018';
+$description = $bookData['volumeInfo']['description'] ?? 'Tentang persahabatan... Tentang cinta... Tentang melupakan... Tentang perpisahan... Dan tentang hujan...';
+$pageCount = $bookData['volumeInfo']['pageCount'] ?? 318;
+$averageRating = $bookData['volumeInfo']['averageRating'] ?? 4.22;
+$ratingsCount = $bookData['volumeInfo']['ratingsCount'] ?? 667;
+$categories = isset($bookData['volumeInfo']['categories']) ? implode(', ', $bookData['volumeInfo']['categories']) : 'Fiction, Romance';
+$language = strtoupper($bookData['volumeInfo']['language'] ?? 'id');
+$thumbnail = $bookData['volumeInfo']['imageLinks']['thumbnail'] ?? '../IMG/image10.jpg';
+
+$isbn = '9786020324784';
+if (isset($bookData['volumeInfo']['industryIdentifiers'])) {
+    foreach ($bookData['volumeInfo']['industryIdentifiers'] as $identifier) {
+        if (in_array($identifier['type'], ['ISBN_13', 'ISBN_10'])) {
+            $isbn = $identifier['identifier'];
+            break;
+        }
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LetterIn - Book Detail</title>
+    <title><?= htmlspecialchars($title) ?> | LetterIn</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../CSS/book_details.css">
@@ -16,7 +47,7 @@
         
         <aside class="left-sidebar">
             <div class="cover-wrapper">
-                <img src="../IMG/image10.jpg" alt="Hujan - Tere Liye" class="book-cover">
+                <img src="<?= htmlspecialchars($thumbnail) ?>" alt="<?= htmlspecialchars($title) ?>" class="book-cover">
             </div>
             
             <div class="sidebar-rating">
@@ -27,8 +58,8 @@
                     <i class="fa-solid fa-star"></i>
                     <i class="fa-solid fa-star-half-stroke"></i>
                 </div>
-                <div class="rating-number">4.22</div>
-                <div class="rating-text">based on 667 reviews</div>
+                <div class="rating-number"><?= number_format($averageRating, 2) ?></div>
+                <div class="rating-text">based on <?= number_format($ratingsCount) ?> reviews</div>
             </div>
 
             <button class="btn-add-review">
@@ -84,24 +115,23 @@
         </aside>
 
         <div class="right-content">
-            <h1 class="book-title">Hujan</h1>
-            <h2 class="book-author">Tere Liye</h2>
+            <h1 class="book-title"><?= htmlspecialchars($title) ?></h1>
+            <h2 class="book-author"><?= htmlspecialchars($authors) ?></h2>
 
             <div class="book-metadata">
-                <p><strong>ISBN/UID:</strong> 9786020324784</p>
+                <p><strong>Genre:</strong> <?= htmlspecialchars($categories) ?></p>
+                <p><strong>ISBN/UID:</strong> <?= htmlspecialchars($isbn) ?></p>
                 <p><strong>Format:</strong> Paperback</p>
-                <p><strong>Language:</strong> Indonesian</p>
-                <p><strong>Publisher:</strong> Gramedia Pustaka Utama</p>
-                <p><strong>Edition Publish Date:</strong> 16 April 2018</p>
-                <p><strong>Page:</strong> 318</p>
+                <p><strong>Language:</strong> <?= htmlspecialchars($language) ?></p>
+                <p><strong>Publisher:</strong> <?= htmlspecialchars($publisher) ?></p>
+                <p><strong>Edition Publish Date:</strong> <?= htmlspecialchars($publishedDate) ?></p>
+                <p><strong>Page:</strong> <?= htmlspecialchars($pageCount) ?></p>
             </div>
 
             <section class="content-box synopsis-box">
                 <h3 class="box-title">Synopsis</h3>
                 <p class="synopsis-text">
-                    Tentang persahabatan... Tentang cinta...<br>
-                    Tentang melupakan... Tentang <br>
-                    perpisahan... Dan tentang hujan...
+                    <?= $description ?>
                 </p>
             </section>
 

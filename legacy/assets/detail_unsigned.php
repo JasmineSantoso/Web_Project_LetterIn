@@ -1,6 +1,7 @@
 <?php
 $bookId = isset($_GET['id']) ? $_GET['id'] : 'zyTCAlFPjgJC'; // Default fallback ID
-$url = "https://www.googleapis.com/books/v1/volumes/{$bookId}";
+$apiKey = 'AIzaSyCrzDO1SZu-fiZMIjxJ9h6um9Ki_-VwA2s'; // API Key from .env
+$url = "https://www.googleapis.com/books/v1/volumes/{$bookId}?key={$apiKey}";
 
 // Suppress errors if API quota is exceeded or offline
 $response = @file_get_contents($url);
