@@ -75,7 +75,7 @@
                 }
                 
                 $authors = implode(', ', $authorsArray);
-                
+                $bookId = $book['id'] ?? null;
                 $thumbnail = $volumeInfo['imageLinks']['thumbnail'] ?? 'https://placehold.co/150x220?text=No+Cover';
                 $title = $volumeInfo['title'] ?? 'Unknown Title';
                 $publishedDate = $volumeInfo['publishedDate'] ?? '';
@@ -84,11 +84,23 @@
                 $ratingsCount = $volumeInfo['ratingsCount'] ?? 0;
             @endphp
             <div class="book-card">
+                @if($bookId)
+                <a href="{{ route('book.details', ['id' => $bookId]) }}" style="display:block;">
+                    <img src="{{ $thumbnail }}" alt="{{ $title }}" class="book-cover">
+                </a>
+                @else
                 <img src="{{ $thumbnail }}" alt="{{ $title }}" class="book-cover">
+                @endif
                 
                 <div class="book-info">
                     <div class="info-top">
+                        @if($bookId)
+                        <a href="{{ route('book.details', ['id' => $bookId]) }}" style="text-decoration:none; color:inherit;">
+                            <h2 class="book-title">{{ $title }} <span class="book-year">{{ $year }}</span></h2>
+                        </a>
+                        @else
                         <h2 class="book-title">{{ $title }} <span class="book-year">{{ $year }}</span></h2>
+                        @endif
                         <p class="book-author">{{ $authors }}</p>
                     </div>
                     <div class="book-rating">

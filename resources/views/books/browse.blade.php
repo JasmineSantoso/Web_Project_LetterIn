@@ -80,7 +80,7 @@
                 }
                 
                 $authors = implode(', ', $authorsArray);
-                
+                $bookId = $book['id'] ?? null;
                 $thumbnail = $volumeInfo['imageLinks']['thumbnail'] ?? 'https://placehold.co/150x220?text=No+Cover';
                 $title = $volumeInfo['title'] ?? 'Unknown Title';
                 $publishedDate = $volumeInfo['publishedDate'] ?? '';
@@ -89,11 +89,23 @@
             @endphp
 
         <div class="browse-card">
+            @if($bookId)
+            <a href="{{ route('book.details', ['id' => $bookId]) }}" style="display:block;">
+                <img src="{{ $thumbnail }}" alt="{{ $title }}" class="browse-cover">
+            </a>
+            @else
             <img src="{{ $thumbnail }}" alt="{{ $title }}" class="browse-cover">
+            @endif
             
             <div class="browse-info">
                 <div class="info-header">
+                    @if($bookId)
+                    <a href="{{ route('book.details', ['id' => $bookId]) }}" style="text-decoration:none; color:inherit;">
+                        <h2 class="browse-title">{{ $title }} <span class="browse-year">{{ $year }}</span></h2>
+                    </a>
+                    @else
                     <h2 class="browse-title">{{ $title }} <span class="browse-year">{{ $year }}</span></h2>
+                    @endif
                     <p class="browse-author">{{ $authors }}</p>
                 </div>
                 <div class="browse-rating">
@@ -180,5 +192,41 @@
                 });
             }
         }
+
+        // Handle Reading Status option selection in browse cards
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('dropdown-option')) {
+                const option = e.target;
+                const statusText = option.textContent.trim();
+                
+                // Find parent elements
+                const details = option.closest('details');
+                if (details) {
+                    const summarySpan = details.querySelector('summary span');
+                    if (summarySpan) {
+                        summarySpan.textContent = statusText;
+                    }
+                    
+                    // Highlight active option
+                    const allOptions = details.querySelectorAll('.dropdown-option');
+                    allOptions.forEach(opt => {
+                        opt.classList.toggle('active', opt.textContent.trim() === statusText);
+                    });
+                    
+                    // Close the details dropdown
+                    details.removeAttribute('open');
+                }
+            }
+        });
+
+        // Close details dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            const openDetails = document.querySelectorAll('.action-box details[open]');
+            openDetails.forEach(details => {
+                if (!details.contains(e.target)) {
+                    details.removeAttribute('open');
+                }
+            });
+        });
     </script>
 @endpush
