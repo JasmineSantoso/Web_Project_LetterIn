@@ -25,6 +25,7 @@ Route::get('/book/{id}', [BookController::class, 'details'])->name('book.details
 Route::get('/search', [BookController::class, 'search'])->name('search');
 Route::get('/book/{book_id}/review', [ReviewController::class, 'create'])->name('book.review');
 Route::post('/book/{book_id}/review', [ReviewController::class, 'store'])->name('book.review.store');
+Route::get('/deezer/search', [ReviewController::class, 'searchDeezer'])->name('deezer.search');
 
 // Profile & Settings
 Route::middleware(['auth'])->group(function () {

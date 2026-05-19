@@ -19,6 +19,7 @@ class HomeController extends Controller
     {
         // Fetch specific book for 'Current Read'
         $currentReadCover = $this->booksService->getBookCover('Laut Bercerita');
+        $currentReadBook = \App\Models\Book::where('title', 'Laut Bercerita')->first();
 
         // Fetch books for carousel (Popular This Week) - Using subject:fiction and newest
         $books = $this->booksService->searchBooks('subject:fiction', 10, 'newest');
@@ -31,7 +32,7 @@ class HomeController extends Controller
 
         // Tampilkan view sesuai dengan status login
         if (Auth::check()) {
-            return view('home_signed', compact('books', 'recommendations', 'currentReadCover'));
+            return view('home_signed', compact('books', 'recommendations', 'currentReadCover', 'currentReadBook'));
         }
         
         return view('welcome', compact('books'));

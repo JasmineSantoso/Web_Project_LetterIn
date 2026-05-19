@@ -17,7 +17,7 @@ class BookSeeder extends Seeder
         Book::create([
             'title' => 'Laut Bercerita',
             'author' => 'Leila S. Chudori',
-            'cover_image' => 'image11.jpg'
+            'cover_image' => 'http://books.google.com/books/content?id=e-ZDDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api'
         ]);
     }
 }

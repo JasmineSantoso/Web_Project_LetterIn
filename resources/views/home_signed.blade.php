@@ -33,9 +33,15 @@
                 
                 <p class="start-date">Start reading<br>08-01-2026</p>
                 
-                <button class="btn-review">
-                    Add Review
-                </button>
+                @if($currentReadBook)
+                    <a href="{{ route('book.review', ['book_id' => $currentReadBook->id]) }}" class="btn-review" style="text-decoration: none;">
+                        Add Review
+                    </a>
+                @else
+                    <button class="btn-review" onclick="alert('Buku tidak ditemukan di database.')">
+                        Add Review
+                    </button>
+                @endif
             </div>
         </div>
     </section>

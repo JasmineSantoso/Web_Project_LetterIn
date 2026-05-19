@@ -324,6 +324,12 @@ body {
     color: #4E342E;
 }
 
+.dropdown-option.active {
+    background-color: #BCC6A8;
+    color: #4E342E;
+    font-weight: bold;
+}
+
 .dropdown details[open] .dropdown-menu {
     display: flex;
 }

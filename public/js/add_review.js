@@ -1,6 +1,6 @@
-// ==========================
-// STAR RATING
-// ==========================
+// ==========================================
+// STAR RATING SYSTEM
+// ==========================================
 const stars = document.querySelectorAll(".star-rating-input i");
 let selectedRating = 0;
 
@@ -33,131 +33,170 @@ function setStars(index) {
 }
 
 
-// ==========================
-// ADD SONG LIKE INSTAGRAM
-// ==========================
+// ==========================================
+// DEEZER INTEGRATION & SEARCH LOGIC
+// ==========================================
 const songInput = document.getElementById("songInput");
-const songTags = document.querySelector(".song-tags");
+const searchResults = document.getElementById("searchResults");
+const songInputBox = document.getElementById("songInputBox");
+const selectedSongContainer = document.getElementById("selectedSongContainer");
+const selectedSongArt = document.getElementById("selectedSongArt");
+const selectedSongText = document.getElementById("selectedSongText");
+const selectedSongAction = document.getElementById("selectedSongAction");
+const songsHiddenInputs = document.getElementById("songsHiddenInputs");
+const recPills = document.querySelectorAll(".rec-song-pill");
 
-// daftar cover tersedia
-const covers = [
-    "/images/cover1.jpg",
-    "/images/cover2.jpg",
-    "/images/cover3.jpg",
-    "/images/cover4.jpg"
-];
+let searchTimeout = null;
 
-// fungsi tambah lagu baru
-function addSong(songName) {
-    songName = songName.trim();
-
-    // validasi kosong
-    if (songName === "") {
-        alert("Masukkan lagu dulu 🎵");
-        return;
-    }
-
-    // cek duplikat
-    let exists = false;
-    document.querySelectorAll(".song-tag span").forEach(el => {
-        if (el.innerText.toLowerCase() === songName.toLowerCase()) {
-            exists = true;
-        }
-    });
-
-    if (exists) {
-        alert("Lagu sudah ada!");
-        return;
-    }
-
-    // buat tag lagu baru
-    const tag = document.createElement("div");
-    tag.className = "song-tag";
-
-    // Pilih cover random
-    const randomCover = covers[Math.floor(Math.random() * covers.length)];
-
-    tag.innerHTML = `
-        <img src="${randomCover}" alt="Cover">
-        <span>${songName}</span>
-        <i class="fa-solid fa-xmark remove-song"></i>
-    `;
-
-    songTags.appendChild(tag);
-    updateSongsHiddenInputs(); // Update hidden inputs
-
-    // reset input
-    songInput.value = "";
-}
-
-function updateSongsHiddenInputs() {
-    const container = document.getElementById("songsHiddenInputs");
-    container.innerHTML = "";
-    document.querySelectorAll(".song-tag span").forEach((el, index) => {
-        const input = document.createElement("input");
-        input.type = "hidden";
-        input.name = `songs[]`;
-        input.value = el.innerText;
-        container.appendChild(input);
-    });
-}
-
-
-// ==========================
-// ENTER = TAMBAH LAGU
-// ==========================
+// Handle searching with debounce (300ms)
 if (songInput) {
-    songInput.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") {
-            e.preventDefault();
-            addSong(songInput.value);
+    songInput.addEventListener("input", function () {
+        clearTimeout(searchTimeout);
+        const query = this.value.trim();
+
+        if (query === "") {
+            searchResults.style.display = "none";
+            searchResults.innerHTML = "";
+            return;
         }
+
+        searchTimeout = setTimeout(() => {
+            fetch(`/deezer/search?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(data => {
+                    const tracks = data.data ?? [];
+                    renderSearchResults(tracks);
+                })
+                .catch(err => {
+                    console.error("Deezer search failed:", err);
+                });
+        }, 300);
     });
 }
 
+// Render search results
+function renderSearchResults(tracks) {
+    searchResults.innerHTML = "";
 
-// ==========================
-// KLIK LAGU REKOMENDASI
-// ==========================
-document.addEventListener("click", function (e) {
-    const tag = e.target.closest(".song-tag");
-
-    // kalau bukan song-tag → stop
-    if (!tag) return;
-
-    // kalau klik tombol remove → hapus lagu
-    if (e.target.classList.contains("remove-song")) {
-        tag.remove();
-        updateSongsHiddenInputs(); // Update hidden inputs
+    if (tracks.length === 0) {
+        searchResults.innerHTML = `<div style="padding: 12px; color: #888; font-family: var(--font-serif); text-align: center;">No songs found 🎵</div>`;
+        searchResults.style.display = "block";
         return;
     }
 
-    // ambil nama lagu
-    const songName = tag.querySelector("span").innerText;
+    tracks.slice(0, 5).forEach(track => {
+        const title = track.title ?? "Unknown Title";
+        const artist = track.artist?.name ?? "Unknown Artist";
+        const albumArt = track.album?.cover_medium ?? (track.album?.cover_small ?? "");
 
-    // masuk ke input search
-    songInput.value = songName;
+        const item = document.createElement("div");
+        item.className = "search-result-item";
+        item.innerHTML = `
+            <div class="search-result-info">
+                <img src="${albumArt}" class="search-result-art">
+                <span class="search-result-text">${title} - ${artist}</span>
+            </div>
+            <div class="search-result-add">
+                <i class="fa-solid fa-plus"></i>
+            </div>
+        `;
 
-    // toggle selected
-    tag.classList.toggle("selected");
+        item.addEventListener("click", function (e) {
+            e.stopPropagation();
+            selectSong(title, artist, albumArt);
+        });
+
+        searchResults.appendChild(item);
+    });
+
+    searchResults.style.display = "block";
+}
+
+// Select a song (from search or recommendations)
+function selectSong(title, artist, albumArt) {
+    // 1. Hide search input box & search results dropdown
+    if (songInputBox) songInputBox.style.display = "none";
+    if (searchResults) {
+        searchResults.style.display = "none";
+        searchResults.innerHTML = "";
+    }
+    if (songInput) songInput.value = "";
+
+    // 2. Populate selected song container details
+    if (selectedSongArt) selectedSongArt.src = albumArt || "/images/cover1.jpg";
+    if (selectedSongText) selectedSongText.textContent = `${title} - ${artist}`;
+    if (selectedSongContainer) selectedSongContainer.style.display = "flex";
+
+    // 3. Update hidden input values for form submission
+    if (songsHiddenInputs) {
+        songsHiddenInputs.innerHTML = `
+            <input type="hidden" name="songs[0][title]" value="${escapeHtml(title)}">
+            <input type="hidden" name="songs[0][artist]" value="${escapeHtml(artist)}">
+            <input type="hidden" name="songs[0][album_art]" value="${escapeHtml(albumArt)}">
+        `;
+    }
+}
+
+// Remove selected song
+if (selectedSongAction) {
+    selectedSongAction.addEventListener("click", function () {
+        // 1. Hide selected song container
+        if (selectedSongContainer) selectedSongContainer.style.display = "none";
+
+        // 2. Show back search input box
+        if (songInputBox) songInputBox.style.display = "flex";
+        if (songInput) {
+            songInput.value = "";
+            songInput.focus();
+        }
+
+        // 3. Clear hidden inputs
+        if (songsHiddenInputs) songsHiddenInputs.innerHTML = "";
+    });
+}
+
+// Handle clicking of recommendation pills
+recPills.forEach(pill => {
+    pill.addEventListener("click", function () {
+        const title = this.getAttribute("data-title");
+        const artist = this.getAttribute("data-artist");
+        const albumArt = this.getAttribute("data-art");
+        selectSong(title, artist, albumArt);
+    });
 });
 
-// ==========================
-// BOOKSHELF DROPDOWN
-// ==========================
+// Close search dropdown when clicking outside
+document.addEventListener("click", function (e) {
+    if (searchResults && songInput && !searchResults.contains(e.target) && e.target !== songInput) {
+        searchResults.style.display = "none";
+    }
+});
 
+// Helper: Escape HTML
+function escapeHtml(str) {
+    return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+// ==========================================
+// BOOKSHELF DROPDOWN SYSTEM
+// ==========================================
 const bookshelfBtn = document.getElementById("bookshelfBtn");
 const bookshelfDropdown = document.getElementById("bookshelfDropdown");
 const dropdownItems = document.querySelectorAll(".dropdown-item");
 
-// awalnya dropdown disembunyikan
-bookshelfDropdown.style.display = "none";
+if (bookshelfDropdown) {
+    bookshelfDropdown.style.display = "none";
+}
 
-// klik tombol → buka / tutup dropdown
 if (bookshelfBtn && bookshelfDropdown) {
     bookshelfBtn.addEventListener("click", function (e) {
         e.stopPropagation();
-
         if (bookshelfDropdown.style.display === "none") {
             bookshelfDropdown.style.display = "block";
         } else {
@@ -166,54 +205,38 @@ if (bookshelfBtn && bookshelfDropdown) {
     });
 }
 
-// klik item dropdown
 dropdownItems.forEach(item => {
     item.addEventListener("click", function () {
-
-        // hapus warna hijau dari semua item
-        dropdownItems.forEach(i => {
-            i.classList.remove("active");
-        });
-
-        // item yang dipilih jadi hijau
+        dropdownItems.forEach(i => i.classList.remove("active"));
         this.classList.add("active");
 
-        // ambil text item
         const selectedText = this.querySelector("span").innerText;
-
-        // update hidden input
         document.getElementById("bookshelfInput").value = selectedText;
 
-        // ubah isi tombol utama
         bookshelfBtn.innerHTML = `
             ${selectedText}
             <i class="fa-solid fa-chevron-down"></i>
         `;
-
-        // tutup dropdown setelah dipilih
         bookshelfDropdown.style.display = "none";
     });
 });
 
-// klik luar area → dropdown tertutup
 document.addEventListener("click", function (e) {
     if (bookshelfBtn && bookshelfDropdown) {
-        if (
-            !bookshelfBtn.contains(e.target) &&
-            !bookshelfDropdown.contains(e.target)
-        ) {
+        if (!bookshelfBtn.contains(e.target) && !bookshelfDropdown.contains(e.target)) {
             bookshelfDropdown.style.display = "none";
         }
     }
 });
 
-// ==========================
-// FORM VALIDATION
-// ==========================
+
+// ==========================================
+// FORM VALIDATION BEFORE SUBMIT
+// ==========================================
 const reviewForm = document.getElementById("reviewForm");
 
 if (reviewForm) {
-    reviewForm.addEventListener("submit", function(e) {
+    reviewForm.addEventListener("submit", function (e) {
         const rating = document.getElementById("ratingInput").value;
         const reviewText = document.querySelector(".review-textarea").value.trim();
         
