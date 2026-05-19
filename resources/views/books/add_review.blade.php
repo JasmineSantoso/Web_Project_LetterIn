@@ -17,14 +17,14 @@
         
             <div class="left-column">
                 <div class="book-cover-wrapper">
-                    <img src="{{ asset('images/' . ($book->cover_image ?? 'image11.jpg')) }}" alt="{{ $book->title }}" class="book-img">
+                    <img src="{{ (str_starts_with($book->cover_image ?? '', 'http') || empty($book->cover_image)) ? ($book->cover_image ?: asset('images/image11.jpg')) : asset('images/' . $book->cover_image) }}" alt="{{ $book->title }}" class="book-img">
                 </div>
             </div>
-
+ 
             <div class="right-column">
                 <h1 class="book-title">{{ $book->title }}</h1>
                 <h2 class="book-author">{{ $book->author }}</h2>
-
+ 
             <div class="star-rating-input">
                 <i class="fa-regular fa-star" data-value="1"></i>
                 <i class="fa-regular fa-star" data-value="2"></i>
@@ -32,27 +32,40 @@
                 <i class="fa-regular fa-star" data-value="4"></i>
                 <i class="fa-regular fa-star" data-value="5"></i>
             </div>
-
+ 
                 <textarea name="content" class="review-textarea" placeholder="Write your review here">{{ old('content') }}</textarea>
-
+ 
             <div class="song-section">
                 <h3 class="section-label">Add Related Song</h3>
                 
-                <div class="song-input-box">
-                    <input type="text" id="songInput" placeholder="Search song...">
+                <div class="song-search-container">
+                    <div class="song-input-box" id="songInputBox">
+                        <input type="text" id="songInput" placeholder="Search song..." autocomplete="off">
+                    </div>
+                    
+                    <!-- Selected Song Box (Exact Screenshot Match) -->
+                    <div class="selected-song-container" id="selectedSongContainer" style="display: none;">
+                        <div class="selected-song-info">
+                            <img src="" id="selectedSongArt" class="selected-song-art">
+                            <span id="selectedSongText" class="selected-song-text"></span>
+                        </div>
+                        <div class="selected-song-action" id="selectedSongAction">
+                            <i class="fa-solid fa-xmark"></i>
+                        </div>
+                    </div>
+
+                    <!-- Search dropdown -->
+                    <div id="searchResults" class="search-results-dropdown" style="display: none;"></div>
                 </div>
 
-                <div class="song-tags">
-                    <div class="song-tag">
-                        <img src="{{ asset('images/cover2.jpg') }}" alt="Cover">
-                        <span>Daylight - Harry Style</span>
-                        <i class="fa-solid fa-xmark remove-song"></i>
-                    </div>
-                    <div class="song-tag">
-                        <img src="{{ asset('images/cover4.jpg') }}" alt="Cover">
-                        <span>Love Notes - Olivia D.</span>
-                        <i class="fa-solid fa-xmark remove-song"></i>
-                    </div>
+                <!-- Recommendations Pills (Exact Pill Shape/Style in Screenshot) -->
+                <div class="recommendations-container" id="recommendationsContainer">
+                    @foreach($recommendedSongs as $recSong)
+                        <div class="rec-song-pill" data-title="{{ $recSong['title'] }}" data-artist="{{ $recSong['artist'] }}" data-art="{{ $recSong['album_art'] }}">
+                            <img src="{{ $recSong['album_art'] }}" class="rec-song-art">
+                            <span class="rec-song-text">{{ $recSong['title'] }} - {{ \Illuminate\Support\Str::limit($recSong['artist'], 10) }}</span>
+                        </div>
+                    @endforeach
                 </div>
             </div>
 

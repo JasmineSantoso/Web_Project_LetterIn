@@ -103,7 +103,32 @@ class BookController extends Controller
 
     public function details($id)
     {
-        $book = $this->googleBooksService->getBookById($id);
+        $book = null;
+        if (is_numeric($id)) {
+            $localBook = \App\Models\Book::find($id);
+            if ($localBook) {
+                $book = [
+                    'id' => $localBook->id,
+                    'volumeInfo' => [
+                        'title' => $localBook->title,
+                        'authors' => [$localBook->author],
+                        'description' => 'A wonderful book read and reviewed on LetterIn.',
+                        'categories' => ['Fiction'],
+                        'imageLinks' => [
+                            'thumbnail' => (str_starts_with($localBook->cover_image ?? '', 'http') || empty($localBook->cover_image)) ? ($localBook->cover_image ?: asset('images/image11.jpg')) : asset('images/' . $localBook->cover_image)
+                        ],
+                        'printType' => 'BOOK',
+                        'language' => 'id',
+                        'publisher' => 'Local Bookshelf',
+                        'publishedDate' => $localBook->created_at ? $localBook->created_at->format('Y-m-d') : 'Unknown'
+                    ]
+                ];
+            }
+        }
+
+        if (!$book) {
+            $book = $this->googleBooksService->getBookById($id);
+        }
         
         if (!$book) {
             // Robust fallback: If Google Books API fails/times out, render a nice placeholder book data

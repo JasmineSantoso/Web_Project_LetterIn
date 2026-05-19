@@ -134,11 +134,25 @@
                 
                 <div class="review-list">
                     @php
-                        $reviews = \App\Models\Review::where('book_id', $id)
-                            ->with('user')
-                            ->latest()
-                            ->take(5)
-                            ->get();
+                        $resolvedLocalBookId = null;
+                        if (is_numeric($id)) {
+                            $resolvedLocalBookId = $id;
+                        } else {
+                            $localBookByApi = \App\Models\Book::where('title', $book['volumeInfo']['title'] ?? '')
+                                ->first();
+                            if ($localBookByApi) {
+                                $resolvedLocalBookId = $localBookByApi->id;
+                            }
+                        }
+
+                        $reviews = collect();
+                        if ($resolvedLocalBookId) {
+                            $reviews = \App\Models\Review::where('book_id', $resolvedLocalBookId)
+                                ->with('user')
+                                ->latest()
+                                ->take(5)
+                                ->get();
+                        }
                     @endphp
 
                     @forelse($reviews as $review)
@@ -146,7 +160,7 @@
                         <div class="user-avatar"><i class="fa-regular fa-circle-user"></i></div>
                         <div class="review-body">
                             <div class="review-meta">
-                                <span class="username">Review by <strong>{{ $review->user->name ?? 'Anonymous' }}</strong></span>
+                                <span class="username">Review by <strong>{{ $review->user->fullname ?? ($review->user->username ?? 'Anonymous') }}</strong></span>
                                 <span class="date">{{ $review->created_at->format('d M Y') }}</span>
                             </div>
                             <div class="review-stars">
@@ -158,7 +172,28 @@
                                     @endif
                                 @endfor
                             </div>
-                            <p class="review-text">{{ $review->body }}</p>
+                            <p class="review-text">{{ $review->content }}</p>
+                            
+                            @if(!empty($review->songs) && is_array($review->songs))
+                                <div class="review-songs" style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; margin-bottom: 5px;">
+                                    @foreach($review->songs as $song)
+                                        @php
+                                            $songTitle = $song['title'] ?? 'Unknown Song';
+                                            $songArtist = $song['artist'] ?? '';
+                                            $songArt = $song['album_art'] ?? '';
+                                        @endphp
+                                        <div class="review-song-badge" style="display: inline-flex; align-items: center; gap: 6px; background-color: #5D4037; color: #FFF8E7; padding: 4px 10px; border-radius: 12px; font-size: 0.78rem; font-family: var(--font-sans); border: 1px solid rgba(255, 248, 231, 0.2);">
+                                            @if($songArt)
+                                                <img src="{{ $songArt }}" style="width: 16px; height: 16px; border-radius: 50%; object-fit: cover;">
+                                            @else
+                                                <i class="fa-solid fa-music" style="font-size: 0.7rem;"></i>
+                                            @endif
+                                            <span>{{ $songTitle }}{{ $songArtist ? ' - ' . $songArtist : '' }}</span>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+
                             <div class="review-actions">
                                 <span><i class="fa-regular fa-thumbs-up"></i> Like</span>
                                 <span><i class="fa-regular fa-comment"></i> Comment</span>
@@ -168,9 +203,9 @@
                     @empty
                     <p style="color:#888; padding: 12px 0;">Belum ada review untuk buku ini.
                         @auth
-                            <a href="{{ route('book.review', ['book_id' => $id]) }}">Jadilah yang pertama!</a>
+                            <a href="{{ route('book.review', ['book_id' => $id]) }}" style="color: #5D4037; font-weight: bold; text-decoration: underline;">Jadilah yang pertama!</a>
                         @else
-                            <a href="{{ route('signin') }}">Login untuk menulis review.</a>
+                            <a href="{{ route('signin') }}" style="color: #5D4037; font-weight: bold; text-decoration: underline;">Login untuk menulis review.</a>
                         @endauth
                     </p>
                     @endforelse
