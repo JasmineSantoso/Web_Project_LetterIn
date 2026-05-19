@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reviews', function (Blueprint $table) {
+        Schema::create('favorite_books', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id');
-            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
-            $table->foreignId('book_id')->constrained()->onDelete('cascade');
-            $table->integer('rating');
-            $table->text('content');
-            $table->json('songs')->nullable();
-            $table->string('bookshelf_status')->nullable();
+            $table->unsignedBigInteger('book_id');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
+            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
+            
+            $table->unique(['user_id', 'book_id']);
         });
     }
 
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reviews');
+        Schema::dropIfExists('favorite_books');
     }
 };

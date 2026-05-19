@@ -37,7 +37,17 @@
         <section class="bordered-section">
             <h2 class="section-label">FAVORITE BOOKS</h2>
             <div class="books-grid" id="favorite-books-container">
-                <!-- Data will be loaded by profile.js or passed by controller -->
+                @if(isset($favoriteBooks) && $favoriteBooks->count() > 0)
+                    @foreach($favoriteBooks as $book)
+                        <div class="book-card" style="margin: 5px;">
+                            <a href="{{ route('book.details', ['id' => $book->google_id]) }}">
+                                <img src="{{ $book->cover_image ?? asset('images/image10.jpg') }}" alt="{{ $book->title }}" style="width: 100px; height: 150px; object-fit: cover; border-radius: 5px;">
+                            </a>
+                        </div>
+                    @endforeach
+                @else
+                    <p style="color: #777; margin-top: 10px;">No favorite books yet.</p>
+                @endif
             </div>
         </section>
 

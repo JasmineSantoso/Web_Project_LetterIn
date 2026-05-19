@@ -8,7 +8,9 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        return view('profile.index');
+        $user = auth()->user();
+        $favoriteBooks = $user->favoriteBooks()->get();
+        return view('profile.index', compact('favoriteBooks'));
     }
 
     public function show($username)
@@ -27,7 +29,9 @@ class ProfileController extends Controller
                 ->exists();
         }
 
-        return view('profile.show', compact('user', 'isFollowing'));
+        $favoriteBooks = $user->favoriteBooks()->get();
+
+        return view('profile.show', compact('user', 'isFollowing', 'favoriteBooks'));
     }
 
     public function settings()

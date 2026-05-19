@@ -53,8 +53,9 @@
                 <div class="action-item dropdown-item">
                     <span>To Read</span> <i class="fa-solid fa-chevron-down"></i>
                 </div>
-                <div class="action-item">
-                    <span>Add Favorite</span> <i class="fa-regular fa-heart"></i>
+                <div class="action-item" id="btn-favorite" data-id="{{ $id }}" style="cursor: pointer;">
+                    <span id="fav-text">{{ $isFavorited ? 'Favorited' : 'Add Favorite' }}</span> 
+                    <i id="fav-icon" class="{{ $isFavorited ? 'fa-solid' : 'fa-regular' }} fa-heart" style="{{ $isFavorited ? 'color: red;' : '' }}"></i>
                 </div>
                 <div class="action-item">
                     <span>Add Bookshelf</span> <i class="fa-regular fa-square-check"></i>
@@ -126,3 +127,49 @@
         </div>
     </main>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const btnFavorite = document.getElementById('btn-favorite');
+        if (btnFavorite) {
+            btnFavorite.addEventListener('click', function() {
+                const bookId = this.getAttribute('data-id');
+                const favText = document.getElementById('fav-text');
+                const favIcon = document.getElementById('fav-icon');
+
+                fetch(`/book/${bookId}/favorite`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        if (data.action === 'added') {
+                            favText.textContent = 'Favorited';
+                            favIcon.classList.remove('fa-regular');
+                            favIcon.classList.add('fa-solid');
+                            favIcon.style.color = 'red';
+                        } else {
+                            favText.textContent = 'Add Favorite';
+                            favIcon.classList.remove('fa-solid');
+                            favIcon.classList.add('fa-regular');
+                            favIcon.style.color = '';
+                        }
+                    } else {
+                        alert(data.message || 'An error occurred.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to toggle favorite.');
+                });
+            });
+        }
+    });
+</script>
+@endpush

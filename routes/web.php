@@ -35,6 +35,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/follow/toggle', [SocialController::class, 'toggleFollow'])->name('follow.toggle');
     Route::get('/notifications', [SocialController::class, 'notifications'])->name('notifications');
     Route::get('/bookmates', [SocialController::class, 'bookmates'])->name('bookmates');
+    Route::post('/book/{id}/favorite', [BookController::class, 'toggleFavorite'])->name('book.favorite.toggle');
 });
 
 // Public Social

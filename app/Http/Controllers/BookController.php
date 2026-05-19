@@ -86,7 +86,15 @@ class BookController extends Controller
             abort(404, 'Book not found');
         }
 
-        return view('books.details', compact('id', 'book'));
+        $isFavorited = false;
+        if (auth()->check()) {
+            $localBook = \App\Models\Book::where('google_id', $id)->first();
+            if ($localBook) {
+                $isFavorited = auth()->user()->favoriteBooks()->where('books.id', $localBook->id)->exists();
+            }
+        }
+
+        return view('books.details', compact('id', 'book', 'isFavorited'));
     }
 
     public function search(Request $request)
@@ -111,5 +119,50 @@ class BookController extends Controller
     public function addReview($id)
     {
         return view('books.add_review', compact('id'));
+    }
+
+    public function toggleFavorite(Request $request, $id)
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+
+        // Find the book locally or fetch and save it
+        $book = \App\Models\Book::where('google_id', $id)->first();
+        if (!$book) {
+            $googleBook = $this->googleBooksService->getBookById($id);
+            if (!$googleBook) {
+                return response()->json(['success' => false, 'message' => 'Book not found'], 404);
+            }
+            
+            $volumeInfo = $googleBook['volumeInfo'];
+            $title = $volumeInfo['title'] ?? 'Unknown Title';
+            $author = !empty($volumeInfo['authors']) ? implode(', ', $volumeInfo['authors']) : 'Unknown Author';
+            $coverImage = $volumeInfo['imageLinks']['thumbnail'] ?? null;
+
+            $book = \App\Models\Book::create([
+                'google_id' => $id,
+                'title' => $title,
+                'author' => $author,
+                'cover_image' => $coverImage,
+            ]);
+        }
+
+        $isFavorited = $user->favoriteBooks()->where('books.id', $book->id)->exists();
+
+        if ($isFavorited) {
+            $user->favoriteBooks()->detach($book->id);
+            $action = 'removed';
+        } else {
+            $user->favoriteBooks()->attach($book->id);
+            $action = 'added';
+        }
+
+        return response()->json([
+            'success' => true,
+            'action' => $action,
+            'message' => 'Book ' . $action . ' from favorites'
+        ]);
     }
 }
