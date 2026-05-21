@@ -21,6 +21,13 @@ class HomeController extends Controller
         $currentReadCover = $this->booksService->getBookCover('Laut Bercerita');
         $currentReadBook = \App\Models\Book::where('title', 'Laut Bercerita')->first();
 
+        // Fetch Google Books ID for "Laut Bercerita" to enable linking to detail page
+        $currentReadGoogleId = null;
+        $currentReadResults = $this->booksService->searchBooks('intitle:Laut Bercerita', 1);
+        if (!empty($currentReadResults)) {
+            $currentReadGoogleId = $currentReadResults[0]['id'] ?? null;
+        }
+
         // Fetch books for carousel (Popular This Week) - Using subject:fiction and newest
         $books = $this->booksService->searchBooks('subject:fiction', 10, 'newest');
         
@@ -32,7 +39,7 @@ class HomeController extends Controller
 
         // Tampilkan view sesuai dengan status login
         if (Auth::check()) {
-            return view('home_signed', compact('books', 'recommendations', 'currentReadCover', 'currentReadBook'));
+            return view('home_signed', compact('books', 'recommendations', 'currentReadCover', 'currentReadBook', 'currentReadGoogleId'));
         }
         
         return view('welcome', compact('books'));

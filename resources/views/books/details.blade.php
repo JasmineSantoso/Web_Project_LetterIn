@@ -51,25 +51,23 @@
 
             <div class="action-menu-box">
                 {{-- Dropdown: Reading Status --}}
-                <div class="action-item dropdown-item" id="reading-status-btn" onclick="toggleReadingDropdown()">
-                    <span id="reading-status-label">To Read</span>
-                    <i class="fa-solid fa-chevron-down" id="reading-chevron"></i>
-                </div>
-                <div class="reading-dropdown" id="reading-dropdown">
-                    <div class="reading-option" onclick="setReadingStatus('To Read')">
-                        <i class="fa-regular fa-bookmark"></i> To Read
-                    </div>
-                    <div class="reading-option" onclick="setReadingStatus('Currently Reading')">
-                        <i class="fa-solid fa-book-open"></i> Currently Reading
-                    </div>
-                    <div class="reading-option" onclick="setReadingStatus('Done Reading')">
-                        <i class="fa-solid fa-check"></i> Done Reading
-                    </div>
+                <div class="action-item dropdown">
+                    <details>
+                        <summary>
+                            <span>To Read</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </summary>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-option">To Read</div>
+                            <div class="dropdown-option">Currently Read</div>
+                            <div class="dropdown-option">Done Read</div>
+                        </div>
+                    </details>
                 </div>
 
                 {{-- Toggle: Favorite --}}
                 <div class="action-item" id="btn-favorite" data-id="{{ $id }}" style="cursor: pointer;">
-                    <span id="fav-text">{{ $isFavorited ? 'Favorited' : 'Add Favorite' }}</span> 
+                    <span id="fav-text">{{ $isFavorited ? 'Remove Favorite' : 'Add Favorite' }}</span> 
                     <i id="fav-icon" class="{{ $isFavorited ? 'fa-solid' : 'fa-regular' }} fa-heart" style="{{ $isFavorited ? 'color: red;' : '' }}"></i>
                 </div>
 
@@ -366,36 +364,40 @@
 
 @push('scripts')
 <script>
-    // ── Reading Status Dropdown ──────────────────────────────
-    function toggleReadingDropdown() {
-        const dropdown = document.getElementById('reading-dropdown');
-        const chevron  = document.getElementById('reading-chevron');
-        dropdown.classList.toggle('open');
-        chevron.classList.toggle('rotated');
-    }
-
-    function setReadingStatus(status) {
-        // Update label
-        document.getElementById('reading-status-label').textContent = status;
-
-        // Mark active option
-        document.querySelectorAll('.reading-option').forEach(opt => {
-            opt.classList.toggle('active', opt.textContent.trim() === status);
-        });
-
-        // Close dropdown
-        document.getElementById('reading-dropdown').classList.remove('open');
-        document.getElementById('reading-chevron').classList.remove('rotated');
-    }
-
-    // ── Close dropdown when clicking outside ─────────────────
+    // Handle Reading Status option selection
     document.addEventListener('click', function(e) {
-        const btn      = document.getElementById('reading-status-btn');
-        const dropdown = document.getElementById('reading-dropdown');
-        if (dropdown && btn && !btn.contains(e.target) && !dropdown.contains(e.target)) {
-            dropdown.classList.remove('open');
-            document.getElementById('reading-chevron').classList.remove('rotated');
+        if (e.target.classList.contains('dropdown-option')) {
+            const option = e.target;
+            const statusText = option.textContent.trim();
+            
+            // Find parent elements
+            const details = option.closest('details');
+            if (details) {
+                const summarySpan = details.querySelector('summary span');
+                if (summarySpan) {
+                    summarySpan.textContent = statusText;
+                }
+                
+                // Highlight active option
+                const allOptions = details.querySelectorAll('.dropdown-option');
+                allOptions.forEach(opt => {
+                    opt.classList.toggle('active', opt.textContent.trim() === statusText);
+                });
+                
+                // Close the details dropdown
+                details.removeAttribute('open');
+            }
         }
+    });
+
+    // Close details dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+        const openDetails = document.querySelectorAll('.action-menu-box details[open]');
+        openDetails.forEach(details => {
+            if (!details.contains(e.target)) {
+                details.removeAttribute('open');
+            }
+        });
     });
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -433,7 +435,7 @@
                     if (!data) return;
                     if (data.success) {
                         if (data.action === 'added') {
-                            favText.textContent = 'Favorited';
+                            favText.textContent = 'Remove Favorite';
                             favIcon.classList.remove('fa-regular');
                             favIcon.classList.add('fa-solid');
                             favIcon.style.color = 'red';

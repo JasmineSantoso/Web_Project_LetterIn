@@ -273,45 +273,57 @@ ul.home-dropdown.show {
     position: relative;
 }
 
-/* Reading Status Dropdown Panel */
-.reading-dropdown {
+.dropdown details {
+    position: relative;
+    width: 100%;
+}
+
+.dropdown summary {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.dropdown summary::-webkit-details-marker {
+    display: none;
+}
+
+.dropdown .dropdown-menu {
+    position: absolute;
+    top: 32px;
+    /* muncul di bawah "To Read" */
+    left: 0;
+    width: 100%;
+    background-color: var(--action-sage);
+    border-radius: 4px;
     display: none;
     flex-direction: column;
-    background-color: #d6e0c2;
-    border-radius: 6px;
-    margin: 2px 0 4px 0;
-    overflow: hidden;
-    animation: slideDown 0.2s ease;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+    z-index: 20;
 }
 
-.reading-dropdown.open {
-    display: flex;
-}
-
-@keyframes slideDown {
-    from { opacity: 0; transform: translateY(-6px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
-.reading-option {
-    padding: 10px 14px;
+.dropdown-option {
+    padding: 8px 12px;
+    font-family: var(--font-serif);
     font-size: 0.9rem;
-    font-family: var(--font-sans);
-    color: #3E2723;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: background 0.15s;
 }
 
-.reading-option:hover {
-    background-color: #c5d4a8;
+.dropdown-option:hover {
+    background-color: #BCC6A8;
+    color: #4E342E;
 }
 
-.reading-option.active {
-    background-color: #a8bf8a;
+.dropdown-option.active {
+    background-color: #BCC6A8;
+    color: #4E342E;
     font-weight: bold;
+}
+
+.dropdown details[open] .dropdown-menu {
+    display: flex;
 }
 
 /* Favorite toggle active state */
@@ -323,15 +335,6 @@ ul.home-dropdown.show {
     font-family: 'Font Awesome 6 Free';
     font-weight: 900;
     content: "\f004"; /* fa-solid fa-heart */
-}
-
-/* Chevron rotate */
-#reading-chevron {
-    transition: transform 0.2s ease;
-}
-
-#reading-chevron.rotated {
-    transform: rotate(180deg);
 }
 
 /* --- Konten Kanan --- */

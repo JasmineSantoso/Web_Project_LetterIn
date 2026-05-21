@@ -6,13 +6,15 @@
 }
 
 :root {
-    --bg-cream: #FFF8E7;
+    --bg-cream: #F7EED3;
     --bg-header: #FFF1C9;
     --bg-footer: #FFF1C9;
     --text-brown: #4E342E;
     --border-brown: #5D4037;
-    --btn-accept: #5D4037;   /* Coklat tua */
-    --btn-decline: #FF0000;  /* Merah terang */
+    --btn-accept: #5D4037;
+    /* Coklat tua */
+    --btn-decline: #FF0000;
+    /* Merah terang */
     --font-serif: 'Playfair Display', serif;
     --font-sans: 'Lato', sans-serif;
 }
@@ -47,7 +49,8 @@ header {
 }
 
 .nav-left .active-nav {
-    font-weight: 900; /* Link aktif lebih tebal */
+    font-weight: 900;
+    /* Link aktif lebih tebal */
 }
 
 .logo-container {
@@ -105,7 +108,8 @@ header {
 
 /* --- Dropdown Logic --- */
 .profile-container {
-    position: relative; /* Anchor untuk dropdown */
+    position: relative;
+    /* Anchor untuk dropdown */
 }
 
 .profile-icon {
@@ -125,10 +129,10 @@ ul.home-dropdown {
     list-style: none;
     border-radius: 8px;
     padding: 8px 0;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+
     /* Sembunyikan secara default */
-    display: none; 
+    display: none;
     opacity: 0;
     transform: translateY(-10px);
     transition: opacity 0.3s ease, transform 0.3s ease;
@@ -179,7 +183,8 @@ ul.home-dropdown.show {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #999; /* Garis pemisah di bawah judul */
+    border-bottom: 1px solid #999;
+    /* Garis pemisah di bawah judul */
     padding-bottom: 10px;
     margin-bottom: 30px;
 }
@@ -208,13 +213,14 @@ ul.home-dropdown.show {
     align-items: center;
     gap: 30px;
     padding: 25px 0;
-    border-bottom: 1px solid #ccc; /* Garis pemisah antar notif */
+    border-bottom: 1px solid #ccc;
+    /* Garis pemisah antar notif */
 }
 
 /* Agar item terakhir tidak ada garis bawah penuh jika diinginkan, 
    tapi di desain terlihat ada garis panjang pemisah */
 .notif-item:last-child {
-    border-bottom: 1px solid #ccc; 
+    border-bottom: 1px solid #ccc;
 }
 
 /* Avatar Styling */
@@ -224,7 +230,8 @@ ul.home-dropdown.show {
     border-radius: 50%;
     overflow: hidden;
     flex-shrink: 0;
-    box-shadow: 2px 2px 6px rgba(0,0,0,0.2); /* Efek bayangan avatar */
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+    /* Efek bayangan avatar */
 }
 
 .avatar-img {
@@ -263,7 +270,7 @@ ul.home-dropdown.show {
     font-weight: bold;
     color: #fff;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     letter-spacing: 0.5px;
 }
 
@@ -285,12 +292,12 @@ ul.home-dropdown.show {
 }
 
 /* kalau checkbox dicentang */
-.accept-toggle:checked ~ .btn-accept,
-.accept-toggle:checked ~ .btn-decline {
+.accept-toggle:checked~.btn-accept,
+.accept-toggle:checked~.btn-decline {
     display: none;
 }
 
-.accept-toggle:checked ~ .accepted-text {
+.accept-toggle:checked~.accepted-text {
     display: inline;
 }
 
@@ -305,7 +312,7 @@ ul.home-dropdown.show {
 .modal {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0, 0, 0, 0.4);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -329,7 +336,7 @@ ul.home-dropdown.show {
     margin-bottom: 12px;
 }
 
-.modal-toggle:checked ~ .modal {
+.modal-toggle:checked~.modal {
     opacity: 1;
     pointer-events: auto;
 }
@@ -366,7 +373,7 @@ ul.home-dropdown.show {
 footer {
     background-color: var(--bg-footer);
     padding: 30px 40px;
-    border-top: 1px solid rgba(0,0,0,0.1);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -412,12 +419,15 @@ footer {
     header {
         padding: 15px 20px;
     }
-    .nav-left, .search-box {
+
+    .nav-left,
+    .search-box {
         display: none;
     }
 
     .notif-item {
-        flex-direction: row; /* Tetap row tapi avatar lebih kecil */
+        flex-direction: row;
+        /* Tetap row tapi avatar lebih kecil */
         gap: 15px;
         padding: 20px 0;
     }
@@ -430,7 +440,7 @@ footer {
     .notif-text {
         font-size: 1rem;
     }
-    
+
     .btn {
         padding: 5px 10px;
         font-size: 0.8rem;
