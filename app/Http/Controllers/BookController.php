@@ -16,7 +16,7 @@ class BookController extends Controller
 
     public function browse(Request $request)
     {
-        $category = $request->input('category');
+        $category = $request->input('category') ?? $request->input('q');
         $genres = $request->input('genre', []);
         $publishFrom = $request->input('publish_from');
         $publishTo = $request->input('publish_to');
@@ -198,7 +198,7 @@ class BookController extends Controller
         return view('books.search', [
             'books' => $books,
             'query' => $query,
-            'forceGuestHeader' => true
+            'forceGuestHeader' => false
         ]);
     }
 

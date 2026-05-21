@@ -255,10 +255,12 @@
                 <a href="{{ route('signin') }}" class="nav-btn">Sign in</a>
                 <a href="{{ route('signup') }}" class="nav-btn">Sign up</a>
             @else
-                <div class="search-box">
-                    <input type="text" placeholder="Search books">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </div>
+                <form action="{{ route('browse') }}" method="GET" class="search-box">
+                    <input type="text" name="category" placeholder="Search books" value="{{ request('category') }}">
+                    <button type="submit" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; padding: 0; margin: 0; cursor: pointer; color: #888; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-magnifying-glass" style="font-size: 0.8rem; position: static; transform: none; color: inherit;"></i>
+                    </button>
+                </form>
                 <div class="profile-container">
                     <a href="javascript:void(0)" class="profile-icon" id="profileBtn">
                         <i class="fa-regular fa-circle-user"></i>
