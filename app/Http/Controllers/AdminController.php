@@ -6,28 +6,53 @@ use App\Models\User;
 use App\Models\Review;
 use App\Models\Report;
 use Illuminate\Http\Request;
+use App\Models\Bookshelf;
 
 class AdminController extends Controller
 {
     /**
      * Show the admin dashboard.
      */
+    
     public function index()
     {
-        // Calculate counts dynamically, with fallsback/bases matching the user sketch
-        $totalUsers = max(User::count(), 100);
-        $totalReviews = max(Review::count(), 233);
-        $totalBookshelves = 40; // Mock statistic matching sketch
-        $totalReports = max(Report::count(), 50); // Get actual reports count
+        // Totals
+        $totalUsers = User::count();
+        $totalReviews = Review::count();
+        $totalBookshelves = Bookshelf::count();
+        $totalReports = Report::count();
 
-        // Chart labels (Sen, Sel, Rab, Kam, Jum)
-        $labels = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum'];
+        // Labels for weekdays (Monday to Friday)
+        $labels = ['Sen','Sel','Rab','Kam','Jum'];
+        $dayMap = [2=>'Sen',3=>'Sel',4=>'Rab',5=>'Kam',6=>'Jum'];
 
-        // Chart datasets mapped from sketch curves
-        $userChartData = [12, 21, 25, 36, 28];
-        $reviewChartData = [35, 32, 29, 15, 33];
-        $bookshelfChartData = [4, 8, 12, 10, 15];
-        $reportChartData = [2, 5, 3, 8, 4];
+        // Initialise arrays with zeros
+        $userChartData = $reviewChartData = $bookshelfChartData = $reportChartData = array_fill_keys($labels, 0);
+
+        // Helper closure to fill chart data from a model
+        $fill = function($model, &$chart) use ($dayMap) {
+            $model::selectRaw('DAYOFWEEK(created_at) as dow, COUNT(*) as cnt')
+                ->where('created_at', '>=', now()->subDays(6))
+                ->groupBy('dow')
+                ->get()
+                ->each(function($item) use (&$chart, $dayMap) {
+                    if (isset($dayMap[$item->dow])) {
+                        $chart[$dayMap[$item->dow]] = $item->cnt;
+                    }
+                });
+        };
+
+        // Populate each chart
+        $fill(User::class, $userChartData);
+        $fill(Review::class, $reviewChartData);
+        $fill(Bookshelf::class, $bookshelfChartData);
+        $fill(Report::class, $reportChartData);
+
+        // Convert associative arrays to indexed arrays matching $labels order
+        $userChartData = array_values($userChartData);
+        $reviewChartData = array_values($reviewChartData);
+        $bookshelfChartData = array_values($bookshelfChartData);
+        $reportChartData = array_values($reportChartData);
 
         return view('admin.dashboard', compact(
             'totalUsers',

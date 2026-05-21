@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('reporter_id');
-            $table->unsignedBigInteger('reported_id');
-            $table->unsignedBigInteger('review_id')->nullable();
+            $table->foreignId('reporter_id')->constrained('users', 'user_id')->cascadeOnDelete();
+            $table->foreignId('reported_id')->constrained('users', 'user_id')->cascadeOnDelete();
+            $table->foreignId('review_id')->nullable()->constrained('reviews', 'id')->nullOnDelete();
             $table->string('category');
             $table->text('content')->nullable();
             $table->text('reported_review_text')->nullable();
@@ -24,9 +24,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Foreign Key Constraints
-            $table->foreign('reporter_id')->references('user_id')->on('users')->onDelete('cascade');
-            $table->foreign('reported_id')->references('user_id')->on('users')->onDelete('cascade');
-            $table->foreign('review_id')->references('id')->on('reviews')->onDelete('set null');
+
         });
     }
 

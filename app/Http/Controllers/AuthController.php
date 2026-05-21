@@ -60,6 +60,11 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
+            $user = Auth::user();
+            if (isset($user->is_admin) && $user->is_admin) {
+                return redirect()->intended('/admin/dashboard');
+            }
+            $request->session()->regenerate();
             return redirect()->intended('/');
         }
 

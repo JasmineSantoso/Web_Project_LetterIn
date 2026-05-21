@@ -13,15 +13,8 @@ return new class extends Migration
     {
         Schema::create('review_reports', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id');
-            $table->unsignedBigInteger('review_id');
-            $table->string('reason');
-            $table->text('details')->nullable();
-            $table->timestamps();
-
-            // Foreign keys
-            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
-            $table->foreign('review_id')->references('id')->on('reviews')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users', 'user_id')->cascadeOnDelete();
+            $table->foreignId('review_id')->constrained('reviews', 'id')->cascadeOnDelete();
 
             // Unique key to prevent duplicates
             $table->unique(['user_id', 'review_id']);
