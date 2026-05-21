@@ -52,6 +52,30 @@ class BookController extends Controller
             $books = $this->getFallbackBooks();
         }
 
+        // Inject local ratings and review counts if they exist in the DB
+        $books = array_map(function ($book) {
+            $id = $book['id'] ?? null;
+            $title = $book['volumeInfo']['title'] ?? '';
+            
+            $localBook = null;
+            if ($id) {
+                $localBook = \App\Models\Book::where('google_id', $id)->first();
+            }
+            if (!$localBook && $title) {
+                $localBook = \App\Models\Book::where('title', $title)->first();
+            }
+            
+            if ($localBook) {
+                $reviews = \App\Models\Review::where('book_id', $localBook->id)->get();
+                $count = $reviews->count();
+                if ($count > 0) {
+                    $book['volumeInfo']['averageRating'] = $reviews->avg('rating');
+                    $book['volumeInfo']['ratingsCount'] = $count;
+                }
+            }
+            return $book;
+        }, $books);
+
         // Double Filter (Post-API logic) to guarantee precise match for user requests
         if (!empty($genres) || $publishFrom || $publishTo || $rating) {
             $books = array_filter($books, function ($book) use ($genres, $publishFrom, $publishTo, $rating) {
@@ -171,7 +195,41 @@ class BookController extends Controller
             }
         }
 
-        return view('books.details', compact('id', 'book', 'isFavorited'));
+        // Fetch local reviews, count, and average rating
+        $localBookRecord = null;
+        if (is_numeric($id)) {
+            $localBookRecord = \App\Models\Book::find($id);
+        } else {
+            $localBookRecord = \App\Models\Book::where('google_id', $id)->first();
+            if (!$localBookRecord && isset($book['volumeInfo']['title'])) {
+                // If it is not found by google_id, fallback to matching by title
+                $title = $book['volumeInfo']['title'];
+                $localBookRecord = \App\Models\Book::where('title', $title)->first();
+            }
+        }
+
+        $reviews = collect();
+        $localReviewsCount = 0;
+        $localAverageRating = 0;
+
+        if ($localBookRecord) {
+            $reviews = \App\Models\Review::where('book_id', $localBookRecord->id)
+                ->with(['user', 'likes', 'comments.user', 'reports'])
+                ->latest()
+                ->get();
+            $localReviewsCount = $reviews->count();
+            if ($localReviewsCount > 0) {
+                $localAverageRating = $reviews->avg('rating');
+            }
+        }
+
+        // Fetch user's bookshelves for the "Add Bookshelf" dropdown
+        $userBookshelves = collect();
+        if (auth()->check()) {
+            $userBookshelves = auth()->user()->bookshelves()->withCount('books')->get();
+        }
+
+        return view('books.details', compact('id', 'book', 'isFavorited', 'reviews', 'localReviewsCount', 'localAverageRating', 'userBookshelves'));
     }
 
     public function search(Request $request)
@@ -193,6 +251,30 @@ class BookController extends Controller
                     return stripos($title, $query) !== false || stripos($authors, $query) !== false;
                 });
             }
+
+            // Inject local ratings and review counts if they exist in the DB
+            $books = array_map(function ($book) {
+                $id = $book['id'] ?? null;
+                $title = $book['volumeInfo']['title'] ?? '';
+                
+                $localBook = null;
+                if ($id) {
+                    $localBook = \App\Models\Book::where('google_id', $id)->first();
+                }
+                if (!$localBook && $title) {
+                    $localBook = \App\Models\Book::where('title', $title)->first();
+                }
+                
+                if ($localBook) {
+                    $reviews = \App\Models\Review::where('book_id', $localBook->id)->get();
+                    $count = $reviews->count();
+                    if ($count > 0) {
+                        $book['volumeInfo']['averageRating'] = $reviews->avg('rating');
+                        $book['volumeInfo']['ratingsCount'] = $count;
+                    }
+                }
+                return $book;
+            }, $books);
         }
 
         return view('books.search', [

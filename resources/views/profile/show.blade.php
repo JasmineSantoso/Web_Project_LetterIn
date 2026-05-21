@@ -9,6 +9,7 @@
 @section('content')
     <main class="main-container">
         
+        {{-- ── Profile Header ─────────────────────────────── --}}
         <section class="profile-header">
             <div class="profile-avatar">
                 @if($user->profile)
@@ -38,6 +39,7 @@
             </div>
         </section>
 
+        {{-- ── Favorite Books ──────────────────────────────── --}}
         <section class="bordered-section">
             <h2 class="section-label">FAVORITE BOOKS</h2>
             <div class="books-grid" id="favorite-books-container">
@@ -45,7 +47,7 @@
                     @foreach($favoriteBooks as $book)
                         <div class="book-card" style="margin: 5px;">
                             <a href="{{ route('book.details', ['id' => $book->google_id]) }}">
-                                <img src="{{ $book->cover_image ?? asset('images/image10.jpg') }}" alt="{{ $book->title }}" style="width: 100px; height: 150px; object-fit: cover; border-radius: 5px;">
+                                <img src="{{ $book->cover_image ?? asset('images/cover1.jpg') }}" alt="{{ $book->title }}" style="width: 100px; height: 150px; object-fit: cover; border-radius: 5px;">
                             </a>
                         </div>
                     @endforeach
@@ -55,38 +57,70 @@
             </div>
         </section>
 
+        {{-- ── Stats Bar ───────────────────────────────────── --}}
         <section class="stats-bar">
             <div class="stat-item">
                 <span class="stat-title">Total Book</span>
-                <span class="stat-number" id="total-books-count">0</span>
+                <span class="stat-number" id="total-books-count">{{ $totalBooks }}</span>
             </div>
             <div class="stat-item">
                 <span class="stat-title">Total Review</span>
-                <span class="stat-number" id="total-reviews-count">0</span>
+                <span class="stat-number" id="total-reviews-count">{{ $totalReviews }}</span>
             </div>
         </section>
 
-        <!-- Dummy Sections from Profile JS will populate these for demonstration -->
-        <section class="bordered-section">
-            <h2 class="section-label">READED BOOKS</h2>
-            <div class="books-grid" id="readed-books-container"></div>
-        </section>
-        <section class="section-wrapper">
-            <h2 class="plain-title">CURRENTLY READING</h2>
-            <div id="currently-reading-container"></div>
-        </section>
+        {{-- ── Currently Review ────────────────────────────── --}}
         <section class="section-wrapper">
             <h2 class="plain-title">CURRENTLY REVIEW</h2>
-            <div class="review-scroll-container" id="currently-review-container"></div>
+            <div class="review-scroll-container" id="currently-review-container">
+                @forelse($userReviews as $review)
+                    <div class="review-card-dark">
+                        <a href="{{ route('book.details', ['id' => $review->book->google_id ?? $review->book->id]) }}" style="flex-shrink: 0;">
+                            <img src="{{ (str_starts_with($review->book->cover_image ?? '', 'http') || empty($review->book->cover_image)) ? ($review->book->cover_image ?: asset('images/cover1.jpg')) : asset('images/' . $review->book->cover_image) }}" 
+                                 alt="{{ $review->book->title }}" 
+                                 style="width: 70px; height: 100px; object-fit: cover; border-radius: 4px;">
+                        </a>
+                        <div class="review-content">
+                            <h4>{{ $review->book->title }}</h4>
+                            <p class="author">{{ $review->book->author }}</p>
+                            <div class="stars">
+                                @for($i = 1; $i <= 5; $i++)
+                                    @if($i <= $review->rating)
+                                        <i class="fa-solid fa-star" style="color: #FBC02D;"></i>
+                                    @else
+                                        <i class="fa-regular fa-star"></i>
+                                    @endif
+                                @endfor
+                            </div>
+                            <p class="desc">{{ Str::limit($review->content, 120) }}</p>
+                        </div>
+                    </div>
+                @empty
+                    <p style="color: #777; margin-top: 10px;">No reviews yet.</p>
+                @endforelse
+            </div>
         </section>
-        <section class="section-wrapper">
-            <h2 class="plain-title">BOOK SHELFS</h2>
-            <div class="shelf-list" id="book-shelfs-container"></div>
-        </section>
-        <section class="bordered-section">
-            <h2 class="section-label">READING LISTS</h2>
-            <div class="books-grid" id="reading-lists-container"></div>
-        </section>
+
+        {{-- ── Bookmates (Following) ───────────────────────── --}}
+        @if(isset($bookmates) && $bookmates->count() > 0)
+        <div class="friend-list-row" id="friend-list-container">
+            @foreach($bookmates as $mate)
+                <a href="{{ route('profile.show', ['username' => $mate->username]) }}" class="friend-circle" style="text-decoration: none; color: inherit;">
+                    <div class="avatar-placeholder">
+                        @if($mate->profile)
+                            <img src="{{ asset('images/' . $mate->profile) }}" alt="{{ $mate->username }}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                        @else
+                            <i class="fa-solid fa-user"></i>
+                        @endif
+                    </div>
+                    <span>{{ $mate->username }}</span>
+                </a>
+            @endforeach
+            <div class="next-icon">
+                <a href="{{ route('bookmates') }}" style="text-decoration: none; color: inherit;"><i class="fa-regular fa-circle-right"></i></a>
+            </div>
+        </div>
+        @endif
 
     </main>
 
@@ -94,7 +128,7 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/profile.js') }}"></script>
+    <script src="{{ asset('js/profile.js') }}?v={{ filemtime(public_path('js/profile.js')) }}"></script>
     <script>
         document.getElementById('btn-follow')?.addEventListener('click', function() {
             let btn = this;

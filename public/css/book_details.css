@@ -249,6 +249,12 @@ ul.home-dropdown.show {
     display: flex;
     flex-direction: column;
     gap: 5px;
+    position: relative; /* anchor for bookshelf & reading dropdowns */
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
 .action-item {
@@ -504,4 +510,251 @@ footer {
     .nav-left, .search-box {
         display: none;
     }
+}
+
+/* --- Review Comments & Likes Animations & Styling --- */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.comments-section-container {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Custom Scrollbar for comments-list */
+.comments-list::-webkit-scrollbar {
+    width: 6px;
+}
+.comments-list::-webkit-scrollbar-track {
+    background: rgba(78, 52, 46, 0.05);
+    border-radius: 10px;
+}
+.comments-list::-webkit-scrollbar-thumb {
+    background: rgba(78, 52, 46, 0.2);
+    border-radius: 10px;
+}
+.comments-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(78, 52, 46, 0.4);
+}
+
+/* Hover effects for like and comment buttons */
+.review-actions .like-btn:hover {
+    color: #5D4037 !important;
+    transform: scale(1.03);
+}
+.review-actions .comment-toggle-btn:hover {
+    color: #5D4037 !important;
+    transform: scale(1.03);
+}
+.comment-form button:hover {
+    transform: scale(1.08);
+    background-color: #4E342E !important;
+}
+
+/* --- Glassmorphic Report Modal Overlay --- */
+.report-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(46, 34, 27, 0.45); /* Warm, dark overlay */
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensure it is on top of everything */
+    animation: fadeInModal 0.3s ease-out forwards;
+}
+
+.report-modal {
+    background: var(--bg-cream);
+    width: 90%;
+    max-width: 480px;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(78, 52, 46, 0.25);
+    border: 1px solid rgba(93, 64, 55, 0.2);
+    overflow: hidden;
+    animation: scaleUpModal 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.report-modal-header {
+    background: var(--bg-header);
+    padding: 18px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(78, 52, 46, 0.08);
+}
+
+.report-modal-header h3 {
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    color: var(--text-brown);
+    margin: 0;
+    font-weight: 800;
+}
+
+.close-modal-btn {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--text-brown);
+    cursor: pointer;
+    line-height: 1;
+    transition: transform 0.2s, color 0.2s;
+    opacity: 0.7;
+}
+
+.close-modal-btn:hover {
+    transform: scale(1.15);
+    opacity: 1;
+}
+
+.report-modal-body {
+    padding: 24px;
+}
+
+.report-instruction {
+    font-size: 0.9rem;
+    color: #6d4c41;
+    margin-bottom: 18px;
+    line-height: 1.4;
+}
+
+.report-options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.report-option-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    background: rgba(78, 52, 46, 0.03);
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(78, 52, 46, 0.06);
+    transition: all 0.2s;
+}
+
+.report-option-item:hover {
+    background: rgba(93, 64, 55, 0.08);
+    border-color: rgba(93, 64, 55, 0.2);
+    transform: translateX(3px);
+}
+
+.report-option-item input[type="radio"] {
+    accent-color: var(--btn-brown);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.report-option-text {
+    font-size: 0.9rem;
+    color: var(--text-brown);
+    font-weight: 500;
+    user-select: none;
+}
+
+.report-textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(93, 64, 55, 0.3);
+    background: #FFF8E7;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--text-brown);
+    resize: none;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.report-textarea:focus {
+    border-color: var(--btn-brown);
+    box-shadow: 0 0 0 3px rgba(93, 64, 55, 0.15);
+}
+
+.report-modal-footer {
+    padding: 16px 24px;
+    background: rgba(78, 52, 46, 0.02);
+    border-top: 1px solid rgba(78, 52, 46, 0.05);
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.btn-cancel-report {
+    background: #E6D5C3;
+    color: var(--text-brown);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-cancel-report:hover {
+    background: #d8c4b0;
+    transform: translateY(-1px);
+}
+
+.btn-submit-report {
+    background: var(--btn-brown);
+    color: #FFF8E7;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-submit-report:hover {
+    background: #4E342E;
+    box-shadow: 0 4px 8px rgba(78, 52, 46, 0.2);
+    transform: translateY(-1px);
+}
+
+/* Modal Animations */
+@keyframes fadeInModal {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes scaleUpModal {
+    from {
+        opacity: 0;
+        transform: scale(0.92);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Hover dynamic micro-interactions for Report button in review card */
+.review-actions .report-btn:hover {
+    color: #c0392b !important;
+    transform: scale(1.03);
+}
+
+.review-actions .report-btn.reported:hover {
+    color: #a0281b !important;
 }

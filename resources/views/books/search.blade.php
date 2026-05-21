@@ -104,8 +104,22 @@
                         <p class="book-author">{{ $authors }}</p>
                     </div>
                     <div class="book-rating">
-                        <i class="fa-solid fa-star"></i>
-                        <span class="rating-text">{{ $rating }} rating ({{ $ratingsCount }})</span>
+                        @php
+                            $fullStars = floor($rating);
+                            $halfStar = ($rating - $fullStars) >= 0.5 ? 1 : 0;
+                            $emptyStars = 5 - $fullStars - $halfStar;
+                            if ($emptyStars < 0) $emptyStars = 0;
+                        @endphp
+                        @for ($i = 0; $i < $fullStars; $i++)
+                            <i class="fa-solid fa-star"></i>
+                        @endfor
+                        @if ($halfStar)
+                            <i class="fa-solid fa-star-half-stroke"></i>
+                        @endif
+                        @for ($i = 0; $i < $emptyStars; $i++)
+                            <i class="fa-regular fa-star"></i>
+                        @endfor
+                        <span class="rating-text">{{ $rating > 0 ? number_format($rating, 1) : 'No' }} rating ({{ $ratingsCount }} {{ $ratingsCount == 1 ? 'review' : 'reviews' }})</span>
                     </div>
                 </div>
 

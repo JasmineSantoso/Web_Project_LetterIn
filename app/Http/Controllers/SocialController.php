@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\Follow;
+use App\Models\Review;
 
 class SocialController extends Controller
 {
@@ -17,15 +18,43 @@ class SocialController extends Controller
     public function bookmates(Request $request)
     {
         $search = $request->query('q');
+        $tab = $request->query('tab', 'all');
         $users = [];
+        $reviews = collect();
+        $friends = collect();
+        $similarUsers = collect();
+        $isFriendFeed = false;
 
         if ($search) {
             $users = User::where('username', 'like', '%' . $search . '%')
                 ->orWhere('fullname', 'like', '%' . $search . '%')
                 ->get();
+        } else {
+            // Get people the authenticated user is following
+            $followingIds = Follow::where('follower_id', auth()->id())->pluck('following_id');
+
+            if ($tab === 'friends') {
+                // Fetch reviews from followed users (friends) only
+                $reviews = Review::whereIn('user_id', $followingIds)
+                    ->with(['user', 'book', 'likes', 'comments'])
+                    ->latest()
+                    ->get();
+            } elseif ($tab === 'similar') {
+                // Recommend users they are NOT following and NOT themselves
+                $similarUsers = User::where('user_id', '!=', auth()->id())
+                    ->whereNotIn('user_id', $followingIds)
+                    ->inRandomOrder()
+                    ->limit(6)
+                    ->get();
+            } else {
+                // Fetch ALL reviews from ALL users
+                $reviews = Review::with(['user', 'book', 'likes', 'comments'])
+                    ->latest()
+                    ->get();
+            }
         }
 
-        return view('social.bookmates', compact('users', 'search'));
+        return view('social.bookmates', compact('users', 'search', 'reviews', 'friends', 'similarUsers', 'tab', 'isFriendFeed'));
     }
 
     public function toggleFollow(Request $request)

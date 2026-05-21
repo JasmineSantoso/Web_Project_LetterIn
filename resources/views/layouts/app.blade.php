@@ -82,11 +82,12 @@
             height: 100%;
         }
         .brand-logo img {
-            height: 400%;
+            height: 200%;
             width: auto;
             object-fit: contain;
             position: relative;
             left: +7px;
+            pointer-events: none;
         }
         .search-box {
             position: relative;
@@ -111,12 +112,38 @@
         .profile-container {
             position: relative;
         }
-        .profile-icon {
+        header .profile-container .profile-icon {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 38px !important;
+            height: 38px !important;
+            border-radius: 50% !important;
+            overflow: hidden !important;
+            background: #E6D5C3;
+            border: 1.5px solid rgba(78, 52, 46, 0.2) !important;
+            transition: transform 0.2s, border-color 0.2s;
+            text-decoration: none !important;
+            box-sizing: border-box !important;
+        }
+        header .profile-container .profile-icon:hover {
+            transform: scale(1.05);
+            border-color: #5D4037 !important;
+        }
+        header .profile-container .profile-icon i {
             font-size: 2.2rem !important;
-            color: #4E342E;
-            text-decoration: none;
-            cursor: pointer;
-            display: block;
+            line-height: 1 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            display: block !important;
+            color: #4E342E !important;
+        }
+        header .profile-container .profile-icon img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover !important;
+            border-radius: 50% !important;
+            display: block !important;
         }
         ul.home-dropdown {
             position: absolute;
@@ -185,7 +212,7 @@
         footer {
             padding: 0 50px;
             height: 80px; /* Reduced from 119px */
-            background: #FFF1C9; /* Color from Figma */
+            background-color: var(--bg-footer);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -263,7 +290,11 @@
                 </form>
                 <div class="profile-container">
                     <a href="javascript:void(0)" class="profile-icon" id="profileBtn">
-                        <i class="fa-regular fa-circle-user"></i>
+                        @if(Auth::user()->profile)
+                            <img src="{{ asset('images/' . Auth::user()->profile) }}" alt="{{ Auth::user()->username }}">
+                        @else
+                            <i class="fa-regular fa-circle-user"></i>
+                        @endif
                     </a>
                     <ul class="home-dropdown" id="myDropdown">
                         <li><a href="/profile">PROFILE</a></li>
@@ -331,7 +362,7 @@
             document.getElementById('myDropdown').classList.toggle('show');
         });
         window.onclick = function(event) {
-            if (!event.target.matches('.profile-icon') && !event.target.matches('.fa-circle-user')) {
+            if (!event.target.closest('#profileBtn')) {
                 var dropdowns = document.getElementsByClassName("home-dropdown");
                 for (var i = 0; i < dropdowns.length; i++) {
                     var openDropdown = dropdowns[i];

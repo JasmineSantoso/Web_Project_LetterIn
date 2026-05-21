@@ -7,6 +7,8 @@
 
 :root {
     --bg-cream: #F7EED3;      /* Warna latar belakang utama */
+    --bg-footer: #FFF1C9;   /* Footer background */
+    --bg-cream: #F7EED3;      /* Warna latar belakang utama */
     --bg-brown: #6D4C41;      /* Warna latar bagian buku */
     --text-brown: #4E342E;    /* Warna teks coklat tua */
     --card-bg: #EADBC8;       /* Warna latar kartu fitur */
@@ -15,6 +17,7 @@
     --font-sans: 'Lato', sans-serif;
     --bg-header: #FFF1C9;
     --bg-footer: #FFF1C9;
+    --dark-card: #5D4037;     /* Background coklat untuk kartu gelap & statistik */
 }
 
 body {
@@ -377,9 +380,9 @@ body {
 
 /* --- Footer --- */
 footer {
-    background-color: var(--bg-headfoot);
+    background-color: var(--bg-footer);
     padding: 30px 40px;
-    border-top: 1px solid rgba(0,0,0,0.1);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;

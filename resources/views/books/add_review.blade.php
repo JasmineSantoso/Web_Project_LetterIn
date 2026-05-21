@@ -3,7 +3,7 @@
 @section('title', 'LetterIn - Add Review')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/add_review.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/add_review.css') }}?v={{ filemtime(public_path('css/add_review.css')) }}">
 @endpush
 
 @section('content')
@@ -24,6 +24,22 @@
             <div class="right-column">
                 <h1 class="book-title">{{ $book->title }}</h1>
                 <h2 class="book-author">{{ $book->author }}</h2>
+ 
+                @auth
+                <div class="reviewer-badge">
+                    <div class="reviewer-avatar">
+                        @if(Auth::user()->profile)
+                            <img src="{{ asset('images/' . Auth::user()->profile) }}" alt="{{ Auth::user()->username }}">
+                        @else
+                            <i class="fa-regular fa-circle-user"></i>
+                        @endif
+                    </div>
+                    <div class="reviewer-info-text">
+                        <span class="reviewer-name">{{ Auth::user()->fullname }}</span>
+                        <span class="reviewer-handle">{{ '@' . Auth::user()->username }}</span>
+                    </div>
+                </div>
+                @endauth
  
             <div class="star-rating-input">
                 <i class="fa-regular fa-star" data-value="1"></i>

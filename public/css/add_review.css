@@ -694,3 +694,60 @@ footer {
         display: none; /* Sembunyikan elemen non-krusial di HP */
     }
 }
+
+/* Reviewer Info Badge */
+.reviewer-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    background-color: #FFF1C9; /* Premium background color matching header/footer */
+    border-radius: 8px;
+    border: 1px solid rgba(78, 52, 46, 0.15);
+    width: fit-content;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.reviewer-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #E6D5C3;
+    flex-shrink: 0;
+    border: 1px solid rgba(78, 52, 46, 0.2);
+}
+
+.reviewer-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.reviewer-avatar i {
+    font-size: 1.8rem;
+    color: #4E342E;
+}
+
+.reviewer-info-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.reviewer-name {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    color: #4E342E;
+    font-size: 0.95rem;
+}
+
+.reviewer-handle {
+    font-family: var(--font-sans);
+    color: #6D4C41;
+    font-size: 0.8rem;
+    font-weight: 400;
+}

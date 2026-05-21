@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
  
 use App\Models\Book;
 use App\Models\Review;
+use App\Models\ReviewLike;
+use App\Models\ReviewComment;
+use App\Models\ReviewReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -43,10 +46,22 @@ class ReviewController extends Controller
                 }
 
                 // Check if book exists in local DB, otherwise save it
-                $book = Book::firstOrCreate(
-                    ['title' => $title, 'author' => $authors],
-                    ['cover_image' => $cover]
-                );
+                $book = Book::where('google_id', $book_id)
+                    ->orWhere(function ($query) use ($title, $authors) {
+                        $query->where('title', $title)->where('author', $authors);
+                    })->first();
+
+                if (!$book) {
+                    $book = Book::create([
+                        'google_id' => $book_id,
+                        'title' => $title,
+                        'author' => $authors,
+                        'cover_image' => $cover
+                    ]);
+                } else if (empty($book->google_id)) {
+                    $book->google_id = $book_id;
+                    $book->save();
+                }
             } else {
                 abort(404, 'Book not found on Google Books API');
             }
@@ -137,8 +152,29 @@ class ReviewController extends Controller
                 $volumeInfo = $bookData['volumeInfo'] ?? [];
                 $title = $volumeInfo['title'] ?? '';
                 $authors = implode(', ', $volumeInfo['authors'] ?? []);
-                $localBook = Book::where('title', $title)->where('author', $authors)->first();
+                $localBook = Book::where('google_id', $book_id)
+                    ->orWhere(function($q) use ($title, $authors) {
+                        $q->where('title', $title)->where('author', $authors);
+                    })->first();
                 if ($localBook) {
+                    if (empty($localBook->google_id)) {
+                        $localBook->google_id = $book_id;
+                        $localBook->save();
+                    }
+                    $resolvedBookId = $localBook->id;
+                } else {
+                    $cover = null;
+                    if (isset($volumeInfo['imageLinks'])) {
+                        $cover = $volumeInfo['imageLinks']['thumbnail']
+                              ?? $volumeInfo['imageLinks']['smallThumbnail']
+                              ?? null;
+                    }
+                    $localBook = Book::create([
+                        'google_id' => $book_id,
+                        'title' => $title,
+                        'author' => $authors,
+                        'cover_image' => $cover
+                    ]);
                     $resolvedBookId = $localBook->id;
                 }
             }
@@ -181,5 +217,117 @@ class ReviewController extends Controller
         }
 
         return response()->json(['error' => 'Failed to connect to Deezer API'], 500);
+    }
+
+    /**
+     * Toggle like on a review.
+     */
+    public function toggleLike($id)
+    {
+        $userId = Auth::id();
+        if (!$userId) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+
+        $like = ReviewLike::where('review_id', $id)
+            ->where('user_id', $userId)
+            ->first();
+
+        if ($like) {
+            $like->delete();
+            $action = 'unliked';
+        } else {
+            ReviewLike::create([
+                'review_id' => $id,
+                'user_id' => $userId,
+            ]);
+            $action = 'liked';
+        }
+
+        $likesCount = ReviewLike::where('review_id', $id)->count();
+
+        return response()->json([
+            'success' => true,
+            'action' => $action,
+            'likes_count' => $likesCount,
+        ]);
+    }
+
+    /**
+     * Store comment on a review.
+     */
+    public function storeComment(Request $request, $id)
+    {
+        $userId = Auth::id();
+        if (!$userId) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+
+        $request->validate([
+            'content' => 'required|string|max:1000',
+        ]);
+
+        $comment = ReviewComment::create([
+            'review_id' => $id,
+            'user_id' => $userId,
+            'content' => $request->content,
+        ]);
+
+        // Eager load user relationship with the newly created comment
+        $comment->load('user');
+
+        return response()->json([
+            'success' => true,
+            'comment' => [
+                'content' => $comment->content,
+                'created_at' => $comment->created_at->diffForHumans(),
+                'user' => [
+                    'username' => $comment->user->username,
+                    'fullname' => $comment->user->fullname,
+                    'profile' => $comment->user->profile ? asset('images/' . $comment->user->profile) : null,
+                    'profile_url' => route('profile.show', ['username' => $comment->user->username]),
+                ]
+            ]
+        ]);
+    }
+
+    /**
+     * Store report on a review.
+     */
+    public function report(Request $request, $id)
+    {
+        $userId = Auth::id();
+        if (!$userId) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+
+        $request->validate([
+            'reason' => 'required|string|max:255',
+            'details' => 'nullable|string|max:1000',
+        ]);
+
+        // Check if already reported by this user to prevent duplicate reports
+        $existingReport = ReviewReport::where('review_id', $id)
+            ->where('user_id', $userId)
+            ->first();
+
+        if ($existingReport) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda sudah melaporkan review ini.'
+            ]);
+        }
+
+        ReviewReport::create([
+            'review_id' => $id,
+            'user_id' => $userId,
+            'reason' => $request->reason,
+            'details' => $request->details,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Laporan berhasil dikirim. Terima kasih atas masukan Anda.'
+        ]);
     }
 }

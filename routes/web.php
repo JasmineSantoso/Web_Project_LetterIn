@@ -7,7 +7,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\ReviewController;
-
+use App\Http\Controllers\BookshelfController;
 use App\Http\Controllers\HomeController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -37,6 +37,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/notifications', [SocialController::class, 'notifications'])->name('notifications');
     Route::get('/bookmates', [SocialController::class, 'bookmates'])->name('bookmates');
     Route::post('/book/{id}/favorite', [BookController::class, 'toggleFavorite'])->name('book.favorite.toggle');
+    Route::post('/review/{id}/like', [ReviewController::class, 'toggleLike'])->name('review.like.toggle');
+    Route::post('/review/{id}/comment', [ReviewController::class, 'storeComment'])->name('review.comment.store');
+    Route::post('/review/{id}/report', [ReviewController::class, 'report'])->name('review.report');
+
+    // Bookshelf routes
+    Route::get('/bookshelves', [BookshelfController::class, 'index'])->name('bookshelf.index');
+    Route::post('/bookshelves', [BookshelfController::class, 'store'])->name('bookshelf.store');
+    Route::post('/bookshelves/{shelf}/books', [BookshelfController::class, 'addBook'])->name('bookshelf.addBook');
+    Route::get('/bookshelves/{shelf}/books-list', [BookshelfController::class, 'booksList'])->name('bookshelf.booksList');
+    Route::delete('/bookshelves/{shelf}/books/{book}', [BookshelfController::class, 'removeBook'])->name('bookshelf.removeBook');
+    Route::delete('/bookshelves/{shelf}', [BookshelfController::class, 'destroy'])->name('bookshelf.destroy');
 });
 
 // Public Social

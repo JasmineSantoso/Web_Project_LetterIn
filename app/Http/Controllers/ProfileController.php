@@ -10,7 +10,22 @@ class ProfileController extends Controller
     {
         $user = auth()->user();
         $favoriteBooks = $user->favoriteBooks()->get();
-        return view('profile.index', compact('favoriteBooks'));
+        $totalReviews = \App\Models\Review::where('user_id', $user->user_id)->count();
+        $totalBooks = $favoriteBooks->count();
+        
+        $userReviews = \App\Models\Review::where('user_id', $user->user_id)
+            ->with('book')
+            ->latest()
+            ->get();
+
+        // Get following users (User objects) for bookmates section
+        $followingIds = $user->following()->pluck('following_id');
+        $bookmates = \App\Models\User::whereIn('user_id', $followingIds)->get();
+
+        // Get user's bookshelves with their books
+        $bookshelves = $user->bookshelves()->with('books')->get();
+
+        return view('profile.index', compact('favoriteBooks', 'totalReviews', 'totalBooks', 'userReviews', 'bookmates', 'bookshelves'));
     }
 
     public function show($username)
@@ -30,8 +45,19 @@ class ProfileController extends Controller
         }
 
         $favoriteBooks = $user->favoriteBooks()->get();
+        $totalReviews = \App\Models\Review::where('user_id', $user->user_id)->count();
+        $totalBooks = $favoriteBooks->count();
+        
+        $userReviews = \App\Models\Review::where('user_id', $user->user_id)
+            ->with('book')
+            ->latest()
+            ->get();
 
-        return view('profile.show', compact('user', 'isFollowing', 'favoriteBooks'));
+        // Get following users (User objects) for bookmates section
+        $followingIds = $user->following()->pluck('following_id');
+        $bookmates = \App\Models\User::whereIn('user_id', $followingIds)->get();
+
+        return view('profile.show', compact('user', 'isFollowing', 'favoriteBooks', 'totalReviews', 'totalBooks', 'userReviews', 'bookmates'));
     }
 
     public function settings()
