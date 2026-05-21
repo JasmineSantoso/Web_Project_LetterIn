@@ -41,3 +41,13 @@ Route::middleware(['auth'])->group(function () {
 
 // Public Social
 Route::get('/profile/{id}', [ProfileController::class, 'friendsProfile'])->name('profile.friend');
+
+// Admin Dashboard
+Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.dashboard');
+
+// Admin Report Management
+Route::get('/admin/reports', [App\Http\Controllers\AdminController::class, 'reports'])->name('admin.reports');
+Route::get('/admin/reports/{id}', [App\Http\Controllers\AdminController::class, 'reportDetails'])->name('admin.reports.show');
+Route::post('/admin/reports/{id}/solve', [App\Http\Controllers\AdminController::class, 'resolveReport'])->name('admin.reports.solve');
+Route::post('/admin/reports/{id}/reject', [App\Http\Controllers\AdminController::class, 'rejectReport'])->name('admin.reports.reject');
+

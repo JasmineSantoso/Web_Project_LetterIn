@@ -7,13 +7,16 @@
 
 :root {
     --bg-cream: #F7EED3;
-    --bg-brown-dark: #6D4C41; /* Coklat tua background */
+    --bg-brown-dark: #6D4C41;
+    /* Coklat tua background */
     --bg-header: #FFF1C9;
     --bg-footer: #FFF1C9;
     --text-brown: #4E342E;
     --text-cream: #FFF8E7;
-    --bar-bg: #8D6E63;       /* Warna track progress bar */
-    --bar-fill: #D7CCC8;     /* Warna isi progress bar */
+    --bar-bg: #8D6E63;
+    /* Warna track progress bar */
+    --bar-fill: #D7CCC8;
+    /* Warna isi progress bar */
     --font-serif: 'Playfair Display', serif;
     --font-sans: 'Lato', sans-serif;
 }
@@ -71,7 +74,7 @@ body {
 .current-cover {
     width: 140px;
     border-radius: 2px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .read-details {
@@ -101,6 +104,7 @@ body {
     margin-bottom: 5px;
     font-family: var(--font-serif);
 }
+
 .percent {
     float: right;
 }
@@ -108,14 +112,16 @@ body {
 .progress-bar {
     width: 100%;
     height: 10px;
-    background-color: #4E342E; /* Background bar gelap */
+    background-color: #4E342E;
+    /* Background bar gelap */
     border-radius: 5px;
     overflow: hidden;
 }
 
 .progress-fill {
     height: 100%;
-    background-color: #D7CCC8; /* Isi bar terang */
+    background-color: #D7CCC8;
+    /* Isi bar terang */
     border-radius: 5px;
 }
 
@@ -157,13 +163,13 @@ body {
 }
 
 /* Saat diklik */
-.stars-review input:checked ~ label {
+.stars-review input:checked~label {
     color: #F4C430;
 }
 
 /* Saat hover */
 .stars-review label:hover,
-.stars-review label:hover ~ label {
+.stars-review label:hover~label {
     color: #F4C430;
 }
 
@@ -217,7 +223,7 @@ body {
     height: 220px;
     object-fit: cover;
     border-radius: 3px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s;
 }
 
@@ -225,7 +231,8 @@ body {
     transform: scale(1.05);
 }
 
-.prev-arrow, .next-arrow {
+.prev-arrow,
+.next-arrow {
     background: rgba(0, 0, 0, 0.3);
     width: 45px;
     height: 45px;
@@ -240,7 +247,8 @@ body {
     transition: background 0.3s;
 }
 
-.prev-arrow:hover, .next-arrow:hover {
+.prev-arrow:hover,
+.next-arrow:hover {
     background: rgba(0, 0, 0, 0.6);
 }
 
@@ -268,7 +276,7 @@ body {
 footer {
     background-color: var(--bg-footer);
     padding: 30px 40px;
-    border-top: 1px solid rgba(0,0,0,0.1);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -313,7 +321,7 @@ footer {
     header {
         padding: 15px;
     }
-    
+
     .nav-btn {
         padding: 8px 15px;
         font-size: 0.8rem;
@@ -328,7 +336,7 @@ footer {
         gap: 20px;
         text-align: center;
     }
-    
+
     .social-icons {
         margin-top: 10px;
     }

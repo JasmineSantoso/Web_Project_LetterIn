@@ -18,10 +18,22 @@
         <h2 class="section-title-white">YOUR CURRENT READ</h2>
         
         <div class="current-read-card">
-            <img src="{{ $currentReadCover ?? 'https://placehold.co/140x200?text=Cover' }}" alt="Laut Bercerita" class="current-cover">
-            
+            @if(!empty($currentReadGoogleId))
+                <a href="{{ route('book.details', ['id' => $currentReadGoogleId]) }}" style="flex-shrink:0;">
+                    <img src="{{ $currentReadCover ?? 'https://placehold.co/140x200?text=Cover' }}" alt="Laut Bercerita" class="current-cover">
+                </a>
+            @else
+                <img src="{{ $currentReadCover ?? 'https://placehold.co/140x200?text=Cover' }}" alt="Laut Bercerita" class="current-cover">
+            @endif
+
             <div class="read-details">
-                <h3 class="read-title">Laut Bercerita</h3>
+                @if(!empty($currentReadGoogleId))
+                    <a href="{{ route('book.details', ['id' => $currentReadGoogleId]) }}" style="text-decoration:none; color:inherit;">
+                        <h3 class="read-title">Laut Bercerita</h3>
+                    </a>
+                @else
+                    <h3 class="read-title">Laut Bercerita</h3>
+                @endif
                 <p class="read-author">Leila S. Chudori</p>
                 
                 <div class="progress-container">
@@ -58,8 +70,15 @@
                         $volumeInfo = $book['volumeInfo'] ?? [];
                         $thumbnail = $volumeInfo['imageLinks']['thumbnail'] ?? 'https://placehold.co/150x220?text=No+Cover';
                         $title = $volumeInfo['title'] ?? 'Unknown Title';
+                        $bookId = $book['id'] ?? null;
                     @endphp
-                    <img src="{{ $thumbnail }}" alt="{{ $title }}">
+                    @if($bookId)
+                        <a href="{{ route('book.details', ['id' => $bookId]) }}" title="{{ $title }}" style="flex-shrink:0;">
+                            <img src="{{ $thumbnail }}" alt="{{ $title }}">
+                        </a>
+                    @else
+                        <img src="{{ $thumbnail }}" alt="{{ $title }}">
+                    @endif
                 @endforeach
             </div>
             <button class="next-arrow brown-arrow">
@@ -80,8 +99,15 @@
                         $volumeInfo = $book['volumeInfo'] ?? [];
                         $thumbnail = $volumeInfo['imageLinks']['thumbnail'] ?? 'https://placehold.co/150x220?text=No+Cover';
                         $title = $volumeInfo['title'] ?? 'Unknown Title';
+                        $bookId = $book['id'] ?? null;
                     @endphp
-                    <img src="{{ $thumbnail }}" alt="{{ $title }}">
+                    @if($bookId)
+                        <a href="{{ route('book.details', ['id' => $bookId]) }}" title="{{ $title }}" style="flex-shrink:0;">
+                            <img src="{{ $thumbnail }}" alt="{{ $title }}">
+                        </a>
+                    @else
+                        <img src="{{ $thumbnail }}" alt="{{ $title }}">
+                    @endif
                 @endforeach
             </div>
             <button class="next-arrow white-arrow">
