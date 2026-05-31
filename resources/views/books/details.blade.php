@@ -51,7 +51,7 @@
 
             <div class="action-menu-box">
                 {{-- Dropdown: Reading Status --}}
-                <div class="action-item dropdown">
+                <div class="action-item dropdown-item dropdown">
                     <details>
                         <summary>
                             <span>To Read</span>
