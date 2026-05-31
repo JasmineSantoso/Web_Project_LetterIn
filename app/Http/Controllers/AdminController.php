@@ -7,6 +7,7 @@ use App\Models\Review;
 use App\Models\Report;
 use Illuminate\Http\Request;
 use App\Models\Bookshelf;
+use App\Models\BannedUser;
 
 class AdminController extends Controller
 {
@@ -151,4 +152,217 @@ class AdminController extends Controller
 
         return redirect()->route('admin.reports')->with('success', 'Report rejected. Review will be kept.');
     }
+
+    /**
+     * List all users with filtering.
+     */
+    public function users(Request $request)
+    {
+        $status = $request->query('status', 'all');
+
+        $activeCount = User::where('is_admin', false)->count();
+        $bannedCount = BannedUser::count();
+        
+        $counts = [
+            'all' => $activeCount + $bannedCount,
+            'active' => $activeCount,
+            'banned' => $bannedCount,
+        ];
+
+        if ($status === 'active') {
+            $users = User::where('is_admin', false)
+                ->withCount(['followers', 'following', 'reviews', 'bookshelves'])
+                ->orderBy('created_at', 'desc')
+                ->paginate(15)
+                ->through(function ($user) {
+                    $user->is_banned_user = false;
+                    $user->status_label = 'active';
+                    return $user;
+                });
+        } elseif ($status === 'banned') {
+            $users = BannedUser::orderBy('banned_at', 'desc')
+                ->paginate(15)
+                ->through(function ($banned) {
+                    $banned->is_banned_user = true;
+                    $banned->status_label = 'banned';
+                    // map columns to standard names
+                    $banned->created_at = $banned->registered_at;
+                    return $banned;
+                });
+        } else {
+            // Merge active and banned users in memory for 'all' status
+            $activeUsers = User::where('is_admin', false)
+                ->withCount(['followers', 'following', 'reviews', 'bookshelves'])
+                ->get()
+                ->map(function ($u) {
+                    return (object)[
+                        'user_id' => $u->user_id,
+                        'username' => $u->username,
+                        'fullname' => $u->fullname,
+                        'email' => $u->email,
+                        'profile' => $u->profile,
+                        'followers_count' => $u->followers_count,
+                        'following_count' => $u->following_count,
+                        'reviews_count' => $u->reviews_count,
+                        'bookshelves_count' => $u->bookshelves_count,
+                        'registered_at' => $u->created_at,
+                        'created_at' => $u->created_at,
+                        'last_login_at' => $u->last_login_at,
+                        'status_label' => 'active',
+                        'is_banned_user' => false,
+                    ];
+                });
+
+            $bannedUsers = BannedUser::all()
+                ->map(function ($b) {
+                    return (object)[
+                        'user_id' => $b->user_id,
+                        'username' => $b->username,
+                        'fullname' => $b->fullname,
+                        'email' => $b->email,
+                        'profile' => null,
+                        'followers_count' => $b->followers_count,
+                        'following_count' => $b->following_count,
+                        'reviews_count' => $b->reviews_count,
+                        'bookshelves_count' => $b->bookshelves_count,
+                        'registered_at' => $b->registered_at,
+                        'created_at' => $b->registered_at,
+                        'last_login_at' => $b->last_login_at,
+                        'status_label' => 'banned',
+                        'is_banned_user' => true,
+                    ];
+                });
+
+            $merged = $activeUsers->concat($bannedUsers)->sortByDesc('created_at');
+
+            // Paginate manually
+            $page = $request->query('page', 1);
+            $perPage = 15;
+            $sliced = $merged->slice(($page - 1) * $perPage, $perPage)->values();
+            
+            $users = new \Illuminate\Pagination\LengthAwarePaginator(
+                $sliced,
+                $merged->count(),
+                $perPage,
+                $page,
+                ['path' => $request->url(), 'query' => $request->query()]
+            );
+        }
+
+        return view('admin.users.index', compact('users', 'counts', 'status'));
+    }
+
+    /**
+     * Show details of a specific user.
+     */
+    public function userDetails(Request $request, $id)
+    {
+        $type = $request->query('type', 'active');
+
+        if ($type === 'banned') {
+            $user = BannedUser::where('user_id', $id)->firstOrFail();
+            $user->is_banned_user = true;
+            $user->status_label = 'banned';
+            $user->created_at = $user->registered_at;
+        } else {
+            $user = User::where('user_id', $id)
+                ->withCount(['followers', 'following', 'reviews', 'bookshelves'])
+                ->firstOrFail();
+            $user->is_banned_user = false;
+            $user->status_label = 'active';
+        }
+
+        return view('admin.users.show', compact('user'));
+    }
+
+    /**
+     * Ban a specific active user.
+     */
+    public function banUser(Request $request, $id)
+    {
+        $user = User::where('user_id', $id)->firstOrFail();
+        $reason = $request->input('ban_reason', 'No reason provided.');
+
+        // Get counts before deletion
+        $followingCount = $user->following()->count();
+        $followersCount = $user->followers()->count();
+        $reviewsCount = $user->reviews()->count();
+        $bookshelvesCount = $user->bookshelves()->count();
+
+        // Save into banned_users table
+        BannedUser::create([
+            'user_id' => $user->user_id,
+            'username' => $user->username,
+            'fullname' => $user->fullname,
+            'email' => $user->email,
+            'following_count' => $followingCount,
+            'followers_count' => $followersCount,
+            'reviews_count' => $reviewsCount,
+            'bookshelves_count' => $bookshelvesCount,
+            'registered_at' => $user->created_at,
+            'last_login_at' => $user->last_login_at,
+            'ban_reason' => $reason,
+        ]);
+
+        // Delete the active user (this will cascade delete all related database records)
+        $user->delete();
+
+        return redirect()->route('admin.users')->with('success', 'User @' . $user->username . ' has been suspended and details archived.');
+    }
+
+    /**
+     * Permanently delete a user (active or banned).
+     */
+    public function deleteUser(Request $request, $id)
+    {
+        $type = $request->query('type', 'active');
+
+        if ($type === 'banned') {
+            $user = BannedUser::where('user_id', $id)->firstOrFail();
+            $username = $user->username;
+            $user->delete();
+        } else {
+            $user = User::where('user_id', $id)->firstOrFail();
+            $username = $user->username;
+            $user->delete(); // cascades related data
+        }
+
+        return redirect()->route('admin.users')->with('success', 'User @' . $username . ' has been permanently deleted.');
+    }
+
+    /**
+     * List all reviews for moderation.
+     */
+    public function reviews()
+    {
+        $reviews = Review::with(['user', 'book'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
+
+        return view('admin.reviews.index', compact('reviews'));
+    }
+
+    /**
+     * Show details of a specific review for moderation.
+     */
+    public function reviewDetails($id)
+    {
+        $review = Review::with(['user', 'book'])
+            ->withCount(['likes', 'comments', 'reports'])
+            ->findOrFail($id);
+
+        return view('admin.reviews.show', compact('review'));
+    }
+
+    /**
+     * Delete a review.
+     */
+    public function deleteReview($id)
+    {
+        $review = Review::findOrFail($id);
+        $review->delete();
+
+        return redirect()->route('admin.reviews')->with('success', 'Ulasan berhasil dihapus.');
+    }
 }
+

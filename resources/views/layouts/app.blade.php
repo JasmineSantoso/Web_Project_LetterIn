@@ -65,15 +65,26 @@
         }
         .nav-left a, .nav-right a {
             text-decoration: none;
-            color: #4E342E;
-            font-weight: bold;
+            color: rgba(78, 52, 46, 0.75);
+            font-weight: 500;
             font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+        .nav-left a:hover, .nav-right a:hover {
+            color: #4E342E;
         }
         .nav-left .active-nav {
-            font-weight: 900;
+            font-weight: 900 !important;
+            color: #4E342E !important;
         }
         .logo-container {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .brand-logo {
             display: flex;
@@ -82,7 +93,7 @@
             height: 100%;
         }
         .brand-logo img {
-            height: 200%;
+            height: 400%;
             width: auto;
             object-fit: contain;
             position: relative;
@@ -266,8 +277,8 @@
             </div>
         @else
             <div class="nav-left">
-                <a href="/bookmates">Bookmates</a>
-                <a href="/browse">Browse</a>
+                <a href="/bookmates" class="{{ Route::is('bookmates*') ? 'active-nav' : '' }}">Bookmates</a>
+                <a href="/browse" class="{{ Route::is('browse*') || Route::is('search*') || Route::is('book.*') ? 'active-nav' : '' }}">Browse</a>
             </div>
         @endif
         

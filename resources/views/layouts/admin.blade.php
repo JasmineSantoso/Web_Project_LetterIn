@@ -20,9 +20,9 @@
 <body>
     <header class="admin-header">
         <div class="nav-left">
-            <a href="{{ route('admin.reports') }}" class="nav-link">Manage Report</a>
-            <a href="#" class="nav-link">Moderate Reviews</a>
-            <a href="#" class="nav-link">Manage Users</a>
+            <a href="{{ route('admin.reports') }}" class="nav-link {{ Route::is('admin.reports*') ? 'active-nav' : '' }}">Manage Report</a>
+            <a href="{{ route('admin.reviews') }}" class="nav-link {{ Route::is('admin.reviews*') ? 'active-nav' : '' }}">Moderate Reviews</a>
+            <a href="{{ route('admin.users') }}" class="nav-link {{ Route::is('admin.users*') ? 'active-nav' : '' }}">Manage Users</a>
         </div>
         
         <div class="logo-container">
@@ -32,7 +32,6 @@
         </div>
         
         <div class="nav-right">
-            <a href="#" class="nav-link">Manage System</a>
             <div class="profile-container">
                 <a href="javascript:void(0)" class="profile-icon" id="profileBtn">
                     <i class="fa-solid fa-user-tie"></i>
@@ -51,6 +50,27 @@
             </div>
         </div>
     </header>
+
+    <!-- Global Notification Container -->
+    @if(session('success'))
+        <div class="global-notification" id="successNotif">
+            <i class="fa-solid fa-circle-check"></i>
+            <span>{{ session('success') }}</span>
+        </div>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const notif = document.getElementById('successNotif');
+                setTimeout(() => {
+                    notif.classList.add('show');
+                }, 100);
+
+                // Hide automatically after 5 seconds
+                setTimeout(() => {
+                    notif.classList.remove('show');
+                }, 5000);
+            });
+        </script>
+    @endif
 
     <main class="page-transition">
         @yield('content')

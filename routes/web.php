@@ -62,3 +62,15 @@ Route::get('/admin/reports/{id}', [App\Http\Controllers\AdminController::class, 
 Route::post('/admin/reports/{id}/solve', [App\Http\Controllers\AdminController::class, 'resolveReport'])->name('admin.reports.solve');
 Route::post('/admin/reports/{id}/reject', [App\Http\Controllers\AdminController::class, 'rejectReport'])->name('admin.reports.reject');
 
+// Admin User Management
+Route::get('/admin/users', [App\Http\Controllers\AdminController::class, 'users'])->name('admin.users');
+Route::get('/admin/users/{id}', [App\Http\Controllers\AdminController::class, 'userDetails'])->name('admin.users.show');
+Route::post('/admin/users/{id}/ban', [App\Http\Controllers\AdminController::class, 'banUser'])->name('admin.users.ban');
+Route::post('/admin/users/{id}/delete', [App\Http\Controllers\AdminController::class, 'deleteUser'])->name('admin.users.delete');
+
+// Admin Review Moderation
+Route::get('/admin/reviews', [App\Http\Controllers\AdminController::class, 'reviews'])->name('admin.reviews');
+Route::get('/admin/reviews/{id}', [App\Http\Controllers\AdminController::class, 'reviewDetails'])->name('admin.reviews.show');
+Route::post('/admin/reviews/{id}/delete', [App\Http\Controllers\AdminController::class, 'deleteReview'])->name('admin.reviews.delete');
+
+

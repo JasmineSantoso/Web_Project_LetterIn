@@ -20,7 +20,7 @@
             @if(isset($tab) && $tab !== 'all')
                 <input type="hidden" name="tab" value="{{ $tab }}">
             @endif
-            <button type="submit" style="background: none; border: none; cursor: pointer; color: #674636;">
+            <button type="submit">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </button>
         </form>
