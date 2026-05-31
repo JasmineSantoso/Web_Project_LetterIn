@@ -331,6 +331,54 @@ ul.home-dropdown.show {
     content: "\f004"; /* fa-solid fa-heart */
 }
 
+/* Dropdown styling */
+.dropdown details {
+    position: relative;
+    width: 100%;
+}
+
+.dropdown summary {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    width: 100%;
+}
+
+.dropdown summary::-webkit-details-marker {
+    display: none;
+}
+
+.dropdown .dropdown-menu {
+    position: absolute;
+    top: 32px;          /* muncul di bawah "To Read" */
+    left: -15px;
+    width: calc(100% + 30px);
+    background-color: var(--action-sage);
+    border-radius: 4px;
+    display: none;
+    flex-direction: column;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+    z-index: 20;
+}
+
+.dropdown-option {
+    padding: 8px 12px;
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.dropdown-option:hover {
+    background-color: #BCC6A8;
+    color: #4E342E;
+}
+
+.dropdown details[open] .dropdown-menu {
+    display: flex;
+}
+
 /* --- Konten Kanan --- */
 .book-title {
     font-family: var(--font-serif);

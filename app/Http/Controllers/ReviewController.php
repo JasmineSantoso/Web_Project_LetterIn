@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Log;
 
 class ReviewController extends Controller
 {
+    protected $googleBooksService;
+
+    public function __construct(\App\Services\GoogleBooksService $googleBooksService)
+    {
+        $this->googleBooksService = $googleBooksService;
+    }
+
     /**
      * Tampilkan form untuk menambah review.
      */

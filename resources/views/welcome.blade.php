@@ -33,7 +33,9 @@
                         $title = $volumeInfo['title'] ?? 'Unknown Title';
                     @endphp
                     <div class="book-card">
-                        <img src="{{ $thumbnail }}" alt="{{ $title }}">
+                        <a href="{{ route('book.details', $book['id']) }}">
+                            <img src="{{ $thumbnail }}" alt="{{ $title }}">
+                        </a>
                     </div>
                 @endforeach
             </div>
