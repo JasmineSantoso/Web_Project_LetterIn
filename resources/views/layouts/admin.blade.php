@@ -37,7 +37,6 @@
                     <i class="fa-solid fa-user-tie"></i>
                 </a>
                 <ul class="admin-dropdown" id="myDropdown">
-                    <li><a href="/profile">USER PROFILE</a></li>
                     <li><a href="/settings">SETTINGS</a></li>
                     <hr style="border: 0.5px solid #6d4c41; margin: 5px 0;">
                     <li>

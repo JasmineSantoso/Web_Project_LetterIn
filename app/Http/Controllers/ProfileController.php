@@ -9,6 +9,9 @@ class ProfileController extends Controller
     public function index()
     {
         $user = auth()->user();
+        if ($user && $user->is_admin) {
+            return redirect()->route('settings');
+        }
         $favoriteBooks = $user->favoriteBooks()->get();
         $totalReviews = \App\Models\Review::where('user_id', $user->user_id)->count();
         $totalBooks = $favoriteBooks->count();
@@ -30,7 +33,9 @@ class ProfileController extends Controller
 
     public function show($username)
     {
-        $user = \App\Models\User::where('username', $username)->firstOrFail();
+        $user = \App\Models\User::where('username', $username)
+            ->where('is_admin', false)
+            ->firstOrFail();
 
         // Check if viewing own profile
         if (auth()->check() && auth()->user()->username === $username) {

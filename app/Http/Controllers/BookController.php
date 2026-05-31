@@ -480,6 +480,10 @@ class BookController extends Controller
         if (!$user) {
             return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
         }
+        // Admins cannot favorite books
+        if ($user->is_admin) {
+            return response()->json(['success' => false, 'message' => 'Admins cannot favorite books'], 403);
+        }
 
         // Find the book locally or fetch and save it
         $book = \App\Models\Book::where('google_id', $id)->first();

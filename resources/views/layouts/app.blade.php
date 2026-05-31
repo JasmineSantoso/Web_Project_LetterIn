@@ -11,6 +11,9 @@
     
     <!-- Common Styles -->
     <style>
+        :root {
+            --bg-brown-dark: #6D4C41;
+        }
         body {
             display: flex;
             flex-direction: column;
@@ -187,7 +190,7 @@
             transition: background 0.2s;
         }
         .home-dropdown li a:hover {
-            background-color: #5D4037;
+            background-color: #4E342E !important;
         }
         .home-dropdown::before {
             content: "";
@@ -276,14 +279,16 @@
                 <a href="#" class="nav-btn">About us</a>
             </div>
         @else
-            <div class="nav-left">
-                <a href="/bookmates" class="{{ Route::is('bookmates*') ? 'active-nav' : '' }}">Bookmates</a>
-                <a href="/browse" class="{{ Route::is('browse*') || Route::is('search*') || Route::is('book.*') ? 'active-nav' : '' }}">Browse</a>
-            </div>
+                <div class="nav-left">
+                    @if(!Auth::user()->is_admin)
+                        <a href="/bookmates" class="{{ Route::is('bookmates*') ? 'active-nav' : '' }}">Bookmates</a>
+                        <a href="/browse" class="{{ Route::is('browse*') || Route::is('search*') || Route::is('book.*') ? 'active-nav' : '' }}">Browse</a>
+                    @endif
+                </div>
         @endif
         
         <div class="logo-container">
-            <a href="/" class="brand-logo">
+            <a href="{{ Auth::check() && Auth::user()->is_admin ? route('admin.dashboard') : '/' }}" class="brand-logo">
                 <img src="{{ asset('images/logo1.png') }}" alt="LetterIn Logo">
             </a>
         </div>
@@ -308,18 +313,24 @@
                         @endif
                     </a>
                     <ul class="home-dropdown" id="myDropdown">
+                    @if(!Auth::user()->is_admin)
                         <li><a href="/profile">PROFILE</a></li>
-                        <li><a href="/settings">SETTINGS</a></li>
+                    @endif
+                    <li><a href="/settings">SETTINGS</a></li>
+                    @if(!Auth::user()->is_admin)
                         <li><a href="/notifications">NOTIFICATIONS</a></li>
-                        <hr style="border: 0.5px solid #6d4c41; margin: 5px 0;">
-                        <li>
-                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">SIGN OUT</a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-                        </li>
+                    @endif
+                    <hr style="border: 0.5px solid #6d4c41; margin: 5px 0;">
+                    <li>
+                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">SIGN OUT</a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    </li>
+                    @if(!Auth::user()->is_admin)
                         <li><a href="#">CONTACT US</a></li>
-                    </ul>
+                    @endif
+                </ul>
                 </div>
             @endif
         </div>
