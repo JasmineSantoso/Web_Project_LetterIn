@@ -12,7 +12,12 @@ class SocialController extends Controller
 {
     public function notifications()
     {
-        return view('social.notifications');
+        $followers = Follow::where('following_id', auth()->id())
+            ->with('follower')
+            ->latest()
+            ->get();
+
+        return view('social.notifications', compact('followers'));
     }
 
     public function bookmates(Request $request)
@@ -26,9 +31,12 @@ class SocialController extends Controller
         $isFriendFeed = false;
 
         if ($search) {
-            $users = User::where('username', 'like', '%' . $search . '%')
-                ->orWhere('fullname', 'like', '%' . $search . '%')
-                ->get();
+            $users = User::where(function($query) use ($search) {
+                $query->where('username', 'like', '%' . $search . '%')
+                    ->orWhere('fullname', 'like', '%' . $search . '%');
+            })
+            ->where('is_admin', false)
+            ->get();
         } else {
             // Get people the authenticated user is following
             $followingIds = Follow::where('follower_id', auth()->id())->pluck('following_id');
@@ -40,8 +48,9 @@ class SocialController extends Controller
                     ->latest()
                     ->get();
             } elseif ($tab === 'similar') {
-                // Recommend users they are NOT following and NOT themselves
+                // Recommend users they are NOT following, NOT themselves, and NOT admin
                 $similarUsers = User::where('user_id', '!=', auth()->id())
+                    ->where('is_admin', false)
                     ->whereNotIn('user_id', $followingIds)
                     ->inRandomOrder()
                     ->limit(6)
@@ -65,6 +74,11 @@ class SocialController extends Controller
 
         $followerId = auth()->id();
         $followingId = $request->user_id;
+
+        // Admins cannot follow others
+        if (auth()->user()->is_admin) {
+            return response()->json(['error' => 'Admins cannot follow users'], 403);
+        }
 
         if ($followerId == $followingId) {
             return response()->json(['error' => 'You cannot follow yourself'], 400);

@@ -8,6 +8,9 @@
 
 @section('content')
     <main class="main-container">
+    <a href="{{ Auth::check() && Auth::user()->is_admin ? route('admin.dashboard') : route('profile') }}" class="btn-back" style="display:inline-flex; align-items:center; margin-bottom:20px; color:#333; text-decoration:none; font-weight:600;">
+        <i class="fa-solid fa-arrow-left" style="margin-right:5px;"></i> Back
+    </a>
         
         <div class="settings-card">
             

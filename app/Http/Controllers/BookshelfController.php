@@ -34,6 +34,11 @@ class BookshelfController extends Controller
             'name' => 'required|string|max:100',
         ]);
 
+        // Admins cannot create bookshelves
+        if (auth()->user() && auth()->user()->is_admin) {
+            return response()->json(['success' => false, 'message' => 'Admins cannot create bookshelves'], 403);
+        }
+
         $shelf = Bookshelf::create([
             'user_id' => auth()->id(),
             'name'    => trim($request->name),
@@ -62,6 +67,11 @@ class BookshelfController extends Controller
         $request->validate([
             'book_google_id' => 'required|string',
         ]);
+
+        // Admins cannot add books to shelves
+        if (auth()->user() && auth()->user()->is_admin) {
+            return response()->json(['success' => false, 'message' => 'Admins cannot add books to shelves'], 403);
+        }
 
         $shelf = Bookshelf::where('id', $shelfId)
             ->where('user_id', auth()->id())
