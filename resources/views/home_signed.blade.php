@@ -8,9 +8,8 @@
 
 @section('content')
     <section class="greeting-section">
-        <h1>Welcome to LetterIn!</h1>
         @auth
-            <h2>Have a good book, {{ Auth::user()->fullname }}!</h2>
+            <h1>Have a good book, {{ Auth::user()->fullname }}!</h1>
         @endauth
     </section>
 

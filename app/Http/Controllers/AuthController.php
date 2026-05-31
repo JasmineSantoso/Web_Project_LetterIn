@@ -58,6 +58,14 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
+        // Check if the user is banned
+        $banned = \App\Models\BannedUser::where('email', $credentials['email'])->first();
+        if ($banned) {
+            return back()->withErrors([
+                'email' => 'Akun Anda telah ditangguhkan karena: ' . $banned->ban_reason,
+            ])->onlyInput('email');
+        }
+
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
             $user = Auth::user();
