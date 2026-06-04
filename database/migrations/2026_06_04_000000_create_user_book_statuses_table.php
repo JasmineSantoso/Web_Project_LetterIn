@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('review_reports', function (Blueprint $table) {
+        Schema::create('user_book_statuses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users', 'user_id')->cascadeOnDelete();
-            $table->foreignId('review_id')->constrained('reviews', 'id')->cascadeOnDelete();
-            $table->string('reason');
-            $table->text('details')->nullable();
+            $table->foreignId('book_id')->constrained('books', 'id')->cascadeOnDelete();
+            $table->string('status'); // 'to_read', 'currently_reading', 'done_reading'
+            $table->integer('progress_percent')->default(0);
+            $table->timestamp('start_date')->nullable();
             $table->timestamps();
 
-            // Unique key to prevent duplicates
-            $table->unique(['user_id', 'review_id']);
+            $table->unique(['user_id', 'book_id']);
         });
     }
 
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('review_reports');
+        Schema::dropIfExists('user_book_statuses');
     }
 };

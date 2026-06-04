@@ -285,8 +285,9 @@ ul.home-dropdown.show {
 
 .books-grid {
     display: flex;
-    justify-content: space-between;
-    gap: 10px;
+    justify-content: flex-start;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
 .books-grid img {

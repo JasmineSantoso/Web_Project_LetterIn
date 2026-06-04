@@ -231,7 +231,21 @@ class BookController extends Controller
             ];
         }
         
-        return view('books.browse', compact('books', 'category'));
+        $userBookStatuses = [];
+        $favoriteBookIds = [];
+        $userBookshelves = collect();
+        if (auth()->check()) {
+            $user = auth()->user();
+            $userBookStatuses = \DB::table('user_book_statuses')
+                ->join('books', 'user_book_statuses.book_id', '=', 'books.id')
+                ->where('user_book_statuses.user_id', $user->user_id)
+                ->pluck('user_book_statuses.status', 'books.google_id')
+                ->toArray();
+            $favoriteBookIds = $user->favoriteBooks()->pluck('google_id')->toArray();
+            $userBookshelves = $user->bookshelves()->withCount('books')->get();
+        }
+
+        return view('books.browse', compact('books', 'category', 'userBookStatuses', 'favoriteBookIds', 'userBookshelves'));
     }
 
     public function details($id)
@@ -373,10 +387,25 @@ class BookController extends Controller
         }
 
         $isFavorited = false;
+        $currentStatus = 'To Read';
         if (auth()->check()) {
             $localBook = \App\Models\Book::where('google_id', $id)->first();
             if ($localBook) {
                 $isFavorited = auth()->user()->favoriteBooks()->where('books.id', $localBook->id)->exists();
+                
+                $statusRecord = \DB::table('user_book_statuses')
+                    ->where('user_id', auth()->user()->user_id)
+                    ->where('book_id', $localBook->id)
+                    ->first();
+                if ($statusRecord) {
+                    if ($statusRecord->status === 'currently_reading') {
+                        $currentStatus = 'Currently Read';
+                    } elseif ($statusRecord->status === 'done_reading') {
+                        $currentStatus = 'Done Read';
+                    } elseif ($statusRecord->status === 'to_read') {
+                        $currentStatus = 'To Read';
+                    }
+                }
             }
         }
 
@@ -414,7 +443,7 @@ class BookController extends Controller
             $userBookshelves = auth()->user()->bookshelves()->withCount('books')->get();
         }
 
-        return view('books.details', compact('id', 'book', 'isFavorited', 'reviews', 'localReviewsCount', 'localAverageRating', 'userBookshelves'));
+        return view('books.details', compact('id', 'book', 'isFavorited', 'currentStatus', 'reviews', 'localReviewsCount', 'localAverageRating', 'userBookshelves'));
     }
 
     public function search(Request $request)
@@ -462,10 +491,27 @@ class BookController extends Controller
             }, $books);
         }
 
+        $userBookStatuses = [];
+        $favoriteBookIds = [];
+        $userBookshelves = collect();
+        if (auth()->check()) {
+            $user = auth()->user();
+            $userBookStatuses = \DB::table('user_book_statuses')
+                ->join('books', 'user_book_statuses.book_id', '=', 'books.id')
+                ->where('user_book_statuses.user_id', $user->user_id)
+                ->pluck('user_book_statuses.status', 'books.google_id')
+                ->toArray();
+            $favoriteBookIds = $user->favoriteBooks()->pluck('google_id')->toArray();
+            $userBookshelves = $user->bookshelves()->withCount('books')->get();
+        }
+
         return view('books.search', [
             'books' => $books,
             'query' => $query,
-            'forceGuestHeader' => false
+            'forceGuestHeader' => false,
+            'userBookStatuses' => $userBookStatuses,
+            'favoriteBookIds' => $favoriteBookIds,
+            'userBookshelves' => $userBookshelves
         ]);
     }
 
@@ -520,6 +566,78 @@ class BookController extends Controller
             'success' => true,
             'action' => $action,
             'message' => 'Book ' . $action . ' from favorites'
+        ]);
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+
+        $status = $request->input('status');
+        if (!in_array($status, ['to_read', 'currently_reading', 'done_reading'])) {
+            return response()->json(['success' => false, 'message' => 'Invalid status'], 400);
+        }
+
+        // Find the book locally or fetch and save it
+        $book = \App\Models\Book::where('google_id', $id)->first();
+        if (!$book) {
+            $googleBook = $this->googleBooksService->getBookById($id);
+            if (!$googleBook) {
+                return response()->json(['success' => false, 'message' => 'Book not found'], 404);
+            }
+            
+            $volumeInfo = $googleBook['volumeInfo'];
+            $title = $volumeInfo['title'] ?? 'Unknown Title';
+            $author = !empty($volumeInfo['authors']) ? implode(', ', $volumeInfo['authors']) : 'Unknown Author';
+            $coverImage = $volumeInfo['imageLinks']['thumbnail'] ?? null;
+
+            $book = \App\Models\Book::create([
+                'google_id' => $id,
+                'title' => $title,
+                'author' => $author,
+                'cover_image' => $coverImage,
+            ]);
+        }
+
+        // Check if there's an existing status record
+        $existing = \DB::table('user_book_statuses')
+            ->where('user_id', $user->user_id)
+            ->where('book_id', $book->id)
+            ->first();
+
+        // Default progress percentages
+        $progressPercent = ($status === 'currently_reading') ? 35 : ($status === 'done_reading' ? 100 : 0);
+        $startDate = ($status === 'currently_reading') ? now() : null;
+
+        if ($existing) {
+            \DB::table('user_book_statuses')
+                ->where('user_id', $user->user_id)
+                ->where('book_id', $book->id)
+                ->update([
+                    'status' => $status,
+                    'progress_percent' => $progressPercent,
+                    'start_date' => $startDate,
+                    'updated_at' => now(),
+                ]);
+        } else {
+            \DB::table('user_book_statuses')->insert([
+                'user_id' => $user->user_id,
+                'book_id' => $book->id,
+                'status' => $status,
+                'progress_percent' => $progressPercent,
+                'start_date' => $startDate,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Reading status updated successfully',
+            'status' => $status
         ]);
     }
 

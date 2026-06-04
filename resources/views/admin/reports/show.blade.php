@@ -54,19 +54,19 @@
                 </div>
 
                 <div class="detail-field">
-                    <label>reporter :</label>
+                    <label>Reporter :</label>
                     <span class="field-value">@ {{ $report->reporter ? $report->reporter->username : 'unknown' }}</span>
                 </div>
 
                 <div class="detail-field">
-                    <label>reported :</label>
+                    <label>Reported :</label>
                     <span class="field-value">@ {{ $report->reported ? $report->reported->username : 'unknown' }}</span>
                 </div>
 
                 <div class="detail-field full-width">
-                    <label>konten :</label>
+                    <label>Content :</label>
                     <div class="field-box reason-box">
-                        {{ $report->content ?: 'Tidak ada penjelasan laporan tertulis.' }}
+                        {{ $report->content ?: 'No written report explanation provided.' }}
                     </div>
                 </div>
 
@@ -93,11 +93,11 @@
                                         <i class="fa-solid fa-star {{ $i <= $report->reported_review_rating ? 'starred' : 'unstarred' }}"></i>
                                     @endfor
                                 </span>
-                                <span class="history-badge"><i class="fa-solid fa-clock-rotate-left"></i> LOG HISTORIS</span>
+                                <span class="history-badge"><i class="fa-solid fa-clock-rotate-left"></i> HISTORICAL LOG</span>
                             </div>
                             <p class="review-content historical">{{ $report->reported_review_text }}</p>
                         @else
-                            <p class="review-content empty">Review tidak ditemukan atau sudah dihapus.</p>
+                            <p class="review-content empty">Review not found or has been deleted.</p>
                         @endif
                     </div>
                 </div>

@@ -6,7 +6,7 @@
 }
 
 :root {
-    --bg-cream: #FFF8E7;
+    --bg-cream: #F7EED3;
     --bg-header: #FFF1C9;
     --bg-footer: #FFF1C9;
     --text-brown: #4E342E;
@@ -250,7 +250,7 @@ body {
     position: absolute;
     top: 110%;
     left: 0;
-    width: 280px;
+    width: 100%;
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 8px 18px rgba(0,0,0,0.12);
@@ -269,9 +269,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 25px;
+    padding: 10px 18px;
     font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
+    font-size: 0.95rem;
     color: #4E342E;
     cursor: pointer;
     transition: 0.2s;
@@ -382,7 +382,7 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #FFF8E7; /* Cream background matching screenshot */
+    background-color: var(--bg-cream); /* Cream background matching screenshot */
     border: 2px solid #5D4037; /* Clean brown border */
     border-radius: 8px;
     padding: 12px 18px;

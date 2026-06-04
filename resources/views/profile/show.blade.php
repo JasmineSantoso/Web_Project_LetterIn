@@ -39,6 +39,18 @@
             </div>
         </section>
 
+        {{-- ── Stats Bar ───────────────────────────────────── --}}
+        <section class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-title">Total Read Books</span>
+                <span class="stat-number" id="total-books-count">{{ $totalBooks }}</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-title">Total Review</span>
+                <span class="stat-number" id="total-reviews-count">{{ $totalReviews }}</span>
+            </div>
+        </section>
+
         {{-- ── Favorite Books ──────────────────────────────── --}}
         <section class="bordered-section">
             <h2 class="section-label">FAVORITE BOOKS</h2>
@@ -57,15 +69,39 @@
             </div>
         </section>
 
-        {{-- ── Stats Bar ───────────────────────────────────── --}}
-        <section class="stats-bar">
-            <div class="stat-item">
-                <span class="stat-title">Total Book</span>
-                <span class="stat-number" id="total-books-count">{{ $totalBooks }}</span>
+        {{-- ── To Read Books ───────────────────────────────── --}}
+        <section class="bordered-section">
+            <h2 class="section-label">TO READ</h2>
+            <div class="books-grid" id="to-read-books-container">
+                @if(isset($toReadBooks) && $toReadBooks->count() > 0)
+                    @foreach($toReadBooks as $book)
+                        <div class="book-card" style="margin: 5px;">
+                            <a href="{{ route('book.details', ['id' => $book->google_id ?? $book->id]) }}">
+                                <img src="{{ $book->cover_image ?? asset('images/cover1.jpg') }}" alt="{{ $book->title }}" style="width: 100px; height: 150px; object-fit: cover; border-radius: 5px;">
+                            </a>
+                        </div>
+                    @endforeach
+                @else
+                    <p style="color: #777; margin-top: 10px;">No books to read yet.</p>
+                @endif
             </div>
-            <div class="stat-item">
-                <span class="stat-title">Total Review</span>
-                <span class="stat-number" id="total-reviews-count">{{ $totalReviews }}</span>
+        </section>
+
+        {{-- ── Done Read Books ──────────────────────────────── --}}
+        <section class="bordered-section">
+            <h2 class="section-label">DONE READ</h2>
+            <div class="books-grid" id="done-read-books-container">
+                @if(isset($doneReadBooks) && $doneReadBooks->count() > 0)
+                    @foreach($doneReadBooks as $book)
+                        <div class="book-card" style="margin: 5px;">
+                            <a href="{{ route('book.details', ['id' => $book->google_id ?? $book->id]) }}">
+                                <img src="{{ $book->cover_image ?? asset('images/cover1.jpg') }}" alt="{{ $book->title }}" style="width: 100px; height: 150px; object-fit: cover; border-radius: 5px;">
+                            </a>
+                        </div>
+                    @endforeach
+                @else
+                    <p style="color: #777; margin-top: 10px;">No books done reading yet.</p>
+                @endif
             </div>
         </section>
 

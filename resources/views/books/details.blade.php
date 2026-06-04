@@ -3,7 +3,7 @@
 @section('title', 'LetterIn - Book Detail')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/book_details.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/book_details.css') }}?v={{ filemtime(public_path('css/book_details.css')) }}">
 @endpush
 
 @section('content')
@@ -54,13 +54,13 @@
                 <div class="action-item dropdown-item dropdown">
                     <details>
                         <summary>
-                            <span>To Read</span>
+                            <span>{{ $currentStatus }}</span>
                             <i class="fa-solid fa-chevron-down"></i>
                         </summary>
                         <div class="dropdown-menu">
-                            <div class="dropdown-option">To Read</div>
-                            <div class="dropdown-option">Currently Read</div>
-                            <div class="dropdown-option">Done Read</div>
+                            <div class="dropdown-option {{ $currentStatus === 'To Read' ? 'active' : '' }}" data-status="to_read">To Read</div>
+                            <div class="dropdown-option {{ $currentStatus === 'Currently Read' ? 'active' : '' }}" data-status="currently_reading">Currently Read</div>
+                            <div class="dropdown-option {{ $currentStatus === 'Done Read' ? 'active' : '' }}" data-status="done_reading">Done Read</div>
                         </div>
                     </details>
                 </div>
@@ -206,12 +206,21 @@
                                             $songArtist = $song['artist'] ?? '';
                                             $songArt = $song['album_art'] ?? '';
                                         @endphp
-                                        <div class="review-song-badge" style="display: inline-flex; align-items: center; gap: 6px; background-color: #5D4037; color: #FFF8E7; padding: 4px 10px; border-radius: 12px; font-size: 0.78rem; font-family: var(--font-sans); border: 1px solid rgba(255, 248, 231, 0.2);">
-                                            @if($songArt)
-                                                <img src="{{ $songArt }}" style="width: 16px; height: 16px; border-radius: 50%; object-fit: cover;">
-                                            @else
-                                                <i class="fa-solid fa-music" style="font-size: 0.7rem;"></i>
-                                            @endif
+                                        <div class="review-song-badge" 
+                                             onclick="playSong(this)"
+                                             data-preview="{{ $song['preview_url'] ?? '' }}" 
+                                             data-title="{{ $songTitle }}" 
+                                             data-artist="{{ $songArtist }}"
+                                             style="cursor: pointer; display: inline-flex; align-items: center; gap: 6px; background-color: #5D4037; color: #FFF8E7; padding: 4px 10px; border-radius: 12px; font-size: 0.78rem; font-family: var(--font-sans); border: 1px solid rgba(255, 248, 231, 0.2); transition: transform 0.2s, background-color 0.2s;"
+                                             onmouseover="this.style.transform='scale(1.04)'; this.style.backgroundColor='#6D4C41';"
+                                             onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#5D4037';">
+                                            <span class="song-icon-container" style="display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px;">
+                                                @if($songArt)
+                                                    <img src="{{ $songArt }}" style="width: 16px; height: 16px; border-radius: 50%; object-fit: cover;">
+                                                @else
+                                                    <i class="fa-solid fa-music" style="font-size: 0.7rem;"></i>
+                                                @endif
+                                            </span>
                                             <span>{{ $songTitle }}{{ $songArtist ? ' - ' . $songArtist : '' }}</span>
                                         </div>
                                     @endforeach
@@ -233,10 +242,23 @@
                                     <i class="fa-regular fa-comment"></i>
                                     Comment (<span class="comments-count">{{ $commentsCount }}</span>)
                                 </span>
-                                <span class="report-btn {{ $hasReported ? 'reported' : '' }}" data-id="{{ $review->id }}" style="cursor: pointer; display: inline-flex; align-items: center; gap: 6px; color: {{ $hasReported ? '#c0392b' : '#666' }}; font-weight: {{ $hasReported ? 'bold' : 'normal' }}; transition: all 0.2s; margin-left: auto;">
-                                    <i class="{{ $hasReported ? 'fa-solid' : 'fa-regular' }} fa-flag" style="{{ $hasReported ? 'color: #c0392b;' : '' }}"></i>
-                                    <span class="report-text">{{ $hasReported ? 'Reported' : 'Report' }}</span>
-                                </span>
+                                @if(auth()->check() && auth()->id() == $review->user_id)
+                                    <a href="{{ route('review.edit', $review->id) }}" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px; color: #5D4037; font-weight: bold; font-size: 0.85rem; margin-left: auto; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform=''">
+                                        <i class="fa-regular fa-pen-to-square"></i> Edit
+                                    </a>
+                                    <form action="{{ route('review.destroy', $review->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this review?');" style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" style="background: none; border: none; padding: 0; margin-left: 15px; display: inline-flex; align-items: center; gap: 6px; color: #c0392b; font-weight: bold; font-size: 0.85rem; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform=''">
+                                            <i class="fa-regular fa-trash-can"></i> Delete
+                                        </button>
+                                    </form>
+                                @else
+                                    <span class="report-btn {{ $hasReported ? 'reported' : '' }}" data-id="{{ $review->id }}" style="cursor: pointer; display: inline-flex; align-items: center; gap: 6px; color: {{ $hasReported ? '#c0392b' : '#666' }}; font-weight: {{ $hasReported ? 'bold' : 'normal' }}; transition: all 0.2s; margin-left: auto;">
+                                        <i class="{{ $hasReported ? 'fa-solid' : 'fa-regular' }} fa-flag" style="{{ $hasReported ? 'color: #c0392b;' : '' }}"></i>
+                                        <span class="report-text">{{ $hasReported ? 'Reported' : 'Report' }}</span>
+                                    </span>
+                                @endif
                             </div>
 
                             {{-- Collapsible Comments Section --}}
@@ -281,25 +303,25 @@
                                                 <i class="fa-regular fa-circle-user" style="font-size: 1.5rem; color: #4E342E;"></i>
                                             @endif
                                         </div>
-                                        <input type="text" class="comment-input" placeholder="Tulis komentar..." required style="flex: 1; padding: 8px 15px; border-radius: 20px; border: 1px solid #5D4037; font-family: var(--font-sans); font-size: 0.85rem; outline: none; background: #FFF8E7; color: var(--text-brown);">
+                                        <input type="text" class="comment-input" placeholder="Write a comment..." required style="flex: 1; padding: 8px 15px; border-radius: 20px; border: 1px solid #5D4037; font-family: var(--font-sans); font-size: 0.85rem; outline: none; background: #FFF8E7; color: var(--text-brown);">
                                         <button type="submit" style="background: #5D4037; color: white; border: none; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s;">
                                             <i class="fa-solid fa-paper-plane" style="font-size: 0.85rem;"></i>
                                         </button>
                                     </form>
                                 @else
                                     <div style="font-size: 0.82rem; color: #8D6E63; text-align: center; margin-top: 5px;">
-                                        <a href="{{ route('signin') }}" style="color: #5D4037; font-weight: bold; text-decoration: underline;">Login</a> untuk menulis komentar.
+                                        <a href="{{ route('signin') }}" style="color: #5D4037; font-weight: bold; text-decoration: underline;">Login</a> to write a comment.
                                     </div>
                                 @endauth
                             </div>
                         </div>
                     </div>
                     @empty
-                    <p style="color:#888; padding: 12px 0;">Belum ada review untuk buku ini.
+                    <p style="color:#888; padding: 12px 0;">No reviews for this book yet.
                         @auth
-                            <a href="{{ route('book.review', ['book_id' => $id]) }}" style="color: #5D4037; font-weight: bold; text-decoration: underline;">Jadilah yang pertama!</a>
+                            <a href="{{ route('book.review', ['book_id' => $id]) }}" style="color: #5D4037; font-weight: bold; text-decoration: underline;">Be the first to write one!</a>
                         @else
-                            <a href="{{ route('signin') }}" style="color: #5D4037; font-weight: bold; text-decoration: underline;">Login untuk menulis review.</a>
+                            <a href="{{ route('signin') }}" style="color: #5D4037; font-weight: bold; text-decoration: underline;">Login to write a review.</a>
                         @endauth
                     </p>
                     @endforelse
@@ -315,47 +337,47 @@
 
     {{-- Sleek Glassmorphic Report Modal Overlay --}}
     <div class="report-modal-overlay" id="reportModalOverlay" style="display: none;">
-        <div class="report-modal">
+         <div class="report-modal">
             <div class="report-modal-header">
-                <h3>Laporkan Review</h3>
+                <h3>Report Review</h3>
                 <button type="button" class="close-modal-btn" id="closeReportModalBtn">&times;</button>
             </div>
             <form id="reportForm">
                 <input type="hidden" id="reportReviewId" name="review_id" value="">
                 <div class="report-modal-body">
-                    <p class="report-instruction">Kenapa Anda ingin melaporkan review ini? Laporan Anda bersifat anonim.</p>
+                    <p class="report-instruction">Why do you want to report this review? Your report is anonymous.</p>
                     
                     <div class="report-options-list">
                         <label class="report-option-item">
                             <input type="radio" name="report_reason" value="Spam atau Promosi" required>
-                            <span class="report-option-text">Spam atau Promosi Komersial</span>
+                            <span class="report-option-text">Spam or Commercial Promotion</span>
                         </label>
                         <label class="report-option-item">
                             <input type="radio" name="report_reason" value="Bahasa Kasar / Pelecehan">
-                            <span class="report-option-text">Bahasa Kasar / Pelecehan / Kebencian</span>
+                            <span class="report-option-text">Hate Speech / Harassment / Offensive Language</span>
                         </label>
                         <label class="report-option-item">
                             <input type="radio" name="report_reason" value="Spoiler Tanpa Peringatan">
-                            <span class="report-option-text">Spoiler Tanpa Peringatan</span>
+                            <span class="report-option-text">Spoiler Without Warning</span>
                         </label>
                         <label class="report-option-item">
                             <input type="radio" name="report_reason" value="Konten Tidak Pantas / SARA">
-                            <span class="report-option-text">Konten Tidak Pantas / Mengandung SARA</span>
+                            <span class="report-option-text">Inappropriate Content / Discrimination</span>
                         </label>
                         <label class="report-option-item">
                             <input type="radio" name="report_reason" value="Lainnya">
-                            <span class="report-option-text">Lainnya / Masalah Lain</span>
+                            <span class="report-option-text">Other / Different Issue</span>
                         </label>
                     </div>
 
                     <div class="report-details-container" style="margin-top: 15px;">
-                        <label for="reportDetails" style="display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; color: #4E342E;">Detail Tambahan (Opsional):</label>
-                        <textarea id="reportDetails" class="report-textarea" placeholder="Berikan penjelasan singkat jika ada..." rows="3"></textarea>
+                        <label for="reportDetails" style="display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; color: #4E342E;">Additional Details (Optional):</label>
+                        <textarea id="reportDetails" class="report-textarea" placeholder="Provide a short explanation if any..." rows="3"></textarea>
                     </div>
                 </div>
                 <div class="report-modal-footer">
-                    <button type="button" class="btn-cancel-report" id="cancelReportBtn">Batal</button>
-                    <button type="submit" class="btn-submit-report" id="submitReportBtn">Kirim Laporan</button>
+                    <button type="button" class="btn-cancel-report" id="cancelReportBtn">Cancel</button>
+                    <button type="submit" class="btn-submit-report" id="submitReportBtn">Submit Report</button>
                 </div>
             </form>
         </div>
@@ -369,6 +391,36 @@
         if (e.target.classList.contains('dropdown-option')) {
             const option = e.target;
             const statusText = option.textContent.trim();
+            const statusVal = option.getAttribute('data-status');
+            
+            const isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
+            if (!isAuthenticated) {
+                window.location.href = "{{ route('signin') }}";
+                return;
+            }
+
+            const bookId = '{{ $id }}';
+            fetch(`/book/${bookId}/status`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ status: statusVal })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    showBookshelfToast('✔ Status updated to "' + statusText + '"!');
+                } else {
+                    alert(data.message || 'Failed to update reading status.');
+                }
+            })
+            .catch(err => {
+                console.error('Error updating reading status:', err);
+                alert('An error occurred.');
+            });
             
             // Find parent elements
             const details = option.closest('details');
@@ -857,13 +909,13 @@
         .then(data => {
             document.getElementById('bookshelf-dropdown').style.display = 'none';
             if (data.success) {
-                showBookshelfToast('✔ Added to "' + shelfName + '"!', '#388E3C');
+                showBookshelfToast('✔ Added to "' + shelfName + '"!');
                 document.getElementById('bookshelf-label').textContent = shelfName;
             } else {
-                showBookshelfToast(data.message || 'Could not add to shelf.', data.message && data.message.includes('already') ? '#1565C0' : '#B71C1C');
+                showBookshelfToast(data.message || 'Could not add to shelf.');
             }
         })
-        .catch(() => showBookshelfToast('An error occurred.', '#B71C1C'));
+        .catch(() => showBookshelfToast('An error occurred.'));
     }
 
     function submitShelfFromDetails() {
@@ -900,30 +952,30 @@
                 hideNewShelfInput();
                 document.getElementById('bookshelf-dropdown').style.display = 'none';
                 document.getElementById('bookshelf-label').textContent = data.shelf.name;
-                showBookshelfToast('✔ Shelf created & book added!', '#388E3C');
+                showBookshelfToast('✔ Shelf created & book added!');
             } else {
-                showBookshelfToast(data.message || 'Could not create shelf.', '#B71C1C');
+                showBookshelfToast(data.message || 'Could not create shelf.');
             }
         })
-        .catch(() => showBookshelfToast('An error occurred.', '#B71C1C'));
+        .catch(() => showBookshelfToast('An error occurred.'));
     }
 
-    function showBookshelfToast(msg, color) {
+    function showBookshelfToast(msg, color = '#adbda3') {
         let toast = document.getElementById('bookshelf-toast');
         if (!toast) {
             toast = document.createElement('div');
             toast.id = 'bookshelf-toast';
-            toast.style.cssText = 'position:fixed;bottom:28px;right:28px;padding:12px 22px;border-radius:10px;color:#fff;font-weight:bold;font-size:0.9rem;box-shadow:0 6px 20px rgba(0,0,0,0.2);z-index:9999;transition:all 0.4s ease;opacity:0;transform:translateY(15px);';
+            toast.style.cssText = 'position:fixed;top:30px;left:50%;transform:translate(-50%, -100px);padding:12px 22px;border-radius:12px;color:#fff;font-weight:bold;font-size:0.9rem;box-shadow:0 10px 25px rgba(0,0,0,0.15);z-index:9999;transition:all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);opacity:0;';
             document.body.appendChild(toast);
         }
         toast.textContent = msg;
         toast.style.background = color;
         toast.style.opacity = '1';
-        toast.style.transform = 'translateY(0)';
+        toast.style.transform = 'translate(-50%, 0)';
         clearTimeout(toast._timer);
         toast._timer = setTimeout(() => {
             toast.style.opacity = '0';
-            toast.style.transform = 'translateY(15px)';
+            toast.style.transform = 'translate(-50%, -100px)';
         }, 3000);
     }
 </script>

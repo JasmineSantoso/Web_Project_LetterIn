@@ -146,12 +146,21 @@
                                                 $songArtist = $song['artist'] ?? '';
                                                 $songArt = $song['album_art'] ?? '';
                                             @endphp
-                                            <div class="review-song-badge" style="display: inline-flex; align-items: center; gap: 6px; background-color: #5D4037; color: #FFF8E7; padding: 3px 8px; border-radius: 12px; font-size: 0.75rem; border: 1px solid rgba(255, 248, 231, 0.15);">
-                                                @if($songArt)
-                                                    <img src="{{ $songArt }}" style="width: 14px; height: 14px; border-radius: 50%; object-fit: cover;">
-                                                @else
-                                                    <i class="fa-solid fa-music" style="font-size: 0.65rem;"></i>
-                                                @endif
+                                            <div class="review-song-badge" 
+                                                 onclick="playSong(this)"
+                                                 data-preview="{{ $song['preview_url'] ?? '' }}" 
+                                                 data-title="{{ $songTitle }}" 
+                                                 data-artist="{{ $songArtist }}"
+                                                 style="cursor: pointer; display: inline-flex; align-items: center; gap: 6px; background-color: #5D4037; color: #FFF8E7; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; border: 1px solid rgba(255, 248, 231, 0.15); transition: transform 0.2s, background-color 0.2s;"
+                                                 onmouseover="this.style.transform='scale(1.04)'; this.style.backgroundColor='#6D4C41';"
+                                                 onmouseout="this.style.transform='scale(1)'; this.style.backgroundColor='#5D4037';">
+                                                <span class="song-icon-container" style="display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px;">
+                                                    @if($songArt)
+                                                        <img src="{{ $songArt }}" style="width: 14px; height: 14px; border-radius: 50%; object-fit: cover;">
+                                                    @else
+                                                        <i class="fa-solid fa-music" style="font-size: 0.65rem;"></i>
+                                                    @endif
+                                                </span>
                                                 <span>{{ $songTitle }}{{ $songArtist ? ' - ' . $songArtist : '' }}</span>
                                             </div>
                                         @endforeach

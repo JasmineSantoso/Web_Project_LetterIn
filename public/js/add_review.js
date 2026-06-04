@@ -2,7 +2,7 @@
 // STAR RATING SYSTEM
 // ==========================================
 const stars = document.querySelectorAll(".star-rating-input i");
-let selectedRating = 0;
+let selectedRating = parseInt(document.getElementById("ratingInput")?.value || 0);
 
 stars.forEach((star, index) => {
     star.addEventListener("mouseover", () => {
@@ -88,6 +88,7 @@ function renderSearchResults(tracks) {
         const title = track.title ?? "Unknown Title";
         const artist = track.artist?.name ?? "Unknown Artist";
         const albumArt = track.album?.cover_medium ?? (track.album?.cover_small ?? "");
+        const previewUrl = track.preview ?? "";
 
         const item = document.createElement("div");
         item.className = "search-result-item";
@@ -103,7 +104,7 @@ function renderSearchResults(tracks) {
 
         item.addEventListener("click", function (e) {
             e.stopPropagation();
-            selectSong(title, artist, albumArt);
+            selectSong(title, artist, albumArt, previewUrl);
         });
 
         searchResults.appendChild(item);
@@ -113,7 +114,7 @@ function renderSearchResults(tracks) {
 }
 
 // Select a song (from search or recommendations)
-function selectSong(title, artist, albumArt) {
+function selectSong(title, artist, albumArt, previewUrl = "") {
     // 1. Hide search input box & search results dropdown
     if (songInputBox) songInputBox.style.display = "none";
     if (searchResults) {
@@ -125,7 +126,19 @@ function selectSong(title, artist, albumArt) {
     // 2. Populate selected song container details
     if (selectedSongArt) selectedSongArt.src = albumArt || "/images/cover1.jpg";
     if (selectedSongText) selectedSongText.textContent = `${title} - ${artist}`;
-    if (selectedSongContainer) selectedSongContainer.style.display = "flex";
+    if (selectedSongContainer) {
+        selectedSongContainer.setAttribute("data-preview", previewUrl);
+        selectedSongContainer.setAttribute("data-title", title);
+        selectedSongContainer.setAttribute("data-artist", artist);
+        selectedSongContainer.style.display = "flex";
+
+        // Automatically start playing preview if available
+        if (previewUrl && typeof window.playSong === "function") {
+            setTimeout(() => {
+                window.playSong(selectedSongContainer);
+            }, 100);
+        }
+    }
 
     // 3. Update hidden input values for form submission
     if (songsHiddenInputs) {
@@ -133,13 +146,29 @@ function selectSong(title, artist, albumArt) {
             <input type="hidden" name="songs[0][title]" value="${escapeHtml(title)}">
             <input type="hidden" name="songs[0][artist]" value="${escapeHtml(artist)}">
             <input type="hidden" name="songs[0][album_art]" value="${escapeHtml(albumArt)}">
+            <input type="hidden" name="songs[0][preview_url]" value="${escapeHtml(previewUrl)}">
         `;
     }
+}
+
+// Play/Pause selected song when clicking selected song info
+const selectedSongInfo = document.getElementById("selectedSongInfo");
+if (selectedSongInfo) {
+    selectedSongInfo.addEventListener("click", function() {
+        if (typeof window.playSong === "function") {
+            window.playSong(selectedSongContainer);
+        }
+    });
 }
 
 // Remove selected song
 if (selectedSongAction) {
     selectedSongAction.addEventListener("click", function () {
+        // Stop playing if it's currently playing
+        if (selectedSongContainer && selectedSongContainer.classList.contains("playing") && typeof window.playSong === "function") {
+            window.playSong(selectedSongContainer);
+        }
+
         // 1. Hide selected song container
         if (selectedSongContainer) selectedSongContainer.style.display = "none";
 
@@ -161,7 +190,8 @@ recPills.forEach(pill => {
         const title = this.getAttribute("data-title");
         const artist = this.getAttribute("data-artist");
         const albumArt = this.getAttribute("data-art");
-        selectSong(title, artist, albumArt);
+        const previewUrl = this.getAttribute("data-preview") || "";
+        selectSong(title, artist, albumArt, previewUrl);
     });
 });
 

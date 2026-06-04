@@ -23,22 +23,38 @@ class AdminController extends Controller
         $totalBookshelves = Bookshelf::count();
         $totalReports = Report::count();
 
-        // Labels for weekdays (Monday to Friday)
-        $labels = ['Sen','Sel','Rab','Kam','Jum'];
-        $dayMap = [2=>'Sen',3=>'Sel',4=>'Rab',5=>'Kam',6=>'Jum'];
+        // Get the last 6 months (including the current month)
+        $labels = [];
+        $monthMap = [];
+        $chartKeys = [];
+        
+        $monthsName = [
+            1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr', 5 => 'May', 6 => 'Jun',
+            7 => 'Jul', 8 => 'Aug', 9 => 'Sep', 10 => 'Oct', 11 => 'Nov', 12 => 'Dec'
+        ];
 
-        // Initialise arrays with zeros
-        $userChartData = $reviewChartData = $bookshelfChartData = $reportChartData = array_fill_keys($labels, 0);
+        for ($i = 5; $i >= 0; $i--) {
+            $date = now()->subMonths($i);
+            $key = $date->format('Y-m'); // e.g. "2026-06"
+            $label = $monthsName[$date->month]; // e.g. "Jun"
+            
+            $labels[] = $label;
+            $monthMap[$key] = $label;
+            $chartKeys[$key] = 0; // initialize with 0
+        }
+
+        // Initialize copies of the chart data template
+        $userChartData = $reviewChartData = $bookshelfChartData = $reportChartData = $chartKeys;
 
         // Helper closure to fill chart data from a model
-        $fill = function($model, &$chart) use ($dayMap) {
-            $model::selectRaw('DAYOFWEEK(created_at) as dow, COUNT(*) as cnt')
-                ->where('created_at', '>=', now()->subDays(6))
-                ->groupBy('dow')
+        $fill = function($model, &$chart) {
+            $model::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as ym, COUNT(*) as cnt")
+                ->where('created_at', '>=', now()->subMonths(5)->startOfMonth())
+                ->groupBy('ym')
                 ->get()
-                ->each(function($item) use (&$chart, $dayMap) {
-                    if (isset($dayMap[$item->dow])) {
-                        $chart[$dayMap[$item->dow]] = $item->cnt;
+                ->each(function($item) use (&$chart) {
+                    if (array_key_exists($item->ym, $chart)) {
+                        $chart[$item->ym] = $item->cnt;
                     }
                 });
         };
@@ -49,7 +65,7 @@ class AdminController extends Controller
         $fill(Bookshelf::class, $bookshelfChartData);
         $fill(Report::class, $reportChartData);
 
-        // Convert associative arrays to indexed arrays matching $labels order
+        // Convert associative arrays to indexed arrays matching order
         $userChartData = array_values($userChartData);
         $reviewChartData = array_values($reviewChartData);
         $bookshelfChartData = array_values($bookshelfChartData);
@@ -126,7 +142,18 @@ class AdminController extends Controller
 
         // Delete the review if it still exists
         if ($report->review) {
-            $report->review->delete();
+            $review = $report->review;
+            foreach ($review->comments as $comment) {
+                \App\Models\Notification::create([
+                    'user_id' => $comment->user_id,
+                    'type' => 'comment_deleted',
+                    'data' => [
+                        'book_title' => $review->book->title ?? 'Unknown Book',
+                        'comment_content' => $comment->content,
+                    ],
+                ]);
+            }
+            $review->delete();
         }
 
         // Update report status
@@ -360,9 +387,21 @@ class AdminController extends Controller
     public function deleteReview($id)
     {
         $review = Review::findOrFail($id);
+
+        foreach ($review->comments as $comment) {
+            \App\Models\Notification::create([
+                'user_id' => $comment->user_id,
+                'type' => 'comment_deleted',
+                'data' => [
+                    'book_title' => $review->book->title ?? 'Unknown Book',
+                    'comment_content' => $comment->content,
+                ],
+            ]);
+        }
+
         $review->delete();
 
-        return redirect()->route('admin.reviews')->with('success', 'Ulasan berhasil dihapus.');
+        return redirect()->route('admin.reviews')->with('success', 'Review deleted successfully.');
     }
 }
 

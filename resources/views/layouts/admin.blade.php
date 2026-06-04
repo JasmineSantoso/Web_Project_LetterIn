@@ -13,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Custom Admin Dashboard CSS -->
-    <link rel="stylesheet" href="{{ asset('css/admin_dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin_dashboard.css') }}?v={{ filemtime(public_path('css/admin_dashboard.css')) }}">
     
     @stack('styles')
 </head>
@@ -34,7 +34,11 @@
         <div class="nav-right">
             <div class="profile-container">
                 <a href="javascript:void(0)" class="profile-icon" id="profileBtn">
-                    <i class="fa-solid fa-user-tie"></i>
+                    @if(Auth::user()->profile)
+                        <img src="{{ asset('images/' . Auth::user()->profile) }}" alt="{{ Auth::user()->username }}">
+                    @else
+                        <i class="fa-regular fa-circle-user"></i>
+                    @endif
                 </a>
                 <ul class="admin-dropdown" id="myDropdown">
                     <li><a href="/settings">SETTINGS</a></li>

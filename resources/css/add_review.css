@@ -379,7 +379,7 @@ ul.home-dropdown.show {
     position: absolute;
     top: 110%;
     left: 0;
-    width: 280px;
+    width: 100%;
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 8px 18px rgba(0,0,0,0.12);
@@ -398,9 +398,9 @@ ul.home-dropdown.show {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px 22px;
+    padding: 10px 18px;
     font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
+    font-size: 0.95rem;
     color: #4E342E;
     cursor: pointer;
     transition: 0.2s;

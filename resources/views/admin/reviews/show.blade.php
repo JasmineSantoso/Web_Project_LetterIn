@@ -141,8 +141,8 @@
     <div class="modal-box">
         <h3 class="modal-title" style="color: #C0392B;">Delete Review?</h3>
         <p style="font-size: 0.95rem; color: #5D4037; margin-bottom: 25px; line-height: 1.5;">
-            Apakah Anda yakin ingin menghapus ulasan ini secara permanen?<br>
-            Tindakan ini juga akan menghapus data like, komentar, dan laporan terkait ulasan ini.
+            Are you sure you want to delete this review permanently?<br>
+            This action will also delete the likes, comments, and reports associated with this review.
         </p>
         <div class="modal-actions">
             <button type="button" class="modal-btn btn-cancel" id="closeDeleteModal">Cancel</button>

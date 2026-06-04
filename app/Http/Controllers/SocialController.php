@@ -12,12 +12,37 @@ class SocialController extends Controller
 {
     public function notifications()
     {
-        $followers = Follow::where('following_id', auth()->id())
-            ->with('follower')
-            ->latest()
-            ->get();
+        $user = auth()->user();
 
-        return view('social.notifications', compact('followers'));
+        // 1. Fetch followers
+        $followers = Follow::where('following_id', $user->user_id)
+            ->with('follower')
+            ->get()
+            ->map(function ($follow) {
+                return (object)[
+                    'type' => 'follow',
+                    'user' => $follow->follower,
+                    'created_at' => $follow->created_at,
+                    'follow_id' => $follow->id,
+                ];
+            });
+
+        // 2. Fetch custom notifications
+        $customNotifs = \App\Models\Notification::where('user_id', $user->user_id)
+            ->get()
+            ->map(function ($notif) {
+                return (object)[
+                    'type' => $notif->type,
+                    'data' => $notif->data,
+                    'created_at' => $notif->created_at,
+                    'notif_id' => $notif->id,
+                ];
+            });
+
+        // 3. Merge and sort
+        $notifications = $followers->concat($customNotifs)->sortByDesc('created_at');
+
+        return view('social.notifications', compact('notifications'));
     }
 
     public function bookmates(Request $request)

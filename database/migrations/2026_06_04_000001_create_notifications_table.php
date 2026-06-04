@@ -11,16 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('review_reports', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users', 'user_id')->cascadeOnDelete();
-            $table->foreignId('review_id')->constrained('reviews', 'id')->cascadeOnDelete();
-            $table->string('reason');
-            $table->text('details')->nullable();
+            $table->string('type');
+            $table->text('data'); // casted to json/array in PHP
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
-
-            // Unique key to prevent duplicates
-            $table->unique(['user_id', 'review_id']);
         });
     }
 
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('review_reports');
+        Schema::dropIfExists('notifications');
     }
 };

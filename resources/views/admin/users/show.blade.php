@@ -127,16 +127,16 @@
         <div class="modal-box">
             <h3 class="modal-title">Banned this account?</h3>
             <p style="font-size: 0.9rem; color: #8D6E63; margin-bottom: 20px;">
-                Akun ini akan dihapus dari data aktif dan dipindahkan ke daftar penangguhan (banned users).
+                This account will be removed from active users and moved to the suspended list (banned users).
             </p>
             <form action="{{ route('admin.users.ban', $user->user_id) }}" method="POST" class="ban-reason-form">
                 @csrf
-                <label for="ban_reason">Alasan Penangguhan (Suspension Reason) :</label>
-                <textarea name="ban_reason" id="ban_reason" rows="4" placeholder="Masukkan alasan mengapa akun ini ditangguhkan..." required></textarea>
+                <label for="ban_reason">Suspension Reason:</label>
+                <textarea name="ban_reason" id="ban_reason" rows="4" placeholder="Enter the reason why this account is suspended..." required></textarea>
                 
                 <div class="modal-actions" style="margin-top: 10px;">
                     <button type="button" class="modal-btn btn-cancel" id="closeBanModal">Cancel</button>
-                    <button type="submit" class="modal-btn" style="background-color: #E74C3C; color: white;">Bann</button>
+                    <button type="submit" class="modal-btn" style="background-color: #E74C3C; color: white;">Ban</button>
                 </div>
             </form>
         </div>
@@ -148,8 +148,8 @@
     <div class="modal-box">
         <h3 class="modal-title" style="color: #C0392B;">Delete Account Permanently?</h3>
         <p style="font-size: 0.95rem; color: #5D4037; margin-bottom: 25px; line-height: 1.5;">
-            Apakah Anda yakin ingin menghapus akun <strong>@ {{ $user->username }}</strong> secara permanen?<br>
-            Tindakan ini akan menghapus seluruh data yang berhubungan dengan akun ini secara permanen dari sistem.
+            Are you sure you want to delete the account <strong>@ {{ $user->username }}</strong> permanently?<br>
+            This action will permanently delete all data associated with this account from the system.
         </p>
         <div class="modal-actions">
             <button type="button" class="modal-btn btn-cancel" id="closeDeleteModal">Cancel</button>

@@ -7,6 +7,7 @@ use App\Models\Review;
 use App\Models\ReviewLike;
 use App\Models\ReviewComment;
 use App\Models\ReviewReport;
+use App\Models\Report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -105,7 +106,8 @@ class ReviewController extends Controller
                     $recommendedSongs[] = [
                         'title' => $songTitle,
                         'artist' => $artistName,
-                        'album_art' => $item['album']['cover_medium'] ?? ($item['album']['cover_small'] ?? '')
+                        'album_art' => $item['album']['cover_medium'] ?? ($item['album']['cover_small'] ?? ''),
+                        'preview_url' => $item['preview'] ?? ''
                     ];
                     $count++;
                 }
@@ -120,22 +122,26 @@ class ReviewController extends Controller
                 [
                     'title' => 'Daylight',
                     'artist' => 'Harry Style',
-                    'album_art' => asset('images/cover2.jpg')
+                    'album_art' => asset('images/cover2.jpg'),
+                    'preview_url' => 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
                 ],
                 [
                     'title' => 'Love Notes',
                     'artist' => 'Olivia D.',
-                    'album_art' => asset('images/cover4.jpg')
+                    'album_art' => asset('images/cover4.jpg'),
+                    'preview_url' => 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'
                 ],
                 [
                     'title' => 'Dear Reader',
                     'artist' => 'Taylor S.',
-                    'album_art' => asset('images/cover3.jpg')
+                    'album_art' => asset('images/cover3.jpg'),
+                    'preview_url' => 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
                 ]
             ];
         }
 
-        return view('books.add_review', compact('book', 'recommendedSongs', 'book_id'));
+        $userBookshelves = Auth::check() ? Auth::user()->bookshelves()->get() : collect();
+        return view('books.add_review', compact('book', 'recommendedSongs', 'book_id', 'userBookshelves'));
     }
 
     /**
@@ -325,6 +331,8 @@ class ReviewController extends Controller
             ]);
         }
 
+        $review = Review::findOrFail($id);
+
         ReviewReport::create([
             'review_id' => $id,
             'user_id' => $userId,
@@ -332,9 +340,158 @@ class ReviewController extends Controller
             'details' => $request->details,
         ]);
 
+        Report::create([
+            'reporter_id' => $userId,
+            'reported_id' => $review->user_id,
+            'review_id' => $id,
+            'category' => $request->reason,
+            'content' => $request->details,
+            'reported_review_text' => $review->content,
+            'reported_review_rating' => $review->rating,
+            'status' => 'pending',
+        ]);
+
         return response()->json([
             'success' => true,
             'message' => 'Laporan berhasil dikirim. Terima kasih atas masukan Anda.'
         ]);
+    }
+
+    /**
+     * Tampilkan form untuk mengedit review.
+     */
+    public function edit($id)
+    {
+        $review = Review::findOrFail($id);
+
+        // Pastikan hanya pembuat review yang bisa mengedit
+        if ($review->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $book = $review->book;
+        $genre = 'Fiction';
+
+        // Resolve genre/category dari volumeInfo Google Books atau local data
+        if ($book && $book->google_id) {
+            $googleBooksService = app(\App\Services\GoogleBooksService::class);
+            $bookData = $googleBooksService->getBookById($book->google_id);
+            if ($bookData) {
+                $volumeInfo = $bookData['volumeInfo'] ?? [];
+                if (isset($volumeInfo['categories']) && !empty($volumeInfo['categories'])) {
+                    $genre = $volumeInfo['categories'][0];
+                }
+            }
+        } else if ($book && $book->title === 'Laut Bercerita') {
+            $genre = 'Drama';
+        }
+
+        // Fetch recommended songs
+        $recommendedSongs = [];
+        try {
+            $response = Http::withoutVerifying()
+                ->timeout(5)
+                ->get('https://api.deezer.com/search', [
+                    'q' => $genre,
+                    'limit' => 5
+                ]);
+
+            if ($response->successful()) {
+                $data = $response->json()['data'] ?? [];
+                $count = 0;
+                foreach ($data as $item) {
+                    if ($count >= 3) break;
+                    
+                    $songTitle = $item['title'] ?? '';
+                    $artistName = $item['artist']['name'] ?? '';
+                    
+                    if (empty($songTitle) || empty($artistName)) continue;
+
+                    $recommendedSongs[] = [
+                        'title' => $songTitle,
+                        'artist' => $artistName,
+                        'album_art' => $item['album']['cover_medium'] ?? ($item['album']['cover_small'] ?? ''),
+                        'preview_url' => $item['preview'] ?? ''
+                    ];
+                    $count++;
+                }
+            }
+        } catch (\Exception $e) {
+            Log::error('Deezer recommendations failed: ' . $e->getMessage());
+        }
+
+        if (empty($recommendedSongs)) {
+            $recommendedSongs = [
+                [
+                    'title' => 'Daylight',
+                    'artist' => 'Harry Style',
+                    'album_art' => asset('images/cover2.jpg'),
+                    'preview_url' => 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
+                ],
+                [
+                    'title' => 'Love Notes',
+                    'artist' => 'Olivia D.',
+                    'album_art' => asset('images/cover4.jpg'),
+                    'preview_url' => 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'
+                ],
+                [
+                    'title' => 'Dear Reader',
+                    'artist' => 'Taylor S.',
+                    'album_art' => asset('images/cover3.jpg'),
+                    'preview_url' => 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
+                ]
+            ];
+        }
+
+        $userBookshelves = Auth::check() ? Auth::user()->bookshelves()->get() : collect();
+        return view('books.edit_review', compact('review', 'book', 'recommendedSongs', 'userBookshelves'));
+    }
+
+    /**
+     * Update review di database.
+     */
+    public function update(Request $request, $id)
+    {
+        $review = Review::findOrFail($id);
+
+        // Pastikan hanya pembuat review yang bisa mengupdate
+        if ($review->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'content' => 'required|string',
+            'bookshelf_status' => 'nullable|string',
+            'songs' => 'nullable|array',
+        ]);
+
+        $review->update([
+            'rating' => $request->rating,
+            'content' => $request->content,
+            'songs' => $request->songs,
+            'bookshelf_status' => $request->bookshelf_status,
+        ]);
+
+        $bookId = $review->book->google_id ?? $review->book->id;
+
+        return redirect()->route('book.details', ['id' => $bookId])->with('success', 'Review berhasil diperbarui!');
+    }
+
+    /**
+     * Hapus review dari database.
+     */
+    public function destroy($id)
+    {
+        $review = Review::findOrFail($id);
+
+        // Pastikan hanya pembuat review yang bisa menghapus
+        if ($review->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $review->delete();
+
+        return back()->with('success', 'Review berhasil dihapus!');
     }
 }

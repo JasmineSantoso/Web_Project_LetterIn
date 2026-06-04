@@ -38,7 +38,7 @@
         {{-- ── Stats Bar ───────────────────────────────────── --}}
         <section class="stats-bar">
             <div class="stat-item">
-                <span class="stat-title">Total Book</span>
+                <span class="stat-title">Total Read Books</span>
                 <span class="stat-number" id="total-books-count">{{ $totalBooks }}</span>
             </div>
             <div class="stat-item">
@@ -61,6 +61,42 @@
                     @endforeach
                 @else
                     <p style="color: #777; margin-top: 10px;">No favorite books yet.</p>
+                @endif
+            </div>
+        </section>
+
+        {{-- ── To Read Books ───────────────────────────────── --}}
+        <section class="bordered-section">
+            <h2 class="section-label">TO READ</h2>
+            <div class="books-grid" id="to-read-books-container">
+                @if(isset($toReadBooks) && $toReadBooks->count() > 0)
+                    @foreach($toReadBooks as $book)
+                        <div class="book-card" style="margin: 5px;">
+                            <a href="{{ route('book.details', ['id' => $book->google_id ?? $book->id]) }}">
+                                <img src="{{ $book->cover_image ?? asset('images/cover1.jpg') }}" alt="{{ $book->title }}" style="width: 100px; height: 150px; object-fit: cover; border-radius: 5px;">
+                            </a>
+                        </div>
+                    @endforeach
+                @else
+                    <p style="color: #777; margin-top: 10px;">No books to read yet.</p>
+                @endif
+            </div>
+        </section>
+
+        {{-- ── Done Read Books ──────────────────────────────── --}}
+        <section class="bordered-section">
+            <h2 class="section-label">DONE READ</h2>
+            <div class="books-grid" id="done-read-books-container">
+                @if(isset($doneReadBooks) && $doneReadBooks->count() > 0)
+                    @foreach($doneReadBooks as $book)
+                        <div class="book-card" style="margin: 5px;">
+                            <a href="{{ route('book.details', ['id' => $book->google_id ?? $book->id]) }}">
+                                <img src="{{ $book->cover_image ?? asset('images/cover1.jpg') }}" alt="{{ $book->title }}" style="width: 100px; height: 150px; object-fit: cover; border-radius: 5px;">
+                            </a>
+                        </div>
+                    @endforeach
+                @else
+                    <p style="color: #777; margin-top: 10px;">No books done reading yet.</p>
                 @endif
             </div>
         </section>
@@ -166,32 +202,46 @@
         </div>
 
         {{-- ── Toast Notification ──────────────────────────────── --}}
-        <div id="profile-toast" style="position: fixed; bottom: 28px; right: 28px; padding: 13px 22px; border-radius: 12px; color: #fff; font-weight: bold; font-size: 0.9rem; box-shadow: 0 6px 24px rgba(0,0,0,0.2); z-index: 10001; opacity: 0; transform: translateY(16px); transition: opacity 0.35s ease, transform 0.35s ease; pointer-events: none; max-width: 300px;"></div>
+        <div id="profile-toast" style="position: fixed; top: 30px; left: 50%; transform: translate(-50%, -100px); padding: 13px 22px; border-radius: 12px; color: #fff; font-weight: bold; font-size: 0.9rem; box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 10001; opacity: 0; transition: opacity 0.35s ease, transform 0.35s ease; pointer-events: none; max-width: 300px; text-align: center;"></div>
 
         {{-- ── Currently Review ────────────────────────────── --}}
         <section class="section-wrapper">
             <h2 class="plain-title">CURRENTLY REVIEW</h2>
             <div class="review-scroll-container" id="currently-review-container">
                 @forelse($userReviews as $review)
-                    <div class="review-card-dark">
-                        <a href="{{ route('book.details', ['id' => $review->book->google_id ?? $review->book->id]) }}" style="flex-shrink: 0;">
-                            <img src="{{ (str_starts_with($review->book->cover_image ?? '', 'http') || empty($review->book->cover_image)) ? ($review->book->cover_image ?: asset('images/cover1.jpg')) : asset('images/' . $review->book->cover_image) }}" 
-                                 alt="{{ $review->book->title }}" 
-                                 style="width: 70px; height: 100px; object-fit: cover; border-radius: 4px;">
-                        </a>
-                        <div class="review-content">
-                            <h4>{{ $review->book->title }}</h4>
-                            <p class="author">{{ $review->book->author }}</p>
-                            <div class="stars">
-                                @for($i = 1; $i <= 5; $i++)
-                                    @if($i <= $review->rating)
-                                        <i class="fa-solid fa-star" style="color: #FBC02D;"></i>
-                                    @else
-                                        <i class="fa-regular fa-star"></i>
-                                    @endif
-                                @endfor
+                    <div class="review-card-dark" style="display: flex; flex-direction: column; gap: 10px; min-width: 300px;">
+                        <div style="display: flex; gap: 15px; width: 100%;">
+                            <a href="{{ route('book.details', ['id' => $review->book->google_id ?? $review->book->id]) }}" style="flex-shrink: 0;">
+                                <img src="{{ (str_starts_with($review->book->cover_image ?? '', 'http') || empty($review->book->cover_image)) ? ($review->book->cover_image ?: asset('images/cover1.jpg')) : asset('images/' . $review->book->cover_image) }}" 
+                                     alt="{{ $review->book->title }}" 
+                                     style="width: 70px; height: 100px; object-fit: cover; border-radius: 4px;">
+                            </a>
+                            <div class="review-content" style="flex: 1; min-width: 0;">
+                                <h4 style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin: 0 0 2px 0;">{{ $review->book->title }}</h4>
+                                <p class="author" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin: 0 0 5px 0;">{{ $review->book->author }}</p>
+                                <div class="stars" style="margin-bottom: 8px;">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        @if($i <= $review->rating)
+                                            <i class="fa-solid fa-star" style="color: #FBC02D;"></i>
+                                        @else
+                                            <i class="fa-regular fa-star"></i>
+                                        @endif
+                                    @endfor
+                                </div>
+                                <p class="desc" style="margin: 0;">{{ Str::limit($review->content, 120) }}</p>
                             </div>
-                            <p class="desc">{{ Str::limit($review->content, 120) }}</p>
+                        </div>
+                        <div class="review-card-actions" style="margin-top: 5px; display: flex; justify-content: flex-end; gap: 15px; border-top: 1px solid rgba(255, 255, 255, 0.15); padding-top: 8px; width: 100%;">
+                            <a href="{{ route('review.edit', $review->id) }}" style="color: #D7CCC8; text-decoration: none; font-size: 0.82rem; font-weight: bold; display: inline-flex; align-items: center; gap: 4px; transition: color 0.2s;" onmouseover="this.style.color='#FFF8E7'" onmouseout="this.style.color='#D7CCC8'">
+                                <i class="fa-regular fa-pen-to-square"></i> Edit
+                            </a>
+                            <form action="{{ route('review.destroy', $review->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this review?');" style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" style="background: none; border: none; padding: 0; color: #FFCDD2; font-size: 0.82rem; font-weight: bold; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: color 0.2s;" onmouseover="this.style.color='#FF8A80'" onmouseout="this.style.color='#FFCDD2'">
+                                    <i class="fa-regular fa-trash-can"></i> Delete
+                                </button>
+                            </form>
                         </div>
                     </div>
                 @empty
@@ -230,16 +280,16 @@
         const SHELF_STORE_URL = '{{ route("bookshelf.store") }}';
 
         /* ─── Toast ─────────────────────────────────────────────── */
-        function showToast(msg, color = '#388E3C') {
+        function showToast(msg, color = '#adbda3') {
             const t = document.getElementById('profile-toast');
             t.textContent = msg;
             t.style.background = color;
             t.style.opacity = '1';
-            t.style.transform = 'translateY(0)';
+            t.style.transform = 'translate(-50%, 0)';
             clearTimeout(t._timer);
             t._timer = setTimeout(() => {
                 t.style.opacity = '0';
-                t.style.transform = 'translateY(16px)';
+                t.style.transform = 'translate(-50%, -100px)';
             }, 3000);
         }
 
@@ -410,7 +460,7 @@
                             if (countEl) countEl.textContent = remaining + (remaining === 1 ? ' book' : ' books');
                         }
                     }, 300);
-                    showToast('Book removed from shelf.', '#5D4037');
+                    showToast('Book removed from shelf.');
                 }
             });
         }
@@ -466,7 +516,7 @@
                                 '<p id="empty-shelf-msg" style="color:#8D6E63;font-style:italic;margin:10px 0;">No bookshelves yet. Create your first shelf!</p>';
                         }
                     }, 300);
-                    showToast('Shelf deleted.', '#5D4037');
+                    showToast('Shelf deleted.');
                 }
             });
         }

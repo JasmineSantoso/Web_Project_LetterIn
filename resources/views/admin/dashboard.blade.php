@@ -103,10 +103,9 @@
             },
             scales: {
                 y: {
-                    min: 0,
-                    max: 40,
+                    beginAtZero: true,
                     ticks: {
-                        stepSize: 10,
+                        precision: 0,
                         font: { family: 'Lato', size: 12 },
                         color: '#4E342E'
                     },
@@ -156,10 +155,9 @@
             },
             scales: {
                 y: {
-                    min: 0,
-                    max: 40,
+                    beginAtZero: true,
                     ticks: {
-                        stepSize: 10,
+                        precision: 0,
                         font: { family: 'Lato', size: 12 },
                         color: '#4E342E'
                     },
@@ -209,10 +207,9 @@
             },
             scales: {
                 y: {
-                    min: 0,
-                    max: 40,
+                    beginAtZero: true,
                     ticks: {
-                        stepSize: 10,
+                        precision: 0,
                         font: { family: 'Lato', size: 12 },
                         color: '#4E342E'
                     },
@@ -262,10 +259,9 @@
             },
             scales: {
                 y: {
-                    min: 0,
-                    max: 40,
+                    beginAtZero: true,
                     ticks: {
-                        stepSize: 10,
+                        precision: 0,
                         font: { family: 'Lato', size: 12 },
                         color: '#4E342E'
                     },
