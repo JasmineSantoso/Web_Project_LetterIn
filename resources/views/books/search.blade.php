@@ -56,11 +56,54 @@
     </section>
 
     <section class="filter-bar">
-        <div class="filter-buttons">
-            <button class="filter-btn">Genre <i class="fa-solid fa-chevron-down"></i></button>
-            <button class="filter-btn">Publish <i class="fa-solid fa-chevron-down"></i></button>
-            <button class="filter-btn">Rating <i class="fa-solid fa-chevron-down"></i></button>
-        </div>
+        <form action="{{ route('search') }}" method="GET" id="filter-form">
+            <input type="hidden" name="q" value="{{ $query }}">
+            <div class="filter-buttons">
+                <!-- Genre Dropdown -->
+                <div class="filter-dropdown" id="dropdown-genre">
+                    <button type="button" class="filter-btn" onclick="toggleDropdown('dropdown-genre')">Genre <i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="dropdown-content">
+                        <label><input type="checkbox" name="genre[]" value="Fiction" onchange="document.getElementById('filter-form').submit()" {{ in_array('Fiction', request('genre', [])) ? 'checked' : '' }}> Fiction</label>
+                        <label><input type="checkbox" name="genre[]" value="Romance" onchange="document.getElementById('filter-form').submit()" {{ in_array('Romance', request('genre', [])) ? 'checked' : '' }}> Romance</label>
+                        <label><input type="checkbox" name="genre[]" value="Fantasy" onchange="document.getElementById('filter-form').submit()" {{ in_array('Fantasy', request('genre', [])) ? 'checked' : '' }}> Fantasy</label>
+                        <label><input type="checkbox" name="genre[]" value="Mystery" onchange="document.getElementById('filter-form').submit()" {{ in_array('Mystery', request('genre', [])) ? 'checked' : '' }}> Mystery</label>
+                        <label><input type="checkbox" name="genre[]" value="History" onchange="document.getElementById('filter-form').submit()" {{ in_array('History', request('genre', [])) ? 'checked' : '' }}> History</label>
+                        <label><input type="checkbox" name="genre[]" value="Science" onchange="document.getElementById('filter-form').submit()" {{ in_array('Science', request('genre', [])) ? 'checked' : '' }}> Science</label>
+                        <label><input type="checkbox" name="genre[]" value="Biography" onchange="document.getElementById('filter-form').submit()" {{ in_array('Biography', request('genre', [])) ? 'checked' : '' }}> Biography</label>
+                    </div>
+                </div>
+
+                <!-- Publish Dropdown -->
+                <div class="filter-dropdown" id="dropdown-publish">
+                    <button type="button" class="filter-btn" onclick="toggleDropdown('dropdown-publish')">Publish <i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="dropdown-content">
+                        <div class="publish-grid">
+                            <div>
+                                <span>From</span><br>
+                                <input type="number" name="publish_from" value="{{ request('publish_from') }}">
+                            </div>
+                            <div>
+                                <span>To</span><br>
+                                <input type="number" name="publish_to" value="{{ request('publish_to') }}">
+                            </div>
+                        </div>
+                        <button type="submit" style="margin-top: 10px; width: 100%; padding: 4px; background: #FFF3E0; border: none; cursor: pointer; border-radius: 2px; font-weight: bold; color: var(--card-brown);">Apply</button>
+                    </div>
+                </div>
+
+                <!-- Rating Dropdown -->
+                <div class="filter-dropdown" id="dropdown-rating">
+                    <button type="button" class="filter-btn" onclick="toggleDropdown('dropdown-rating')">Rating <i class="fa-solid fa-chevron-down"></i></button>
+                    <div class="dropdown-content rating-grid">
+                        <label class="rating-label"><input type="radio" name="rating" value="5" onchange="document.getElementById('filter-form').submit()" {{ request('rating') == '5' ? 'checked' : '' }}> <span><i class="fa-solid fa-star"></i> 5</span></label>
+                        <label class="rating-label"><input type="radio" name="rating" value="4" onchange="document.getElementById('filter-form').submit()" {{ request('rating') == '4' ? 'checked' : '' }}> <span>&ge;<i class="fa-solid fa-star"></i> 4</span></label>
+                        <label class="rating-label"><input type="radio" name="rating" value="3" onchange="document.getElementById('filter-form').submit()" {{ request('rating') == '3' ? 'checked' : '' }}> <span>&ge;<i class="fa-solid fa-star"></i> 3</span></label>
+                        <label class="rating-label"><input type="radio" name="rating" value="2" onchange="document.getElementById('filter-form').submit()" {{ request('rating') == '2' ? 'checked' : '' }}> <span>&ge;<i class="fa-solid fa-star"></i> 2</span></label>
+                        <label class="rating-label" style="grid-column: span 2; text-align: center;"><input type="radio" name="rating" value="1" onchange="document.getElementById('filter-form').submit()" {{ request('rating') == '1' ? 'checked' : '' }}> <span>&ge;<i class="fa-solid fa-star"></i> 1</span></label>
+                    </div>
+                </div>
+            </div>
+        </form>
     </section>
 
     <section class="result-list">
@@ -477,6 +520,21 @@
             }
         });
 
+        function toggleDropdown(id) {
+            // Close all other dropdowns
+            const dropdowns = document.querySelectorAll('.filter-dropdown');
+            dropdowns.forEach(dropdown => {
+                if (dropdown.id !== id) {
+                    dropdown.classList.remove('active');
+                }
+            });
+            // Toggle the clicked one
+            const targetDropdown = document.getElementById(id);
+            if (targetDropdown) {
+                targetDropdown.classList.toggle('active');
+            }
+        }
+
         // Close details dropdowns when clicking outside
         document.addEventListener('click', function(e) {
             const openDetails = document.querySelectorAll('.action-box details[open]');
@@ -485,6 +543,14 @@
                     details.removeAttribute('open');
                 }
             });
+
+            // Close filter dropdowns when clicking outside
+            if (!e.target.matches('.filter-btn') && !e.target.closest('.filter-btn') && !e.target.closest('.dropdown-content')) {
+                const dropdowns = document.querySelectorAll('.filter-dropdown');
+                dropdowns.forEach(dropdown => {
+                    dropdown.classList.remove('active');
+                });
+            }
         });
     </script>
 @endpush
