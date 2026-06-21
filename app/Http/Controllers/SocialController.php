@@ -100,11 +100,6 @@ class SocialController extends Controller
         $followerId = auth()->id();
         $followingId = $request->user_id;
 
-        // Admins cannot follow others
-        if (auth()->user()->is_admin) {
-            return response()->json(['error' => 'Admins cannot follow users'], 403);
-        }
-
         if ($followerId == $followingId) {
             return response()->json(['error' => 'You cannot follow yourself'], 400);
         }

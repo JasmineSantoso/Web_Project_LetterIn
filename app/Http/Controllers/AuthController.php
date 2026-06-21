@@ -72,7 +72,7 @@ class AuthController extends Controller
             if (isset($user->is_admin) && $user->is_admin) {
                 return redirect()->intended('/admin/dashboard');
             }
-            $request->session()->regenerate();
+            
             return redirect()->intended('/');
         }
 

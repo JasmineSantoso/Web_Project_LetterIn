@@ -212,7 +212,6 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/home_signed.js') }}"></script>
     <script>
         function toggleDropdown(id) {
             // Close all other dropdowns
@@ -243,7 +242,7 @@
                 const statusText = option.textContent.trim();
                 const statusVal = option.getAttribute('data-status');
                 
-                const dropdownEl = option.closest('.action-item.dropdown');
+                const dropdownEl = option.closest('.action-item');
                 if (dropdownEl) {
                     const bookId = dropdownEl.getAttribute('data-id');
                     

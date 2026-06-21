@@ -234,7 +234,7 @@
                 const statusText = option.textContent.trim();
                 const statusVal = option.getAttribute('data-status');
                 
-                const dropdownEl = option.closest('.action-item.dropdown');
+                const dropdownEl = option.closest('.action-item');
                 if (dropdownEl) {
                     const bookId = dropdownEl.getAttribute('data-id');
                     

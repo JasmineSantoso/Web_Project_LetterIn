@@ -133,5 +133,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/home_signed.js') }}"></script>
+    <script src="{{ asset('js/home.js') }}"></script>
 @endpush
