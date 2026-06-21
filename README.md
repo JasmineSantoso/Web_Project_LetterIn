@@ -94,7 +94,6 @@ Administrator
 - HTML5
 - CSS3
 - JavaScript
-- Bootstrap
 - Blade Template Engine
 
 ## Backend
