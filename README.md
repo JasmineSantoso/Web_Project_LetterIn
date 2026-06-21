@@ -2,71 +2,87 @@
 
 ## Design and Implementation of a Book Review Information System Based on Rating and Music Curation on the LetterIn Platform
 
-LetterIn is a web-based application designed as a digital book review platform featuring rating systems, user reviews, book recommendations, and music curation to enhance users’ reading experiences. This website aims to help users discover books that match their preferences through community reviews, ratings, and personalized reading atmospheres.
+LetterIn is a web-based social book review platform developed using the Laravel Framework. The application allows users to discover books through the Google Books API, organize personal bookshelves, share reviews and ratings, recommend songs that match a book's atmosphere, and interact with other readers through likes, comments, follows, and notifications. An administrator dashboard is also provided to moderate reports and manage community safety.
 
 ---
 
 # ✨ Features
 
-## 👤 Guest User
+## 👤 Guest
 
-* View the homepage
-* Browse book collections
-* View book details
-* Read reviews and ratings from other users
-* Search books by title or category
-* Register an account
-* Login to the system
-
-## 👥 Registered User
-
-* Login and logout
-* Edit user profile
-* Give book ratings
-* Write book reviews
-* Save favorite books / wishlist
-* Access personalized book recommendations
-* Get music curation based on reading mood
-* Edit or delete personal reviews
-
-## 🛠️ Admin
-
-* Manage book data
-* Manage book categories
-* Manage users
-* Moderate reviews
-* Remove inappropriate content
-* View website activity reports
+- View homepage
+- Browse books
+- Search books
+- View book details
+- Read public reviews
+- Register
+- Login
 
 ---
 
-# 🗺️ Sitemap / Actor Features
+## 👥 Registered User
+
+- Browse books from Google Books API
+- Search books
+- View book details
+- Create custom bookshelves
+- Add books to favorites
+- Track reading status
+- Write book reviews
+- Give ratings
+- Recommend songs in reviews
+- Edit or delete personal reviews
+- Like reviews
+- Comment on reviews
+- Report inappropriate reviews
+- Follow other users
+- Receive notifications
+- Edit profile
+- Logout
+
+---
+
+## 🛠️ Administrator
+
+- View dashboard
+- Manage users
+- Moderate reviews
+- Review user reports
+- Ban users
+- Remove inappropriate content
+
+---
+
+# 🗺️ Sitemap
 
 ```text
 Guest
 ├── Home
-├── Explore Books
-├── Book Detail
-├── Search Book
+├── Browse Books
+├── Search Books
+├── Book Details
 ├── Login
 └── Register
 
 Registered User
-├── Dashboard
+├── Home
+├── Browse Books
+├── Search Books
+├── Book Details
+├── Favorites
+├── Bookshelves
+├── Reading Status
+├── Reviews
+├── Notifications
 ├── Profile
-├── Book Review
-├── Rating System
-├── Wishlist
-├── Music Recommendation
 └── Logout
 
-Admin
-├── Admin Dashboard
-├── Manage Books
-├── Manage Categories
-├── Manage Users
-├── Manage Reviews
-└── Reports
+Administrator
+├── Dashboard
+├── User Management
+├── Review Moderation
+├── Reports
+└── Banned Users
 ```
 
 ---
@@ -75,33 +91,38 @@ Admin
 
 ## Frontend
 
-* HTML5
-* CSS3
-* JavaScript
-* Blade Template Engine
+- HTML5
+- CSS3
+- JavaScript
+- Blade Template Engine
 
 ## Backend
 
-* PHP
-* Laravel Framework
+- PHP
+- Laravel Framework
 
 ## Database
 
-* MySQL / SQLite *(adjust according to the project configuration)*
+- MySQL
+- Laravel Eloquent ORM
 
-## Additional Tools
+## External API
 
-* Git & GitHub
-* Laragon / XAMPP
-* Composer
+- Google Books API
+- Deezer API
+
+## Development Tools
+
+- Composer
+- Git & GitHub
+- Laragon / XAMPP
+- Visual Studio Code
 
 ---
 
-# 🗄️ Database Configuration
+# ⚙️ Database Configuration
 
-## Database Used
-
-The database configuration used in this project:
+Configure the database credentials in the `.env` file.
 
 ```env
 DB_CONNECTION=mysql
@@ -114,121 +135,114 @@ DB_PASSWORD=
 
 ---
 
-# 📑 Table Specifications
+# 🔄 System Flow
 
-## users
+```text
+                  ┌───────────────────┐
+                  │       Start       │
+                  └─────────┬─────────┘
+                            │
+                            ▼
+                  Register / Login
+                            │
+                            ▼
+                Browse & Search Books
+                 (Google Books API)
+                            │
+                            ▼
+                    Select a Book
+                            │
+        ┌───────────────────┼────────────────────┐
+        │                   │                    │
+        ▼                   ▼                    ▼
+   View Details       Add to Favorites    Add to Bookshelf
+        │
+        ▼
+   Track Reading Status
+        │
+        ▼
+     Write Review
+(Rating + Review + Songs)
+        │
+        ▼
+   Publish Review
+        │
+        ▼
+Other Users Can Interact
+(Comment • Like • Follow • Report)
+        │
+        ▼
+ Receive Notifications
+        │
+        ▼
+   Administrator Reviews Reports
+        │
+        ▼
+         End
+```
 
-| Field      | Type      | Description        |
-| ---------- | --------- | ------------------ |
-| id         | bigint    | Primary key        |
-| name       | varchar   | User name          |
-| email      | varchar   | User email         |
-| password   | varchar   | User password      |
-| role       | enum      | User role          |
-| created_at | timestamp | Creation timestamp |
+## Workflow Overview
 
-## books
+1. Users register or log into their LetterIn account.
+2. Users browse or search books using the Google Books API.
+3. Users can add books to favorites or organize them into custom bookshelves.
+4. Users can update their reading status.
+5. Users write reviews by providing:
+   - Rating
+   - Review content
+   - Recommended songs
+6. Published reviews become visible to the community.
+7. Other users can:
+   - Like reviews
+   - Comment on reviews
+   - Follow reviewers
+   - Report inappropriate reviews
+8. Notifications are generated for social interactions.
+9. Administrators moderate reports, remove inappropriate content, and ban users when necessary.
 
-| Field       | Type      | Description        |
-| ----------- | --------- | ------------------ |
-| id          | bigint    | Primary key        |
-| title       | varchar   | Book title         |
-| author      | varchar   | Book author        |
-| description | text      | Book description   |
-| cover       | varchar   | Book cover image   |
-| category_id | bigint    | Category relation  |
-| created_at  | timestamp | Creation timestamp |
+---
 
-## categories
+# 🗄️ Database Management System
 
-| Field | Type    | Description   |
-| ----- | ------- | ------------- |
-| id    | bigint  | Primary key   |
-| name  | varchar | Category name |
+LetterIn uses **MySQL** as its relational database management system with **Laravel Eloquent ORM**. Book information is retrieved dynamically from the Google Books API, while user-generated content and social interactions are stored locally in the database.
 
-## reviews
+| Table | Purpose |
+|-------|---------|
+| `users` | Stores user accounts, authentication, and profile information. |
+| `books` | Stores books retrieved from the Google Books API. |
+| `reviews` | Stores user ratings, reviews, reading status, and recommended songs. |
+| `bookshelves` | Stores user-created bookshelves. |
+| `bookshelf_book` | Associates books with bookshelves. |
+| `favorite_books` | Stores users' favorite books. |
+| `user_book_statuses` | Tracks reading status and reading progress. |
+| `follows` | Stores follower and following relationships. |
+| `review_comments` | Stores comments on reviews. |
+| `review_likes` | Stores likes on reviews. |
+| `review_reports` | Stores reports for inappropriate reviews. |
+| `reports` | Stores reports handled by administrators. |
+| `notifications` | Stores user notifications. |
+| `banned_users` | Stores banned user information. |
 
-| Field      | Type      | Description        |
-| ---------- | --------- | ------------------ |
-| id         | bigint    | Primary key        |
-| user_id    | bigint    | User relation      |
-| book_id    | bigint    | Book relation      |
-| rating     | integer   | Book rating        |
-| review     | text      | Review content     |
-| created_at | timestamp | Creation timestamp |
+### Main Relationships
 
-## wishlists
-
-| Field   | Type   | Description   |
-| ------- | ------ | ------------- |
-| id      | bigint | Primary key   |
-| user_id | bigint | User relation |
-| book_id | bigint | Book relation |
+- One user can write many reviews.
+- One book can have many reviews.
+- One user can own multiple bookshelves.
+- One bookshelf can contain multiple books.
+- One book can belong to multiple bookshelves.
+- Users can follow other users.
+- Users can like and comment on reviews.
+- Users can report inappropriate reviews.
+- Administrators manage reports and banned users.
 
 ---
 
 # 👨‍💻 Team Members
 
-| Name                     | Role                                | Responsibilities                            |
-| -------------------------| ----------------------------------- | --------------------------------------------|
-| Samara Wardasadiya       | Project Manager / Backend Developer | Develop backend systems and database        |
-| Kadiva Alifia Nurhidayah | Frontend Developer                  | Design website UI/UX                        |
-| Jasmine Aulia Santoso    | Database Designer                   | Design ERD, UML,  and database relations    |
+| Name | Role | Responsibilities |
+|------|------|------------------|
+| Samara Wardasadiya | Project Manager / Fullstack Developer | Managed project planning, implemented backend features, designed the database, integrated Google Books API, and coordinated development activities. |
+| Kadiva Alifia Nurhidayah | Fullstack Developer | Designed UI/UX, developed frontend interfaces, implemented responsive layouts, and integrated frontend components with backend services. |
+| Jasmine Aulia Santoso | Fullstack Developer | Designed system architecture, created ERD and UML diagrams, implemented database relationships, developed backend modules, and performed system testing and integration. |
 
 ---
-
-# ⚙️ Installation Guide
-
-## 1. Clone Repository
-
-```bash
-git clone https://github.com/JasmineSantoso/Web_Project_LetterIn.git
-```
-
-## 2. Enter Project Directory
-
-```bash
-cd Web_Project_LetterIn
-```
-
-## 3. Install Laravel Dependencies
-
-```bash
-composer install
-```
-
-## 4. Copy Environment File
-
-```bash
-cp .env.example .env
-```
-
-## 5. Generate Application Key
-
-```bash
-php artisan key:generate
-```
-
-## 6. Configure Database
-
-Edit the `.env` file and adjust the database configuration.
-
-## 7. Run Migration
-
-```bash
-php artisan migrate
-```
-
-## 8. Run Development Server
-
-```bash
-php artisan serve
-```
-
----
-
-# 🚀 Future Development
-
-* Integration with Google Books API
-* Reading progress tracker feature
-* Social interaction between users
